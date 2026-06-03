@@ -1,0 +1,14 @@
+{
+  "name": "instruqt-tracks",
+  "owner": {
+    "name": "Instruqt"
+  },
+  "plugins": [
+    {
+      "name": "track",
+      "source": ".",
+      "description": "Generate Instruqt tracks from customer discovery through challenge-by-challenge content creation with built-in quality scoring",
+      "version": "1.0.0"
+    }
+  ]
+}
