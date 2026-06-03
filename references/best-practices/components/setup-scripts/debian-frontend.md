@@ -76,6 +76,45 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get install curl  # Blocks waiting for Y/n
 ```
 
+### debconf-set-selections for packages with required prompts
+
+Some packages (mysql-server, krb5-config, iptables-persistent, postfix) require answers to configuration prompts that `DEBIAN_FRONTEND=noninteractive` alone cannot suppress. Pre-seed the answers with `debconf-set-selections`:
+
+```bash
+#!/bin/bash
+export DEBIAN_FRONTEND=noninteractive
+
+# Pre-seed MySQL root password
+echo "mysql-server mysql-server/root_password password instruqt" | debconf-set-selections
+echo "mysql-server mysql-server/root_password_again password instruqt" | debconf-set-selections
+apt-get install -y -qq mysql-server
+
+# Pre-seed iptables-persistent to save current rules
+echo "iptables-persistent iptables-persistent/autosave_v4 boolean true" | debconf-set-selections
+echo "iptables-persistent iptables-persistent/autosave_v6 boolean true" | debconf-set-selections
+apt-get install -y -qq iptables-persistent
+
+# Pre-seed Kerberos default realm
+echo "krb5-config krb5-config/default_realm string LAB.EXAMPLE.COM" | debconf-set-selections
+apt-get install -y -qq krb5-user
+```
+
+Without pre-seeding, these packages either hang waiting for input (causing a timeout) or install with incorrect defaults.
+
+### apt-get vs apt
+
+Always use `apt-get` over `apt` in non-interactive scripts. `apt` is designed for interactive terminal use and may produce warnings or behave unpredictably in scripts:
+
+```bash
+# Good — apt-get is the scripting interface
+apt-get update -qq
+apt-get install -y -qq curl jq
+
+# Bad — apt is for interactive use
+apt update        # "WARNING: apt does not have a stable CLI interface"
+apt install -y curl
+```
+
 ## What to Watch For
 
 - The export must use an equals sign: `export DEBIAN_FRONTEND=noninteractive` not `export DEBIAN_FRONTEND noninteractive`
@@ -84,3 +123,4 @@ apt-get install curl  # Blocks waiting for Y/n
 - The dpkg lock file may be held by unattended-upgrades on fresh VMs; a wait loop prevents failures
 - Using `apt` instead of `apt-get` in non-interactive scripts can produce "WARNING: apt does not have a stable CLI interface" messages
 - The `-qq` flag suppresses progress output, keeping setup logs clean
+- Packages with interactive prompts (mysql-server, krb5-config, iptables-persistent, postfix) need `debconf-set-selections` before installation — `DEBIAN_FRONTEND=noninteractive` only suppresses the UI, it does not provide answers

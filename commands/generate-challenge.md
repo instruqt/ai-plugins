@@ -24,24 +24,24 @@ Resolve paths:
 ## Context Sources
 
 **Customer context**: `${TRACK_RESEARCH_DIR}/<company-slug>/`
-**Track plan**: `${TRACK_OUTPUT_DIR}/plan.md`
-**Challenge plan**: `${TRACK_OUTPUT_DIR}/<NN-slug>/plan.md`
+**Track plan**: `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
+**Challenge plan**: `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
 **Infrastructure**: `${TRACK_OUTPUT_DIR}/config.yml`
 
 ## Workflow
 
 ### Step 1: Verify Track Directory
 
-1. Check for `track.yml` and `${TRACK_OUTPUT_DIR}/plan.md`
-2. Check for `${TRACK_OUTPUT_DIR}/<NN-slug>/plan.md` (challenge plan)
+1. Check for `track.yml` and `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
+2. Check for `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md` (challenge plan)
 3. If missing, direct to the appropriate command
 
 ### Step 2: Load Context
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/load-customer-context/SKILL.md` for loading instructions:
 1. Read company, style guide, and product files
-2. Read `${TRACK_OUTPUT_DIR}/plan.md`
-3. Read `${TRACK_OUTPUT_DIR}/<NN-slug>/plan.md`
+2. Read `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
+3. Read `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
 4. Read `${TRACK_OUTPUT_DIR}/config.yml`
 
 ### Step 3: Find Challenge
@@ -70,8 +70,8 @@ Agent(
 
   Generate challenge: <challenge-slug>
   Customer: <company-slug>
-  Track plan: ${TRACK_OUTPUT_DIR}/plan.md
-  Challenge plan: ${TRACK_OUTPUT_DIR}/<NN-slug>/plan.md
+  Track plan: ${TRACK_OUTPUT_DIR}/.instruqt/plan.md
+  Challenge plan: ${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md
   Config: ${TRACK_OUTPUT_DIR}/config.yml
   Overwrite mode: <overwrite/skip/abort>
 
@@ -115,6 +115,17 @@ Challenge "<title>" generated with issues.
 | No customer context | Run `/track:research-company` first |
 | Challenge not found | List available challenges |
 
+### Step 6b: CLI Validation
+
+After the challenge-implementer completes, run external validation tools:
+
+1. Run `shellcheck` on all scripts in the challenge directory (if shellcheck is available)
+2. Run `instruqt track validate --path ${TRACK_OUTPUT_DIR}` (if instruqt CLI is available)
+
+Report any issues found. These catch problems the internal validation may miss (platform-side field requirements, shell issues beyond convention checks).
+
+If either tool is not installed, note it as a warning but do not block.
+
 ## Important Notes
 
 - Always verify prerequisites before generating
@@ -122,3 +133,5 @@ Challenge "<title>" generated with issues.
 - The challenge-implementer handles validation and scoring loops autonomously
 - No retry limit on validation — agent keeps fixing until pass
 - Scoring loops cap at 3 rounds — unresolved findings surfaced to user
+- The `id` field in assignment.md frontmatter is intentionally omitted — Instruqt assigns UUIDs on first `instruqt track push`
+- Always run `instruqt track validate` and `shellcheck` after generation when the tools are available

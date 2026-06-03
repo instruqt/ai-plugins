@@ -22,7 +22,7 @@ Run `/track:research-company` first to create customer context.
 ## Context Sources
 
 **Global customer context** (`${TRACK_RESEARCH_DIR}/<company-slug>/`)
-**Track-specific plan** (`${TRACK_OUTPUT_DIR}/plan.md` — created by this command)
+**Track-specific plan** (`${TRACK_OUTPUT_DIR}/.instruqt/plan.md` — created by this command)
 
 ## Workflow
 
@@ -70,7 +70,7 @@ The agent will:
 2. Optionally research the topic
 3. Define learning objectives and challenge roadmap
 4. Draft track.yml and config.yml
-5. Write `${TRACK_OUTPUT_DIR}/plan.md`
+5. Write `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
 6. Present for user approval
 
 ### Step 4: Update README
@@ -97,4 +97,4 @@ Next: Plan each challenge in order:
 - Always check for existing customer context first
 - The track-planner agent handles the interactive planning
 - Track plan MUST be approved by the user before proceeding
-- Store plan in `${TRACK_OUTPUT_DIR}/plan.md` (track-specific, not global)
+- Store plan in `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` (track-specific, not global)

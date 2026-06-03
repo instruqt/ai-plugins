@@ -77,6 +77,15 @@ Use `machine_type` instead of `memory`/`cpus` fields. The latter are a legacy al
 | `instruqt/docker-*` | Docker-enabled images |
 | `instruqt/windows-server` | Windows Server |
 
+### Image naming conventions
+
+Stock cloud images use two naming conventions:
+
+- **Family slug** (recommended): `ubuntu-os-cloud/ubuntu-2204-lts` — always resolves to the latest image in the family. Updates automatically when the cloud provider publishes a new image.
+- **Pinned date format**: `ubuntu-os-cloud/ubuntu-2204-lts-v20240101` — pins to a specific image version. Use when reproducibility matters more than getting security patches.
+
+Prefer the family slug for most tracks. Pin to a specific date only when a known image regression needs to be avoided.
+
 ### Custom images
 
 Custom images from vendor GCP projects can be referenced by their full project/image path.
@@ -144,6 +153,30 @@ When using Windows VM images (`instruqt/windows-server`):
 - Lifecycle scripts (setup, check, solve, cleanup) are PowerShell, not Bash
 - Terminal tabs open a native PowerShell session
 - File paths use Windows conventions
+
+### Windows via nested Docker (alternative)
+
+For tracks that need a Windows environment but cannot use a Windows VM image, run a Windows Docker container inside a Linux VM and expose it via Guacamole RDP:
+
+```yaml
+virtualmachines:
+  - name: workstation
+    image: ubuntu-os-cloud/ubuntu-2204-lts
+    machine_type: n1-standard-4
+    nested_virtualization: true
+    allow_external_ingress:
+      - http
+      - https
+      - high-ports
+    provision_ssl_certificate: true
+```
+
+The setup script pulls a Windows container image and runs it with Docker, then configures Guacamole to connect to its RDP port. This is heavier than a native Windows VM but avoids Windows image licensing constraints.
+
+### Editor limitations
+
+> [!NOTE]
+> **Cursor (the editor)** has no viable self-hosted web mode. It cannot be run as a browser-based IDE like code-server or VS Code. If a track needs a browser-based code editor, use code-server instead.
 
 ## Examples
 

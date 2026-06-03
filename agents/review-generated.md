@@ -22,7 +22,7 @@ You are a track quality reviewer for Instruqt. Your job is to review a generated
 Gather all track content:
 - `config.yml` — track configuration, challenges, sandbox
 - All challenge directories: `<NN-slug>/assignment.md`, `<NN-slug>/setup-*`, `<NN-slug>/check-*`, `<NN-slug>/solve-*`, `<NN-slug>/cleanup-*`
-- `${TRACK_OUTPUT_DIR}/plan.md` if it exists (for learning objectives context)
+- `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` if it exists (for learning objectives context)
 - Customer context if available (for brand-voice scoring)
 
 ## Step 2: Dispatch Checklist Scorers
@@ -77,17 +77,19 @@ Use the Agent tool to spawn analytic scorer agents **in parallel**.
 |--------|-------|--------|---------------|
 | assignment-content | Sonnet | `references/evaluation/analytic/generate/assignment-content.md` | `<challenge>/assignment.md` + track plan (objectives) |
 | brand-voice | Sonnet | `references/evaluation/analytic/generate/brand-voice.md` | `<challenge>/assignment.md` + style-guide.md (skip if no customer context) |
-| step-design | Sonnet | `references/evaluation/analytic/generate/step-design.md` | `config.yml` (challenge's steps) + `<challenge>/assignment.md` |
+| challenge-design | Sonnet | `references/evaluation/analytic/generate/challenge-design.md` | `<challenge>/assignment.md` + `<challenge>/check-*` + track plan |
 | script-quality | Haiku | `references/evaluation/analytic/generate/script-quality.md` | `<challenge>/setup-*`, `check-*`, `solve-*`, `cleanup-*` |
+| script-assignment-alignment | Sonnet | `references/evaluation/analytic/generate/script-assignment-alignment.md` | `<challenge>/assignment.md` + `<challenge>/check-*` + `<challenge>/solve-*` |
+| tab-layout | Haiku | `references/evaluation/analytic/generate/tab-layout.md` | `<challenge>/assignment.md` (tabs frontmatter) + `config.yml` (ports, hostnames) |
 
 **Track-wide scorers:**
 
 | Scorer | Model | Rubric | Content Slice |
 |--------|-------|--------|---------------|
-| track-metadata | Haiku | `references/evaluation/analytic/generate/track-metadata.md` | `config.yml` |
-| track-structure | Haiku | `references/evaluation/analytic/generate/track-structure.md` | `config.yml` + challenge directory listing |
-| sandbox-completeness | Haiku | `references/evaluation/analytic/generate/sandbox-completeness.md` | `config.yml` + all script listings |
-| interactivity | Sonnet | `references/evaluation/analytic/generate/interactivity.md` | All `assignment.md` files + `config.yml` across all challenges |
+| track-metadata | Haiku | `references/evaluation/analytic/generate/track-metadata.md` | `track.yml` |
+| track-structure | Haiku | `references/evaluation/analytic/generate/track-structure.md` | `track.yml` + `config.yml` + challenge directory listing |
+| config-completeness | Haiku | `references/evaluation/analytic/generate/config-completeness.md` | `config.yml` + all script listings + all tab definitions |
+| interactivity | Sonnet | `references/evaluation/analytic/generate/interactivity.md` | All `assignment.md` files + all `check-*` scripts across all challenges |
 
 **Analytic scorer prompt template:**
 
@@ -185,10 +187,34 @@ Present findings grouped by priority:
 3. **Below threshold** (analytic score 3) — should fix
 4. **Passing** (scores 4-5) — summary only
 
+## Step 6: Write Scores
+
+After presenting the scorecard, write all scoring results to `${TRACK_OUTPUT_DIR}/.instruqt/scores.json`. If the file exists, update it (merge results into the existing structure, overwriting scores for challenges that were re-scored). Use the same format as the challenge-implementer:
+
+```json
+{
+  "track": "<track-slug>",
+  "last_updated": "<ISO 8601 timestamp>",
+  "challenges": {
+    "<NN-challenge-slug>": {
+      "checklist": { ... },
+      "analytic": { ... },
+      "status": "passed | needs_work"
+    }
+  },
+  "track_wide": { ... }
+}
+```
+
+- `status: "passed"` — all checklist items pass and all analytic criteria >= 4
+- `status: "needs_work"` — one or more findings below threshold
+
+This makes review results available to subsequent commands. The implementer can read existing scores to know what to fix. Generate-track can show review status in its state detection.
+
 ## Important Notes
 
-- This agent provides feedback ONLY — no files are modified
+- This agent provides feedback ONLY — no track content files are modified (scores.json is plugin state, not content)
 - The user decides what to address after reviewing the scorecard
-- If the user asks to fix specific findings, they should use `/track:generate` or manual editing
+- If the user asks to fix specific findings, they should use `/track:generate-challenge` or manual editing — the implementer reads scores.json to know what needs fixing
 - Skip brand-voice scoring if no customer context exists
 - Run track validation and `shellcheck <challenge>/*.sh` as part of the review (checklist needs the output)

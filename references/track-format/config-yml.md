@@ -121,11 +121,32 @@ Always `"3"`. Required.
 | `machine_type` | string | — | GCP machine-type string (preferred over memory/cpus) |
 | `memory` | int (MB) | — | Alternative to machine_type |
 | `cpus` | int | — | Alternative to machine_type |
-| `shell` | string | — | Default shell for terminal tabs |
+| `shell` | string | — | Default shell for terminal tabs (see shell note below) |
 | `environment` | map | — | Key-value environment variables |
 | `allow_external_ingress` | list | — | `[http, https, high-ports]` for web apps |
 | `nested_virtualization` | bool | false | Required for Docker/Kind on VM |
 | `provision_ssl_certificate` | bool | false | Provision HTTPS certificate |
+
+**shell: su - on VMs vs containers.** The `shell: su - username` syntax works on VMs but NOT on containers. Containers typically run as root with no login infrastructure; use `shell: /bin/bash` or `shell: /bin/sh` for containers. See `virtualmachines.md` for the non-root user pattern on VMs.
+
+**Canonical VM combo.** Most VM-based tracks that expose web UIs need all three flags together:
+
+```yaml
+allow_external_ingress:
+  - http
+  - https
+  - high-ports
+nested_virtualization: true
+provision_ssl_certificate: true
+```
+
+- `allow_external_ingress` opens the firewall for service tabs and external access
+- `nested_virtualization` enables Docker, Kind, k3s, and any workload needing `/dev/kvm`
+- `provision_ssl_certificate` provides HTTPS for service tabs (required by code-server, many web UIs)
+
+Omit `nested_virtualization` if the VM runs only native packages (no Docker). Omit `provision_ssl_certificate` if there are no service/website tabs. Omit `allow_external_ingress` if the VM is backend-only (no learner-facing tabs).
+
+**K3S auto-join.** For multi-VM Kubernetes tracks, set `K3S_CONTROL_PLANE_HOSTNAME` in the `environment:` block of both control plane and worker VMs. Worker nodes use this to auto-join the cluster. See `virtualmachines.md` for a full example.
 
 ### virtualbrowsers
 

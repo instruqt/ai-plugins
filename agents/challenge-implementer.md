@@ -38,9 +38,17 @@ ${TRACK_RESEARCH_DIR}/<company-slug>/products/*.md
 
 ### Track and Challenge Context
 ```
-${TRACK_OUTPUT_DIR}/plan.md                     # Track plan
-${TRACK_OUTPUT_DIR}/<challenge-slug>/plan.md    # Challenge plan (from /plan-challenge)
+${TRACK_OUTPUT_DIR}/.instruqt/plan.md                     # Track plan
+${TRACK_OUTPUT_DIR}/.instruqt/<challenge-slug>/plan.md    # Challenge plan (from /plan-challenge)
 ```
+
+### Existing Scores
+Check for `${TRACK_OUTPUT_DIR}/.instruqt/scores.json`. If it exists, read the entry for this challenge. Prior scores tell you:
+- **Review findings** — if a `/track:review-*` command found issues, they are recorded here. Address these findings during generation instead of waiting for the scoring loop to rediscover them.
+- **Prior generation scores** — if this challenge was previously generated and scored, the findings show what went wrong last time. Avoid repeating the same mistakes.
+- **Escalated status** — if the prior run escalated to the user, note which criteria were unresolved.
+
+If no scores exist for this challenge, proceed normally.
 
 ### Reference Documentation
 The challenge plan includes a "Reference Documentation" section listing doc pages relevant to this challenge. These have already been fetched and cleaned by the plan-challenge command. Read them from `${TRACK_RESEARCH_DIR}/<company-slug>/website/` — do NOT fetch anything from the web.
@@ -154,7 +162,7 @@ Check each item. Return ONLY valid JSON:
    b. Re-validate track
    c. Re-run **ALL** checklist items (not just failed ones — fixes may cause regressions)
    d. Repeat from step 2
-4. **No cap on fix rounds** — keep fixing until all pass
+4. **After 3 fix rounds**, if items still fail: **stop and escalate to the user**. Present what is still failing, what was tried, and ask how to proceed (fix manually, provide guidance, or accept and continue). Do not silently move on with broken content.
 
 ## Step 7: Challenge Analytic Scoring
 
@@ -170,8 +178,10 @@ Use the Agent tool to spawn scorer agents **in parallel**.
 |--------|-------|--------|---------------|
 | assignment-content | Sonnet | `references/evaluation/analytic/generate/assignment-content.md` | `<challenge>/assignment.md` + track plan (objectives) |
 | brand-voice | Sonnet | `references/evaluation/analytic/generate/brand-voice.md` | `<challenge>/assignment.md` + `${TRACK_RESEARCH_DIR}/<company>/style-guide.md` |
-| step-design | Sonnet | `references/evaluation/analytic/generate/step-design.md` | `config.yml` (challenge's steps) + `<challenge>/assignment.md` |
+| challenge-design | Sonnet | `references/evaluation/analytic/generate/challenge-design.md` | `<challenge>/assignment.md` + `<challenge>/check-*` + track plan |
 | script-quality | Haiku | `references/evaluation/analytic/generate/script-quality.md` | `<challenge>/setup-*`, `check-*`, `solve-*`, `cleanup-*` |
+| script-assignment-alignment | Sonnet | `references/evaluation/analytic/generate/script-assignment-alignment.md` | `<challenge>/assignment.md` + `<challenge>/check-*` + `<challenge>/solve-*` |
+| tab-layout | Haiku | `references/evaluation/analytic/generate/tab-layout.md` | `<challenge>/assignment.md` (tabs frontmatter) + `config.yml` (ports, hostnames) |
 
 **Analytic scorer prompt template:**
 
@@ -215,9 +225,9 @@ Use `model: haiku` or `model: sonnet` on the Agent call as specified in the tabl
 3. If any criterion < 4:
    a. Fix the issues based on findings
    b. Re-validate track
-   c. Re-score **only affected rubrics** (don't re-dispatch all scorers)
+   c. Re-score **all rubrics** (fixes can cause regressions across rubrics)
    d. Repeat from step 2
-4. **Cap at 3 fix rounds**. If criteria still < 4 after 3 rounds, collect remaining findings for the completion report
+4. **After 3 fix rounds**, if criteria still < 4: **stop and escalate to the user**. Present the failing criteria, scores, findings, and what was attempted. Ask how to proceed (fix manually, provide guidance, or accept and continue). Do not silently move on.
 
 ## Step 8: Track-Wide Analytic Scoring
 
@@ -227,10 +237,10 @@ After challenge analytic scoring passes (or caps out), score across ALL challeng
 
 | Scorer | Model | Rubric | Content Slice |
 |--------|-------|--------|---------------|
-| track-metadata | Haiku | `references/evaluation/analytic/generate/track-metadata.md` | `config.yml` |
-| track-structure | Haiku | `references/evaluation/analytic/generate/track-structure.md` | `config.yml` + challenge directory listing |
-| sandbox-completeness | Haiku | `references/evaluation/analytic/generate/sandbox-completeness.md` | `config.yml` + all script listings |
-| interactivity | Sonnet | `references/evaluation/analytic/generate/interactivity.md` | All `assignment.md` files + `config.yml` across all challenges |
+| track-metadata | Haiku | `references/evaluation/analytic/generate/track-metadata.md` | `track.yml` |
+| track-structure | Haiku | `references/evaluation/analytic/generate/track-structure.md` | `track.yml` + `config.yml` + challenge directory listing |
+| config-completeness | Haiku | `references/evaluation/analytic/generate/config-completeness.md` | `config.yml` + all script listings + all tab definitions |
+| interactivity | Sonnet | `references/evaluation/analytic/generate/interactivity.md` | All `assignment.md` files + all `check-*` scripts across all challenges |
 
 Uses the same analytic scorer prompt template as Step 7.
 
@@ -241,9 +251,9 @@ Uses the same analytic scorer prompt template as Step 7.
 3. If any criterion < 4:
    a. Fix issues **only in the current challenge** (do not modify prior challenges)
    b. Re-validate track
-   c. Re-score only affected rubrics
+   c. Re-score **all rubrics** (fixes can cause regressions across rubrics)
    d. Repeat from step 2
-4. **Cap at 3 fix rounds**. Unfixable cross-challenge findings are surfaced in the completion report for the user to address
+4. **After 3 fix rounds**, if criteria still < 4: **stop and escalate to the user**. For cross-challenge findings that cannot be fixed in the current challenge, present them clearly and ask whether to continue or address them first. Do not silently move on.
 
 ## Step 9: Holistic Scoring (Informational)
 
@@ -288,7 +298,40 @@ Give one overall score 1-5. Return ONLY valid JSON:
 
 Collect the holistic scores and include them in the completion report.
 
-## Step 10: Report Completion
+## Step 10: Write Scores
+
+Write all scoring results to `${TRACK_OUTPUT_DIR}/.instruqt/scores.json`. If the file exists, update it (merge new challenge results into the existing structure). If it does not exist, create it.
+
+```json
+{
+  "track": "<track-slug>",
+  "last_updated": "<ISO 8601 timestamp>",
+  "challenges": {
+    "<NN-challenge-slug>": {
+      "checklist": {
+        "<rubric>": { "<item>": { "score": 0, "finding": "..." } }
+      },
+      "analytic": {
+        "<rubric>": { "<criterion>": { "score": 4, "finding": null } }
+      },
+      "holistic": {
+        "<rubric>": { "overall": { "score": 4, "finding": null } }
+      },
+      "status": "passed | escalated"
+    }
+  },
+  "track_wide": {
+    "<rubric>": { "<criterion>": { "score": 4, "finding": null } }
+  }
+}
+```
+
+- `status: "passed"` — all checklist items pass and all analytic criteria >= 4
+- `status: "escalated"` — user was asked about unresolved findings and chose to continue
+
+This file is the checkpoint for resume. `generate-track` reads it to determine which challenges need work.
+
+## Step 11: Report Completion
 
 ```
 Challenge "[Title]" generation complete.

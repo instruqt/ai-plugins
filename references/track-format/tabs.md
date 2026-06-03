@@ -207,3 +207,16 @@ tabs:
     hostname: host01
     cmd: screen -xRR
 ```
+
+### Windows VM with Native PowerShell Terminal
+
+Windows VMs support native PowerShell terminal tabs without requiring Guacamole RDP. This is sufficient for CLI-focused Windows workflows:
+
+```yaml
+tabs:
+  - title: PowerShell
+    type: terminal
+    hostname: windows-server
+```
+
+The terminal opens a PowerShell session directly. Use Guacamole RDP only when learners need a graphical desktop.

@@ -235,6 +235,94 @@ if [[ "$IMAGE" != "nginx:1.25" ]]; then
 fi
 ```
 
+## File-Based Quiz Answers
+
+An alternative to the YAML `type: quiz` challenge type — use a check script that reads the learner's answer from a file. This allows free-form answers, multi-part answers, or answers validated by custom logic:
+
+```bash
+# Learner writes their answer to a file specified in the assignment
+ANSWER=$(cat /root/answer.txt 2>/dev/null | tr -d '[:space:]')
+
+if [[ -z "$ANSWER" ]]; then
+  fail-message "No answer found. Write your answer to /root/answer.txt as described in the assignment."
+  exit 1
+fi
+
+if [[ "$ANSWER" != "192.168.1.0/24" ]]; then
+  fail-message "The subnet is not correct. Review the network diagram and try again."
+  exit 1
+fi
+```
+
+This pattern is useful when quiz-type challenges need validation beyond simple multiple-choice, or when the answer requires computation or formatting.
+
+## Bash History Checks (Advanced)
+
+### set -o history for non-interactive shells
+
+Check scripts run in non-interactive bash, which does not record history by default. If you need to verify command history, enable it explicitly:
+
+```bash
+#!/bin/bash
+
+# Enable history recording in non-interactive shell
+set -o history
+HISTFILE=/root/.bash_history
+
+# Reload the history file
+history -r
+
+if ! history | grep -q 'terraform apply'; then
+  fail-message "It looks like you haven't run 'terraform apply' yet."
+  exit 1
+fi
+```
+
+Without `set -o history`, `history` returns empty in check scripts regardless of what the learner ran.
+
+### Pre-populating .bash_history for passthrough
+
+When a setup script runs commands that the learner is expected to have run (e.g., seeding an environment), those commands appear in `.bash_history`. This can cause a history-based check to pass before the learner does anything. Clear or pre-populate history to avoid false positives:
+
+```bash
+# In setup script — clear history after setup commands
+history -c
+cat /dev/null > /root/.bash_history
+
+# Or — seed history with only the setup commands the learner should see,
+# so the check can distinguish learner commands from setup commands
+cat > /root/.bash_history <<'EOF'
+# --- setup commands above this line ---
+EOF
+```
+
+> [!WARNING]
+> History-based checks are inherently fragile — the learner might use a different shell, clear history, use command-line editing, or use a slight variation of the command. Use as a supplement, not a primary check. Prefer outcome-based checks when possible.
+
+## Side-Effect-Triggering Checks
+
+Some checks can perform a visible side-effect on the first failure to guide the learner. For example, opening a browser tab to the relevant documentation or writing a hint file:
+
+```bash
+if ! systemctl is-active --quiet nginx; then
+  # First failure: write a hint file the learner can reference
+  if [ ! -f /root/.nginx-hint-shown ]; then
+    cat > /root/HINT.md <<'EOF'
+# Hint: Starting nginx
+
+1. Check if nginx is installed: `which nginx`
+2. Start the service: `systemctl start nginx`
+3. Verify it's running: `systemctl status nginx`
+EOF
+    touch /root/.nginx-hint-shown
+  fi
+  fail-message "nginx is not running. Check the HINT.md file in your home directory for guidance."
+  exit 1
+fi
+```
+
+The marker file (`.nginx-hint-shown`) ensures the side-effect only fires once.
+
 ## General Tips
 
 - Always use `2>/dev/null` on commands that produce noisy stderr to keep the check output clean.
@@ -242,3 +330,5 @@ fi
 - Use `${VAR:-default}` in fail-messages to avoid empty strings when a variable is unset.
 - Prefer exact matches over partial matches when the expected value is known.
 - Order assertions from prerequisite to specific — check that the service exists before checking its configuration.
+- History-based checks require `set -o history` in the check script — non-interactive bash does not record history by default.
+- File-based quiz checks give more flexibility than the built-in quiz type but require clear assignment instructions about where to write the answer.

@@ -22,8 +22,8 @@ Resolve paths:
 
 ## Context Sources
 
-**Track plan**: `${TRACK_OUTPUT_DIR}/plan.md`
-**Prior challenge plans**: `${TRACK_OUTPUT_DIR}/<NN-slug>/plan.md`
+**Track plan**: `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
+**Prior challenge plans**: `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
 **Prior generated content**: `${TRACK_OUTPUT_DIR}/<NN-slug>/assignment.md`, scripts
 **Customer context**: `${TRACK_RESEARCH_DIR}/<company-slug>/`
 **Infrastructure**: `${TRACK_OUTPUT_DIR}/config.yml`
@@ -32,7 +32,7 @@ Resolve paths:
 
 ### Step 1: Verify Prerequisites
 
-1. Check `${TRACK_OUTPUT_DIR}/plan.md` exists — if not, direct to `/track:plan-track`
+1. Check `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` exists — if not, direct to `/track:plan-track`
 2. Match the challenge argument to the track roadmap
 3. If no match, list available challenges
 
@@ -44,7 +44,7 @@ Use the Agent tool to spawn a `challenge-planner` agent:
 Agent(
   prompt="Read ${CLAUDE_PLUGIN_ROOT}/agents/challenge-planner.md for your full instructions.
 
-  Track plan: ${TRACK_OUTPUT_DIR}/plan.md
+  Track plan: ${TRACK_OUTPUT_DIR}/.instruqt/plan.md
   Config: ${TRACK_OUTPUT_DIR}/config.yml
   Challenge: <challenge-slug>
   Customer: <company-slug>

@@ -30,8 +30,21 @@ ${TRACK_RESEARCH_DIR}/
 
 1. Read `company.md` — required. If missing, direct user to run `/track:research-company`
 2. Read `style-guide.md` — recommended. Generation works without it but quality suffers
-3. List `products/` directory
-4. Read product files relevant to the current track (check `${TRACK_OUTPUT_DIR}/track.yml` for which products)
+3. Determine which products are relevant (see Product Filtering below)
+4. Read ONLY the relevant product files. **Do not load all product files.**
+
+## Product Filtering
+
+Only load product files that the track actually covers. The filter source depends on the pipeline stage:
+
+| Stage | Filter source | How to determine relevant products |
+|-------|--------------|-------------------------------------|
+| `plan-track` | User's command arguments | The user specifies a topic or product name. Match against `products/` filenames. If ambiguous, list available products and ask. |
+| `plan-challenge` | Track plan | Read `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`, extract the "Products Covered" section. Load only those product files. |
+| `generate-challenge` | Track plan | Same as plan-challenge. |
+| `review-*` | Track plan | Same as plan-challenge. |
+
+**Hard rule:** Never load product files not listed in the track plan's "Products Covered" section (except during `plan-track` where the track plan does not yet exist). A customer may have 15+ product files — loading all of them wastes context and introduces irrelevant terminology.
 
 ## Using Context
 

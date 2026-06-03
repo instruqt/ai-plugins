@@ -127,3 +127,14 @@ Bad -- using HTTPS port without the application actually serving TLS inside the 
 - `new_window: true` breaks the seamless experience -- only use it when iframe embedding is truly impossible
 - If the web UI takes time to start, the service tab will show an error until it is ready; coordinate with setup script timing
 - socat port forwarding does NOT help with CSP/X-Frame-Options -- it forwards headers unchanged
+- **Co-hosted API + portal on same hostname/port** -- some applications serve both a web UI and an API on the same port (e.g., Grafana serves the dashboard UI and `/api/` endpoints on port 3000). A single service tab handles both:
+
+```yaml
+- title: Grafana
+  type: service
+  hostname: workstation
+  port: 3000
+  path: /d/main/overview
+```
+
+Do not create separate service tabs for the API and UI when they share a port — use one tab for the UI and let the learner access the API from the terminal via curl. If you need to show API responses in a tab, use a terminal tab with a `cmd:` that runs the curl command.

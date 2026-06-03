@@ -31,16 +31,15 @@ If the challenge plan does not exist, show an error: "No challenge plan found fo
 
 ## Step 2: Dispatch Analytic Scorers
 
-Use the Agent tool to spawn 6 analytic scorer agents **in parallel**.
+Use the Agent tool to spawn 5 analytic scorer agents **in parallel**.
 
 | Scorer | Model | Rubric | Content Slice |
 |--------|-------|--------|---------------|
 | assignment-flow | Sonnet | `references/evaluation/analytic/plan-challenge/assignment-flow.md` | Challenge plan + `${TRACK_OUTPUT_DIR}/plan.md` |
-| step-placement | Sonnet | `references/evaluation/analytic/plan-challenge/step-placement.md` | Challenge plan |
-| step-design-specificity | Sonnet | `references/evaluation/analytic/plan-challenge/step-design-specificity.md` | Challenge plan |
+| script-design | Sonnet | `references/evaluation/analytic/plan-challenge/script-design.md` | Challenge plan (scripts section) |
 | builds-on-prior | Sonnet | `references/evaluation/analytic/plan-challenge/builds-on-prior.md` | Challenge plan + prior challenge plans/content |
 | time-estimates | Sonnet | `references/evaluation/analytic/plan-challenge/time-estimates.md` | Challenge plan |
-| sandbox-changes | Sonnet | `references/evaluation/analytic/plan-challenge/sandbox-changes.md` | Challenge plan + `config.yml` |
+| infrastructure-changes | Sonnet | `references/evaluation/analytic/plan-challenge/infrastructure-changes.md` | Challenge plan + `config.yml` |
 
 **Analytic scorer prompt template:**
 
@@ -158,8 +157,30 @@ Include one object per criterion from every sub-agent response, including passin
 [Brief summary — no detailed findings needed]
 ```
 
+## Step 6: Write Scores
+
+After presenting the scorecard, write scoring results to `${TRACK_OUTPUT_DIR}/.instruqt/scores.json`. If the file exists, update the entry for this challenge under `challenge_plans`. Structure:
+
+```json
+{
+  "track": "<track-slug>",
+  "last_updated": "<ISO 8601 timestamp>",
+  "challenge_plans": {
+    "<NN-challenge-slug>": {
+      "analytic": {
+        "<rubric>": { "<criterion>": { "score": 4, "finding": null } }
+      },
+      "holistic": {
+        "challenge-coherence": { "overall": { "score": 4, "finding": null } }
+      },
+      "status": "passed | needs_work"
+    }
+  }
+}
+```
+
 ## Important Notes
 
-- This agent provides feedback ONLY — no files are modified
+- This agent provides feedback ONLY — no track content files are modified (scores.json is plugin state, not content)
 - The user decides what to address after reviewing the scorecard
 - Prior challenge context is critical for accurate scoring of "builds on prior" criteria

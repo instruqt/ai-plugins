@@ -72,6 +72,51 @@ if [[ "$ROW_COUNT" != "3" ]]; then
 fi
 ```
 
+### Auto-counted check pattern
+
+For challenges with many checks, use a counter to show the learner their progress through the validation sequence. This tells them how far they got and how much remains:
+
+```bash
+#!/bin/bash
+
+TOTAL_CHECKS=4
+CHECK=0
+
+# Check 1
+CHECK=$((CHECK + 1))
+if ! systemctl is-active --quiet nginx; then
+  fail-message "[Check $CHECK/$TOTAL_CHECKS] nginx is not running. Start it with: systemctl start nginx"
+  exit 1
+fi
+
+# Check 2
+CHECK=$((CHECK + 1))
+if [ ! -f /etc/nginx/conf.d/app.conf ]; then
+  fail-message "[Check $CHECK/$TOTAL_CHECKS] Missing /etc/nginx/conf.d/app.conf. Create the config file."
+  exit 1
+fi
+
+# Check 3
+CHECK=$((CHECK + 1))
+STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://localhost/ 2>/dev/null)
+if [[ "$STATUS" != "200" ]]; then
+  fail-message "[Check $CHECK/$TOTAL_CHECKS] Expected HTTP 200 but got ${STATUS:-no response}."
+  exit 1
+fi
+
+# Check 4
+CHECK=$((CHECK + 1))
+BODY=$(curl -s --max-time 5 http://localhost/ 2>/dev/null)
+if ! echo "$BODY" | grep -q "Welcome"; then
+  fail-message "[Check $CHECK/$TOTAL_CHECKS] The page does not contain 'Welcome'. Check your application content."
+  exit 1
+fi
+
+exit 0
+```
+
+The `[Check 2/4]` prefix tells the learner they passed checks 1 but failed on check 2, with 2 more to go. This is especially valuable in challenges with 5+ validation steps.
+
 ## What to Watch For
 
 - Exit without fail-message — Instruqt shows a generic error with no learner-facing information.
@@ -79,3 +124,4 @@ fi
 - Messages that assume knowledge not covered in the assignment text.
 - Messages that say "check failed" without saying what to check.
 - Messages with shell variable interpolation that could expand to empty string — use `${VAR:-default}` patterns.
+- Challenges with many checks but no progress indication — the learner has no idea how close they are to passing.

@@ -66,7 +66,9 @@ When `type: quiz`, the challenge becomes a multiple-choice question instead of a
 | Field | Type | Description |
 |-------|------|-------------|
 | `answers` | list of strings | Answer options displayed to the learner |
-| `solution` | list of int | Correct answer indices (0-based) |
+| `solution` | list of int | Correct answer indices (0-based). Single item for single-select, multiple items for multi-select. |
+
+Single-answer quiz:
 
 ```yaml
 type: quiz
@@ -77,6 +79,22 @@ answers:
   - "Option C"
 solution:
   - 1
+```
+
+Multi-select quiz (learner must select all correct answers):
+
+```yaml
+type: quiz
+title: "Select All That Apply"
+answers:
+  - "Deployments manage ReplicaSets"
+  - "ReplicaSets manage Deployments"
+  - "Pods are the smallest schedulable unit"
+  - "Services manage Pod networking"
+solution:
+  - 0
+  - 2
+  - 3
 ```
 
 ### Notes (pre-challenge slides)
@@ -90,6 +108,22 @@ Array of slides shown before the challenge starts.
 | `url` | string | URL (for `video` and `image` types) |
 
 Notes slides require `enhanced_loading: false` at the track level to display as overlays.
+
+Text-type notes support inline `<style>` blocks for branded styling:
+
+```yaml
+notes:
+  - type: text
+    contents: |-
+      <style>
+        .note-header { color: #326CE5; font-size: 1.5em; }
+        .note-body { padding: 10px; }
+      </style>
+      <h1 class="note-header">Welcome</h1>
+      <div class="note-body">
+        This challenge covers deploying applications to Kubernetes.
+      </div>
+```
 
 ### Tabs
 
@@ -209,6 +243,33 @@ The Markdown body after the frontmatter `---` contains the challenge instruction
 - **Admonitions** — Callout boxes for warnings, tips, notes
 - **Collapsibles** — Expandable/collapsible sections for hints or optional content
 - **Inline HTML** — Raw HTML for custom formatting
+- **Setext headings** — Underline-style headings (`===` for H1, `---` for H2) are supported in addition to ATX (`#`) style
+
+### Headings
+
+Both ATX and Setext heading styles work:
+
+```markdown
+# ATX Heading (preferred)
+
+Setext Heading
+==============
+```
+
+ATX style (`#`, `##`, etc.) is preferred for consistency. Setext headings are supported but less common in Instruqt tracks.
+
+### CDN asset URLs
+
+Track assets (images, diagrams, downloadable files) uploaded through the Instruqt platform are served from a CDN. The URL pattern is:
+
+```
+https://play.instruqt.com/assets/tracks/<track-id>/<content-hash>/assets/<filename>
+```
+
+Reference these URLs in assignment body or notes slides. The `<content-hash>` changes when the track is updated, so URLs from previous versions may become stale.
+
+> [!WARNING]
+> **Backslash paths in asset URLs.** If track content is authored on Windows, asset paths may contain backslashes (`\`) instead of forward slashes (`/`). These cause broken images/links on the platform. Always use forward slashes in URLs, even when authoring on Windows.
 
 ### Body structure convention
 

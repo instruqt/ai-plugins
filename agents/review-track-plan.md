@@ -150,7 +150,27 @@ Include one object per criterion from every sub-agent response, including passin
 [Brief summary — no detailed findings needed]
 ```
 
+## Step 6: Write Scores
+
+After presenting the scorecard, write scoring results to `${TRACK_OUTPUT_DIR}/.instruqt/scores.json`. If the file exists, update the `track_plan` section. Structure:
+
+```json
+{
+  "track": "<track-slug>",
+  "last_updated": "<ISO 8601 timestamp>",
+  "track_plan": {
+    "analytic": {
+      "<rubric>": { "<criterion>": { "score": 4, "finding": null } }
+    },
+    "holistic": {
+      "learning-coherence": { "overall": { "score": 4, "finding": null } }
+    },
+    "status": "passed | needs_work"
+  }
+}
+```
+
 ## Important Notes
 
-- This agent provides feedback ONLY — no files are modified
+- This agent provides feedback ONLY — no track content files are modified (scores.json is plugin state, not content)
 - The user decides what to address after reviewing the scorecard

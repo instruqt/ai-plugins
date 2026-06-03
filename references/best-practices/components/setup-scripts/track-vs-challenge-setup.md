@@ -106,6 +106,62 @@ EOF
 # This config is for challenge 3, but the learner modifies it in challenge 2
 ```
 
+### Heredoc-based project generation
+
+When a challenge requires the learner to work on a project that doesn't come from a git repo, generate the project structure in setup using heredocs. This is common for "build from scratch" tracks:
+
+```bash
+#!/bin/bash
+# Track-level setup: generate a starter project
+
+mkdir -p /root/app/src
+
+cat > /root/app/package.json <<'EOF'
+{
+  "name": "lab-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.18.0"
+  }
+}
+EOF
+
+cat > /root/app/src/server.js <<'EOF'
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+EOF
+
+cat > /root/app/Dockerfile <<'EOF'
+FROM node:22-bookworm-slim
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
+EOF
+
+cd /root/app && npm install
+set-workdir /root/app
+```
+
+Use heredocs with `<<'EOF'` (single-quoted delimiter) to prevent variable expansion inside the file content. This avoids accidental substitution of `$PORT`, `$HOME`, etc.
+
+For large or complex projects, prefer cloning a git repo over heredocs. Heredocs are best for small, focused starter projects (3-5 files) where git overhead is unnecessary.
+
 ## What to Watch For
 
 - Track-level setup that takes too long because it includes per-challenge work
@@ -113,3 +169,4 @@ EOF
 - Progressive tracks where challenge N's setup assumes challenge N-1 completed successfully -- this breaks if the learner skips or the previous check was lenient
 - Defensive per-challenge setup adds resilience but should not re-run truly expensive operations (e.g., cluster creation)
 - Agent variable get/set calls to pass state between track-level and per-challenge setup
+- Heredoc project generation that uses `<<EOF` (unquoted) instead of `<<'EOF'` -- unquoted heredocs expand shell variables inside the content, which corrupts file templates containing `$VAR` syntax

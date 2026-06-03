@@ -200,6 +200,22 @@ The `{NAME}` segment in all cloud provider env vars follows this rule:
 
 Example: `name: my-project` becomes `MY_PROJECT` in variable names like `INSTRUQT_GCP_PROJECT_MY_PROJECT_PROJECT_ID`.
 
+### Indirect variable expansion for portable scripts
+
+When cloud account names may change (or when writing reusable script libraries), use bash indirect expansion (`${!VAR}`) to construct variable names dynamically:
+
+```bash
+# Instead of hardcoding the account name in the variable:
+PROJECT_ID="$INSTRUQT_GCP_PROJECT_SANDBOX_PROJECT_ID"
+
+# Construct the variable name from a parameter:
+ACCOUNT_NAME="SANDBOX"
+VAR_NAME="INSTRUQT_GCP_PROJECT_${ACCOUNT_NAME}_PROJECT_ID"
+PROJECT_ID="${!VAR_NAME}"
+```
+
+This is useful when a script needs to work with different account names without modification, or when the config.yml `name` field changes and you want a single place to update the reference.
+
 ## Examples
 
 ### AWS with dual policies

@@ -93,6 +93,32 @@ Good -- suppressing login noise:
 touch /root/.hushlogin
 ```
 
+### Cloud resource name uniquification
+
+When creating cloud resources (S3 buckets, GCS buckets, Azure resource groups, DNS entries) that require globally unique names, use `_SANDBOX_ID` to avoid collisions between concurrent track sessions:
+
+```bash
+# In setup script
+BUCKET_NAME="lab-data-${_SANDBOX_ID}"
+gsutil mb "gs://${BUCKET_NAME}"
+
+# Store for use in check/solve scripts and assignment interpolation
+agent variable set BUCKET_NAME "$BUCKET_NAME"
+```
+
+```bash
+# In profile.d for learner use
+cat >> /etc/profile.d/instruqt-env.sh <<EOF
+export BUCKET_NAME="lab-data-${_SANDBOX_ID}"
+EOF
+
+cat >> /root/.bashrc <<EOF
+export BUCKET_NAME="lab-data-${_SANDBOX_ID}"
+EOF
+```
+
+Without uniquification, concurrent track sessions attempt to create resources with the same name, causing failures for all but the first.
+
 ## What to Watch For
 
 - Variables set only in `.bashrc` are missing when the terminal opens as a login shell (and vice versa for `/etc/profile.d/`)
@@ -101,3 +127,4 @@ touch /root/.hushlogin
 - ANSI color codes in PS1 cause cursor positioning bugs in the web terminal
 - Shell completions that depend on the tool being installed must run after the tool installation step
 - The `/etc/profile.d/` file must be sourced by the shell, so it needs a `.sh` extension
+- Cloud resources with hardcoded names will collide when multiple learners run the track simultaneously — always uniquify with `_SANDBOX_ID`

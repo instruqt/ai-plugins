@@ -92,6 +92,27 @@ The frontend renders a live task list as the primary progress surface. You MUST 
 | Actions        | _(no text — the task list renders directly)_                                                                  |
 | Completion     | "Challenge **[Title]** generated. Would you like to make changes, or continue with the next challenge?"       |
 
+### `/track:generate-track`
+
+| Phase          | What to say                                                                                                   |
+| -------------- | ------------------------------------------------------------------------------------------------------------- |
+| Interpretation | "I'll generate all **[N]** challenges for the track."                                                         |
+| Actions        | _(no text — the task list renders directly)_                                                                  |
+| Completion     | "All challenges generated. Would you like to review the track or push to Instruqt?"                           |
+
+After each challenge is generated and validated, prompt the user:
+- **Test automatically** — run `instruqt track test`
+- **Test manually** — the user tests, then confirms when done
+- **Skip testing** — continue to the next challenge
+
+### `/track:generate-readme`
+
+| Phase          | What to say                                                                                                   |
+| -------------- | ------------------------------------------------------------------------------------------------------------- |
+| Interpretation | "I'll generate a README for the track."                                                                       |
+| Actions        | _(no text — the task list renders directly)_                                                                  |
+| Completion     | "README created. Would you like to make changes?"                                                             |
+
 ### `/track:review-track-plan`, `/track:review-challenge-plan`, `/track:review-track`
 
 | Phase          | What to say                                                                          |

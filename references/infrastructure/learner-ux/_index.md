@@ -21,3 +21,4 @@ Software installed on a VM and exposed via a service tab or virtual browser. Req
 - Guacamole VNC -- Apache Guacamole providing VNC access. Lighter than RDP; use for Linux desktop environments.
 - KasmVNC -- High-performance VNC with a web client. Use for GPU-accelerated or multimedia desktop sessions.
 - noVNC -- Lightweight browser-based VNC client. Use for simple Linux desktop access without Guacamole's overhead.
+- [ttyd](installed/ttyd.md) -- Browser-streamed terminal application. Use for streaming TUI apps (k9s, htop, log tails) into a service tab pane alongside other tabs.

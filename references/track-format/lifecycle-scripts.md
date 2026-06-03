@@ -22,8 +22,44 @@ The filename suffix encodes the target hostname: `setup-host01`, `check-mongodb`
 
 ### Shebangs
 
-- Linux: `#!/bin/bash` or `#!/usr/bin/env bash`
+- `#!/bin/bash` or `#!/usr/bin/env bash` — standard Linux
+- `#!/bin/sh` — Alpine or stripped containers where bash is not installed
+- `#!/bin/bash -xe` — shorthand that enables xtrace and errexit but omits pipefail; useful for setup scripts where you want verbose logging without pipefail side effects
 - Windows VMs: no shebang (PowerShell assumed)
+
+**Bash version guard:** Some container images ship old bash (< 4.x) that lacks features like associative arrays. Force a re-exec under a known-good binary:
+
+```bash
+[ "${BASH_VERSINFO[0]:-0}" -lt 4 ] && exec /bin/bash "$0" "$@"
+```
+
+## Helper Commands
+
+Instruqt injects helper commands into the script environment. Availability is **image-dependent** — most official Instruqt images include them, but custom or minimal images may not. Test with your target image.
+
+### fail-message
+
+Displays learner-facing error text when a check fails. Only meaningful in check scripts.
+
+```bash
+fail-message "The config file is missing. Create /etc/app/config.yaml as described above."
+```
+
+### set-status
+
+Displays a success message to the learner after a check passes. The success-side counterpart to `fail-message`.
+
+```bash
+set-status "Great work! The service is configured correctly."
+```
+
+### set-workdir
+
+Sets the default working directory for terminal tabs on a host. Call from setup scripts to land the learner in the right place.
+
+```bash
+set-workdir /root/project
+```
 
 ## Script Types
 
@@ -153,10 +189,210 @@ Use `agent variable get` to retrieve resource identifiers stored during setup fo
 | Aspect | Value |
 |--------|-------|
 | Shell | Bash (Linux), PowerShell (Windows) |
-| Working directory | `/root` by default on Linux VMs |
-| Environment | All `config.yml` `environment:` vars, all secrets, Instruqt built-in vars |
-| Timeout (check) | 1 minute |
+| Working directory | `/root` by default on Linux VMs; `/` on containers |
+| Environment | All `config.yml` `environment:` vars, all secrets, Instruqt built-in vars (see below) |
+| Max script size | 5 MB — do not embed binary data or large heredocs in scripts |
 | Exit codes (check) | 0 = pass, 1 = fail |
+
+### Timeouts
+
+Every lifecycle script has a hard timeout enforced by the platform. Scripts killed by timeout produce no learner-facing message.
+
+| Script | Timeout |
+|--------|---------|
+| Track setup | 55 min |
+| Track cleanup | 55 min |
+| Challenge setup | 55 min |
+| **Challenge check** | **1 min** |
+| Challenge solve | 55 min |
+| Challenge cleanup | 55 min |
+
+The 1-minute check timeout is the critical constraint. Check scripts must be lightweight — avoid expensive operations like full cluster health checks, large file scans, or commands that wait for convergence. If a check needs to validate something slow, validate the configuration or trigger rather than the final converged state.
+
+## Built-in Environment Variables
+
+Instruqt injects environment variables into every lifecycle script automatically. These supplement any variables defined in `config.yml` `environment:` blocks and secrets.
+
+### Platform Variables
+
+| Variable | Description |
+|----------|-------------|
+| `INSTRUQT_AUTH_TOKEN` | Platform-injected JWT for authenticating Instruqt API calls from within scripts |
+| `INSTRUQT_TRACK_SLUG` | Slug of the current track (e.g., `getting-started-with-terraform`) |
+| `INSTRUQT_TRACK_ID` | UUID of the current track |
+| `INSTRUQT_PARTICIPANT_ID` | Unique identifier for the current track session |
+
+### Sandbox Variables
+
+| Variable | Description |
+|----------|-------------|
+| `_SANDBOX_ID` | Unique sandbox instance identifier |
+| `_SANDBOX_DNS` | DNS suffix for the sandbox network |
+
+**`_SANDBOX_ID` is NOT in the agent variable store.** It exists only as an environment variable on each host. To share it across hosts, bridge it explicitly:
+
+```bash
+# In setup on host A:
+agent variable set SANDBOX_ID "$_SANDBOX_ID"
+
+# In scripts on host B:
+SANDBOX_ID=$(agent variable get SANDBOX_ID)
+```
+
+**Sandbox-public URL pattern:** Services exposed on sandbox hosts are reachable externally at:
+
+```
+https://<hostname>-<port>-${_SANDBOX_ID}.env.play.instruqt.com
+```
+
+This pattern is useful for constructing URLs in assignment text via variable interpolation, or for cross-host API calls within scripts.
+
+### User Variables
+
+| Variable | Description |
+|----------|-------------|
+| `INSTRUQT_USER_EMAIL` | Email address of the current learner |
+| `INSTRUQT_USER_ID` | Unique identifier of the current learner |
+
+> [!WARNING]
+> `INSTRUQT_USER_EMAIL` and `INSTRUQT_USER_ID` are **not guaranteed** in all play contexts. They are empty during:
+> - Hot-started sandbox provisioning (track-level setup scripts)
+> - Anonymous embed plays
+> - Certain API-triggered invocations
+>
+> Always provide a fallback:
+>
+> ```bash
+> EMAIL="${INSTRUQT_USER_EMAIL:-anonymous@instruqt.com}"
+> ```
+
+## Common Patterns
+
+### docker compose vs docker-compose
+
+Docker Compose v2 (the `docker compose` CLI plugin) is now dominant. Prefer the v2 syntax over the legacy `docker-compose` standalone binary:
+
+```bash
+# Preferred (v2 plugin)
+docker compose up -d
+docker compose exec app bash
+docker compose down
+
+# Legacy (v1 standalone) — avoid unless the image only has v1
+docker-compose up -d
+```
+
+### systemctl enable --now
+
+Combine enable and start in a single command instead of two separate calls:
+
+```bash
+# One command
+systemctl enable --now nginx
+
+# Equivalent to:
+systemctl enable nginx
+systemctl start nginx
+```
+
+### Indirect Variable Expansion
+
+Use `${!VAR}` for dynamic environment variable names. Useful when variable names are constructed at runtime or differ across provider renames:
+
+```bash
+# Construct the variable name dynamically
+VAR_NAME="INSTRUQT_AWS_ACCOUNT_${ACCOUNT_NUM}_ID"
+ACCOUNT_ID="${!VAR_NAME}"
+
+# Portable across renames — if Instruqt renames an env var,
+# only the name string needs updating
+```
+
+### cmd: vs shell: in Tab Configuration
+
+`shell:` in `config.yml` sets the default shell for all terminal tabs on a host. `cmd:` on individual tabs in `assignment.md` runs a specific command instead of a shell.
+
+| Setting | Scope | Example | Notes |
+|---------|-------|---------|-------|
+| `shell:` | Host-wide (config.yml) | `shell: /bin/bash` | Default for all terminal tabs on that host |
+| `shell: su - user` | Host-wide | `shell: su - user` | Supported on VMs, not containers |
+| `cmd:` | Per-tab (assignment.md) | `cmd: ssh remote-host` | Overrides shell for one tab |
+| `cmd:` | Per-tab | `cmd: screen -xRR session` | Attach to a shared screen session |
+
+Use `shell:` for the common case (what shell learners land in). Use `cmd:` for special-purpose tabs that run a specific command (SSH tunnel, REPL, screen session).
+
+### Cross-Host State Sharing
+
+For simple string values, use agent variables:
+
+```bash
+# Host A setup:
+agent variable set DB_PASSWORD "$(openssl rand -hex 16)"
+
+# Host B setup:
+DB_PASSWORD=$(agent variable get DB_PASSWORD)
+```
+
+For structured data that multiple VMs consume, use the JSON-broker sidecar pattern or cross-VM environment passthrough. A leader host runs a lightweight HTTP server (Python, socat, or netcat) that serves a JSON payload. Other hosts curl it during setup:
+
+```bash
+# Leader host — serve structured state on port 8888
+cat > /tmp/state.json <<EOF
+{"cluster_ip": "$CLUSTER_IP", "join_token": "$JOIN_TOKEN", "ca_hash": "$CA_HASH"}
+EOF
+python3 -m http.server 8888 --directory /tmp &
+
+# Worker host — consume structured state
+STATE=$(curl -s http://leader:8888/state.json)
+CLUSTER_IP=$(echo "$STATE" | jq -r '.cluster_ip')
+JOIN_TOKEN=$(echo "$STATE" | jq -r '.join_token')
+```
+
+See `decision-frameworks/agent-variable-vs-json-broker.md` for the full decision tree.
+
+## Windows PowerShell Scripts
+
+Windows VMs use PowerShell for lifecycle scripts. No shebang is needed — the platform detects the host OS automatically.
+
+### Conventions
+
+- Use `$ErrorActionPreference = 'Stop'` as the PowerShell equivalent of `set -e`
+- Scripts run as Administrator by default
+- Common operations: `Register-ScheduledTask`, `Rename-Computer`, `Install-WindowsFeature`, `Add-WindowsFeature`
+- Use `Restart-Computer -Force` with care — pair with a scheduled task for post-reboot continuation
+
+```powershell
+$ErrorActionPreference = 'Stop'
+
+# Rename the computer
+Rename-Computer -NewName "lab-dc01" -Force
+
+# Install a Windows feature
+Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
+
+# Schedule a task for post-reboot configuration
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-File C:\setup\post-reboot.ps1"
+$trigger = New-ScheduledTaskTrigger -AtStartup
+Register-ScheduledTask -TaskName "PostReboot" -Action $action -Trigger $trigger -RunLevel Highest
+```
+
+### PowerShell Check Scripts
+
+PowerShell check scripts follow the same pattern as bash — exit 0 on success, exit 1 on failure:
+
+```powershell
+# Check if the AD feature is installed
+if (-not (Get-WindowsFeature AD-Domain-Services).Installed) {
+    fail-message "Active Directory Domain Services is not installed. Use Install-WindowsFeature to add it."
+    exit 1
+}
+
+exit 0
+```
+
+### Native Terminal Tabs for Windows
+
+Windows VMs support native PowerShell terminal tabs without needing Guacamole RDP. This is sufficient for CLI-focused Windows workflows. Use Guacamole RDP only when learners need a graphical desktop.
 
 ## Examples
 

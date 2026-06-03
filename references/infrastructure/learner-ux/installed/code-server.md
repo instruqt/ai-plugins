@@ -118,7 +118,30 @@ systemctl restart code-server
 - **Theme flicker**. If settings.json is written after code-server starts, the theme may flash from light to dark. Write settings before starting the service, or restart it after writing.
 - **Extension installation timing**. Extensions installed after code-server starts require a restart. Install them before `systemctl start code-server` or restart afterward.
 - **Self-signed certificate warning**. The `--cert` flag generates a self-signed cert. Instruqt's service tab proxy handles TLS termination, so learners do not see warnings in the embedded tab.
-- **Non-root terminal profile**. By default, code-server's integrated terminal runs as root. If the track needs a different user, configure `terminal.integrated.profiles.linux` explicitly.
+- **Non-root terminal profile**. By default, code-server's integrated terminal runs as root. If the track needs a different user, configure the terminal profile in settings.json:
+
+```json
+{
+  "terminal.integrated.defaultProfile.linux": "student",
+  "terminal.integrated.profiles.linux": {
+    "student": {
+      "path": "/bin/bash",
+      "args": ["-l"],
+      "env": {},
+      "overrideName": true,
+      "icon": "terminal-bash"
+    }
+  }
+}
+```
+
+Then create the user and set up `su` in the ExecStart:
+
+```bash
+useradd -m -s /bin/bash student
+# Run code-server as student
+ExecStart=/usr/bin/su - student -c '/usr/bin/code-server --host 0.0.0.0 --port 8443 --cert --auth none /home/student/workspace'
+```
 
 ## Example Tracks
 

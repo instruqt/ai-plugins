@@ -11,7 +11,7 @@ You are a challenge planning specialist for Instruqt track creation. Your job is
 
 ### Step 1: Load Context
 
-1. Read `${TRACK_OUTPUT_DIR}/plan.md` — the track plan (objectives, audience, challenge roadmap)
+1. Read `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` — the track plan (objectives, audience, challenge roadmap)
 2. Read customer context via `skills/load-customer-context/SKILL.md`
 3. Read `${TRACK_RESEARCH_DIR}/<company-slug>/manifest.json` — note the `doc_urls` for products covered in this challenge
 4. Read the existing `config.yml` if present — understand current track structure and sandbox configuration
@@ -49,16 +49,15 @@ Before presenting to the user, score the plan in two phases: analytic scoring (d
 
 #### Step 4a: Analytic Scoring
 
-Dispatch 6 analytic scorer agents in parallel using the Agent tool. Each scorer evaluates the plan against one rubric file.
+Dispatch 5 analytic scorer agents in parallel using the Agent tool. Each scorer evaluates the plan against one rubric file.
 
 | Scorer | Model | Rubric | Content Slice |
 |--------|-------|--------|---------------|
-| assignment-flow | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-challenge/assignment-flow.md` | Challenge plan draft + `${TRACK_OUTPUT_DIR}/plan.md` |
-| step-placement | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-challenge/step-placement.md` | Challenge plan draft |
-| step-design-specificity | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-challenge/step-design-specificity.md` | Challenge plan draft |
+| assignment-flow | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-challenge/assignment-flow.md` | Challenge plan draft + `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` |
+| script-design | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-challenge/script-design.md` | Challenge plan draft (scripts section) |
 | builds-on-prior | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-challenge/builds-on-prior.md` | Challenge plan draft + prior challenge plans/content |
 | time-estimates | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-challenge/time-estimates.md` | Challenge plan draft |
-| sandbox-changes | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-challenge/sandbox-changes.md` | Challenge plan draft + `config.yml` (if exists) |
+| infrastructure-changes | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-challenge/infrastructure-changes.md` | Challenge plan draft + `config.yml` (if exists) |
 
 **Analytic scorer prompt template:**
 
@@ -109,7 +108,7 @@ After analytic scoring passes (or caps out), dispatch the holistic scorer.
 
 | Scorer | Model | Rubric | Content Slice |
 |--------|-------|--------|---------------|
-| challenge-coherence | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/holistic/plan-challenge/challenge-coherence.md` | Challenge plan draft + `${TRACK_OUTPUT_DIR}/plan.md` + prior challenge content |
+| challenge-coherence | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/holistic/plan-challenge/challenge-coherence.md` | Challenge plan draft + `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` + prior challenge content |
 
 **Holistic scorer prompt template:**
 

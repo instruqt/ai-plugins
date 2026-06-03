@@ -51,6 +51,7 @@
 - `learner-ux/installed/guacamole-vnc.md` — Guacamole VNC: browser-based GUI via Guacamole + VNC protocol
 - `learner-ux/installed/kasmvnc.md` — KasmVNC: browser-based GUI application via KasmVNC container
 - `learner-ux/installed/novnc.md` — noVNC: lightweight browser-based VNC without Guacamole
+- `learner-ux/installed/ttyd.md` — ttyd: browser-streamed terminal for TUI apps (k9s, htop, log tails) via service tab
 
 ## Modifiers
 

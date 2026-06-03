@@ -81,6 +81,8 @@
 - `best-practices/components/setup-scripts/environment-configuration.md` — Environment configuration: shell env vars, prompt customization, working directory, completions
 - `best-practices/components/setup-scripts/hot-start-awareness.md` — Hot start awareness: handling hot-start and invite-link scenarios with empty user-specific env vars
 - `best-practices/components/setup-scripts/tool-installation.md` — Tool installation: version pinning, platform detection, speed optimization in setup scripts
+- `best-practices/components/setup-scripts/readiness-patterns.md` — Readiness patterns: retry helpers, exponential backoff, jitter, HTTP status polling, dual probes for service availability
+- `best-practices/components/setup-scripts/debugging-patterns.md` — Debugging patterns: PS4 line-numbered xtrace, ERR traps, banner-echo for log navigation in sandboxes
 
 ### Solve Scripts
 
@@ -170,6 +172,11 @@ See `infrastructure/_index.md` for the full infrastructure reference covering ba
 - `decision-frameworks/engagement-validation.md` — Engagement validation: when and how to detect genuine learner progress vs click-through gaming
 - `decision-frameworks/machine-type-vs-memory-cpus.md` — Machine type vs memory/cpus: VM sizing using machine_type field vs separate memory + cpus fields
 - `decision-frameworks/preset-vs-custom-config.md` — Preset vs custom config: sandbox preset vs writing a custom config.yml for track infrastructure
+- `decision-frameworks/container-vs-vm.md` — Container vs VM: choosing between Instruqt containers and virtual machines based on Docker socket, systemd, and feature requirements
+- `decision-frameworks/cloud-provider-selection.md` — Cloud provider selection: choosing and configuring AWS, Azure, or GCP accounts based on track requirements
+- `decision-frameworks/gui-access-method.md` — GUI access method: Guacamole RDP vs Guacamole VNC vs KasmVNC vs noVNC for graphical desktop access
+- `decision-frameworks/editor-selection.md` — Editor selection: native Instruqt editor tab vs code-server for file editing
+- `decision-frameworks/tab-type-selection.md` — Tab type selection: terminal vs service vs code vs website vs browser vs virtual browser
 
 ## Errors
 
@@ -180,3 +187,42 @@ See `infrastructure/_index.md` for the full infrastructure reference covering ba
 ## Evaluation
 
 - `evaluation/scoring-guide.md` — Scoring guide: global score-level definitions (0-1 checklist, 1-5 analytic/holistic), calibration for scorer agents
+
+### Analytic: Plan Track
+
+- `evaluation/analytic/plan-track/learning-objectives.md` — Learning objectives: clarity, measurability, alignment with track intent and audience
+- `evaluation/analytic/plan-track/audience-definition.md` — Audience definition: specificity of target audience, prerequisites, skill level assumptions
+- `evaluation/analytic/plan-track/challenge-roadmap.md` — Challenge roadmap: challenge sequencing, timelimits, difficulty progression, logical flow
+- `evaluation/analytic/plan-track/infrastructure-design.md` — Infrastructure design: config.yml resources, quota compliance, machine type appropriateness
+
+### Analytic: Plan Challenge
+
+- `evaluation/analytic/plan-challenge/assignment-flow.md` — Assignment flow: step sequencing, progressive disclosure, learner guidance within a single challenge
+- `evaluation/analytic/plan-challenge/builds-on-prior.md` — Builds on prior: challenge connects to and extends what earlier challenges taught
+- `evaluation/analytic/plan-challenge/infrastructure-changes.md` — Infrastructure changes: per-challenge setup/cleanup needs, config.yml amendments
+- `evaluation/analytic/plan-challenge/script-design.md` — Script design: check/solve/setup script design quality, convention adherence
+- `evaluation/analytic/plan-challenge/time-estimates.md` — Time estimates: per-challenge duration realism, cumulative track time, complexity-duration alignment
+
+### Analytic: Generate
+
+- `evaluation/analytic/generate/assignment-content.md` — Assignment content: markdown quality, code blocks, step structure, tab references
+- `evaluation/analytic/generate/brand-voice.md` — Brand voice: tone, style, terminology consistency with customer writing style
+- `evaluation/analytic/generate/challenge-design.md` — Challenge design: goal clarity, scoping, step structure, check alignment, title quality
+- `evaluation/analytic/generate/config-completeness.md` — Config completeness: config.yml resources match what the track plan requires
+- `evaluation/analytic/generate/interactivity.md` — Interactivity: concept reinforcement through practice, check feedback quality, tab support, progressive independence
+- `evaluation/analytic/generate/script-assignment-alignment.md` — Script-assignment alignment: check/solve scripts validate exactly what the assignment asks learners to do
+- `evaluation/analytic/generate/script-quality.md` — Script quality: bash conventions, error handling, idempotency, platform awareness
+- `evaluation/analytic/generate/tab-layout.md` — Tab layout: tab types, ordering, hostname/port correctness, learner workflow
+- `evaluation/analytic/generate/track-metadata.md` — Track metadata: title, description, tags, timing settings, lab_config appropriateness
+- `evaluation/analytic/generate/track-structure.md` — Track structure: challenge ordering, balance, difficulty progression, directory conventions, config coherence
+
+### Checklist: Generate
+
+- `evaluation/checklist/generate/completeness.md` — Completeness: all required files present, scripts executable, no missing artifacts
+- `evaluation/checklist/generate/conventions.md` — Conventions: shebangs, set flags, naming patterns, file structure compliance
+- `evaluation/checklist/generate/validation.md` — Validation: shellcheck passes, YAML valid, quotas respected, ports aligned
+
+### Holistic
+
+- `evaluation/holistic/plan-track/learning-coherence.md` — Learning coherence: track-level gestalt quality, objectives-to-challenges alignment
+- `evaluation/holistic/plan-challenge/challenge-coherence.md` — Challenge coherence: challenge-level gestalt quality, assignment-scripts-tabs alignment

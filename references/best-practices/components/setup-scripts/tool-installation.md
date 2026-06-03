@@ -109,3 +109,15 @@ docker pull nginx:latest  # Unpredictable content
 - When backgrounding installations, each `wait $PID` must be checked for failure, especially under `set -e`
 - Pre-pulling Docker images (`docker pull image:tag &`) in track-level setup avoids pull delays during challenges
 - If a tool is needed on every track, consider baking it into a custom sandbox image instead of installing at runtime
+- When installing from vendor manifests or install scripts hosted on GitHub, pin to a specific git commit SHA rather than a branch name — branches can be force-pushed, tags can be moved, but commit SHAs are immutable:
+
+```bash
+# Good — pinned to immutable commit SHA
+curl -fsSL "https://raw.githubusercontent.com/helm/helm/a1b2c3d4e5f6/scripts/get-helm-3" | bash
+
+# Bad — pinned to branch (can change at any time)
+curl -fsSL "https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3" | bash
+
+# Bad — pinned to tag (tags can be moved)
+curl -fsSL "https://raw.githubusercontent.com/helm/helm/v3.14.0/scripts/get-helm-3" | bash
+```

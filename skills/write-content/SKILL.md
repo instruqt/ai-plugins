@@ -29,11 +29,16 @@ Load the relevant generation guides from the knowledge base using `discover-best
 
 ## Loading Strategy
 
-Don't load all guides at once. Load what's relevant to the current generation step:
-- Writing assignment markdown? Load assignment-content + tab-design + brand-voice
-- Writing check/solve scripts? Load check-scripts + solve-scripts
-- Writing setup scripts? Load setup-scripts + cleanup-scripts
-- Planning challenge progression? Load educational-progression + content-coherence
+**Load only what you need for the current generation step.** Do not pre-load all categories listed above. Use `discover-best-practices` to query for specific guidance, then read only the matched files.
+
+| Current step | Query for | Skip |
+|---|---|---|
+| Writing assignment markdown | assignment-content, tab-design, brand-voice | all script categories, holistic |
+| Writing check/solve scripts | check-scripts, solve-scripts | assignment-content, setup-scripts, holistic |
+| Writing setup scripts | setup-scripts, cleanup-scripts | assignment-content, check/solve scripts, holistic |
+| Reviewing challenge progression | educational-progression, content-coherence | all component categories |
+
+**Hard rule:** Do not load holistic best-practices during single-file generation. Holistic guidance (educational progression, content coherence, learner experience) is relevant only when evaluating cross-challenge quality — not when writing one file. The scorer agents handle holistic evaluation separately.
 
 ## Assignment Body Structure
 

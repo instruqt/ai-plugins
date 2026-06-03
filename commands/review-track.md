@@ -27,7 +27,7 @@ Check for `track.yml` — if not found, show error: "No track found. This direct
 ### Step 2: Load Context (Optional)
 
 If customer context exists, load it — this enables brand-voice scoring:
-1. Check `${TRACK_OUTPUT_DIR}/plan.md` for customer reference
+1. Check `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` for customer reference
 2. Read `${CLAUDE_PLUGIN_ROOT}/skills/load-customer-context/SKILL.md` for loading instructions
 
 ### Step 3: Spawn Review Agent
