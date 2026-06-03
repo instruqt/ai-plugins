@@ -1,0 +1,97 @@
+name: Release labsmith CLI
+
+on:
+  workflow_dispatch:
+    inputs:
+      cli_image_tag:
+        description: 'labsmith-cli Docker image tag (commit SHA from mono repo)'
+        required: true
+        type: string
+      release_tag:
+        description: 'Release tag (e.g. labsmith-v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  cli_image: europe-west1-docker.pkg.dev/instruqt/instruqt-internal/labsmith-cli
+  workload_identity_provider: projects/1095590792109/locations/global/workloadIdentityPools/github-actions/providers/github
+  service_account: github-actions-deployments@instruqt.iam.gserviceaccount.com
+
+jobs:
+  extract-and-release:
+    name: Extract binaries and create release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          token_format: access_token
+          workload_identity_provider: ${{ env.workload_identity_provider }}
+          service_account: ${{ env.service_account }}
+
+      - name: Login to GAR
+        uses: docker/login-action@v4
+        with:
+          registry: europe-west1-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+
+      - name: Pull CLI image
+        run: docker pull "${{ env.cli_image }}:${{ inputs.cli_image_tag }}"
+
+      - name: Extract linux/amd64 binary
+        run: |
+          cid=$(docker create "${{ env.cli_image }}:${{ inputs.cli_image_tag }}")
+          docker cp "$cid:/labsmith-cli" ./labsmith-linux-amd64
+          docker rm "$cid"
+          chmod +x ./labsmith-linux-amd64
+          ./labsmith-linux-amd64 --version
+
+      # TODO: linux/arm64, darwin/amd64, darwin/arm64
+      # The mono repo currently builds linux/amd64 only.
+      # When multi-platform builds are added to mono CI, add extraction
+      # steps for each platform here:
+      #
+      # - name: Extract linux/arm64 binary
+      #   run: |
+      #     docker pull --platform linux/arm64 "${{ env.cli_image }}:${{ inputs.cli_image_tag }}"
+      #     cid=$(docker create --platform linux/arm64 "${{ env.cli_image }}:${{ inputs.cli_image_tag }}")
+      #     docker cp "$cid:/labsmith-cli" ./labsmith-linux-arm64
+      #     docker rm "$cid"
+      #
+      # For darwin binaries, the mono repo would need to cross-compile
+      # (GOOS=darwin GOARCH=amd64/arm64) and include them in the image
+      # or publish them separately.
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ inputs.release_tag }}" \
+            --title "labsmith CLI ${{ inputs.release_tag }}" \
+            --notes "$(cat <<'EOF'
+          ## labsmith CLI
+
+          Scraper binary for the Instruqt track generation plugin.
+
+          Built from mono repo commit: ${{ inputs.cli_image_tag }}
+
+          ### Installation
+
+          The plugin auto-installs this binary on first use. To install manually:
+
+          ```bash
+          curl -fsSL https://github.com/instruqt/instruqt-track-plugin/releases/download/${{ inputs.release_tag }}/labsmith-linux-amd64 \
+            -o ~/.instruqt/bin/labsmith
+          chmod +x ~/.instruqt/bin/labsmith
+          ```
+          EOF
+          )" \
+            ./labsmith-linux-amd64
