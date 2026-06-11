@@ -22,7 +22,9 @@ Resolve paths:
 Context is loaded dynamically — nothing is required. Available sources:
 - **Company context** (`${INSTRUQT_DATA_DIR}/companies/<company-slug>/`) — if available
 - **Product context** (`${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/`) — if available
-- **Existing track files** (current directory) — if extending an existing track
+- **Existing track files** (current directory) — if extending an existing track:
+  - Challenge assignments: `<NN-slug>/assignment.md`
+  - Lifecycle scripts: `<NN-slug>/setup-*`, `check-*`, `solve-*`
 - **Track-specific plan** (`${TRACK_OUTPUT_DIR}/.instruqt/plan.md` — created by this command)
 
 ## Workflow

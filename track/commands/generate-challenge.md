@@ -26,6 +26,7 @@ Context is loaded dynamically via `skills/load-context/SKILL.md`:
 - **Product context**: `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/` (if available)
 - **Track plan**: `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
 - **Challenge plan**: `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
+- **Prior generated content**: `${TRACK_OUTPUT_DIR}/<NN-slug>/assignment.md`, lifecycle scripts
 - **Infrastructure**: `${TRACK_OUTPUT_DIR}/config.yml`
 
 ## Workflow
@@ -43,6 +44,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/skills/load-context/SKILL.md` for loading instructio
 2. Read `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
 3. Read `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
 4. Read `${TRACK_OUTPUT_DIR}/config.yml`
+5. Read prior challenge generated content (`<prior-slug>/assignment.md`, lifecycle scripts)
 
 ### Step 3: Find Challenge
 

@@ -41,6 +41,21 @@ ${TRACK_OUTPUT_DIR}/.instruqt/plan.md                     # Track plan
 ${TRACK_OUTPUT_DIR}/.instruqt/<challenge-slug>/plan.md    # Challenge plan (from /plan-challenge)
 ```
 
+### Prior Challenge Content
+Read the *actually generated* content for all prior challenges — not just plans. The scoring/fix loop during generation may have changed content from the original plan.
+
+For each earlier challenge in order:
+- `<prior-slug>/assignment.md` — what the learner saw and did
+- `<prior-slug>/setup-*`, `check-*`, `solve-*` — what was actually scripted
+
+Extract from prior challenges:
+- Environment state left behind (packages installed, files created, services running)
+- Concepts and terminology already introduced
+- Variable names, paths, and conventions established
+- What the learner has already built
+
+This is critical for continuity — challenge 3's setup script shouldn't reinstall what challenge 1 already installed, and its assignment shouldn't re-explain concepts the learner already practiced.
+
 ### Existing Scores
 Check for `${TRACK_OUTPUT_DIR}/.instruqt/scores.json`. If it exists, read the entry for this challenge. Prior scores tell you:
 - **Review findings** — if a `/track:review-*` command found issues, they are recorded here. Address these findings during generation instead of waiting for the scoring loop to rediscover them.

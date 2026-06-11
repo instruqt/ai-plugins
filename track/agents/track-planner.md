@@ -22,7 +22,9 @@ Read the `load-context` skill: `skills/load-context/SKILL.md`
 Dynamically discover and load available context:
 - Company context from `${INSTRUQT_DATA_DIR}/companies/<company-slug>/` (if available)
 - Product context from `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/` (if available)
-- Existing track files in the current directory (if extending an existing track)
+- Existing track files in the current directory (if extending an existing track):
+  - Challenge assignments: `<NN-slug>/assignment.md`
+  - Lifecycle scripts: `<NN-slug>/setup-*`, `check-*`, `solve-*`
 
 Nothing is required — but if company or product context exists, use it for branding, tone, and technical accuracy.
 
