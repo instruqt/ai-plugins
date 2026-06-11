@@ -32,6 +32,13 @@ The plugin has a built-in knowledge base of Instruqt best practices — covering
 
 ### Workflow
 
+The plugin provides a staged workflow that guides you through the full content creation process — from research through planning to generation. Each stage feeds into the next, so you always have the right context at the right time.
+
+> [!TIP]
+> **Clear your context between stages.** Run `/clear` before starting each new stage (Research → Plan → Generate). Each stage writes its output to specific files — company profiles, product profiles, track plans, challenge plans — and the next stage reads those files as its starting context. This means you don't need to carry conversation history forward. Clearing between stages:
+> - **Keeps the context clean** — no stale or irrelevant information bleeding in from earlier stages.
+> - **Gives you full control over compaction** — you decide what context carries forward (via the files each stage produces), rather than relying on the LLM's automatic summarization to guess what to keep and what to drop.
+
 #### Research
 
 The plugin scrapes your company website to understand your branding, messaging, terminology, and tone — then distills it into a company profile and writing style guide. Everything generated later uses this context, so your tracks read like *you* wrote them, not a generic AI. You only need to do this once per company — the profile is reused across all your tracks.
