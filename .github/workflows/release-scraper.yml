@@ -1,14 +1,14 @@
-name: Release labsmith CLI
+name: Release scraper CLI
 
 on:
   workflow_dispatch:
     inputs:
       cli_image_tag:
-        description: 'labsmith-cli Docker image tag (commit SHA from mono repo)'
+        description: 'Scraper Docker image tag (commit SHA from mono repo)'
         required: true
         type: string
       release_tag:
-        description: 'Release tag (e.g. labsmith-v1.0.0)'
+        description: 'Release tag (e.g. scraper-v1.0.0)'
         required: true
         type: string
 
@@ -46,38 +46,25 @@ jobs:
       - name: Pull CLI image
         run: docker pull "${{ env.cli_image }}:${{ inputs.cli_image_tag }}"
 
-      - name: Extract linux/amd64 binary
+      - name: Extract platform binaries
         run: |
           cid=$(docker create "${{ env.cli_image }}:${{ inputs.cli_image_tag }}")
-          docker cp "$cid:/labsmith-cli" ./labsmith-linux-amd64
+          docker cp "$cid:/binaries/scraper-linux-amd64" ./scraper-linux-amd64
+          docker cp "$cid:/binaries/scraper-linux-arm64" ./scraper-linux-arm64
+          docker cp "$cid:/binaries/scraper-darwin-amd64" ./scraper-darwin-amd64
+          docker cp "$cid:/binaries/scraper-darwin-arm64" ./scraper-darwin-arm64
           docker rm "$cid"
-          chmod +x ./labsmith-linux-amd64
-          ./labsmith-linux-amd64 --version
-
-      # TODO: linux/arm64, darwin/amd64, darwin/arm64
-      # The mono repo currently builds linux/amd64 only.
-      # When multi-platform builds are added to mono CI, add extraction
-      # steps for each platform here:
-      #
-      # - name: Extract linux/arm64 binary
-      #   run: |
-      #     docker pull --platform linux/arm64 "${{ env.cli_image }}:${{ inputs.cli_image_tag }}"
-      #     cid=$(docker create --platform linux/arm64 "${{ env.cli_image }}:${{ inputs.cli_image_tag }}")
-      #     docker cp "$cid:/labsmith-cli" ./labsmith-linux-arm64
-      #     docker rm "$cid"
-      #
-      # For darwin binaries, the mono repo would need to cross-compile
-      # (GOOS=darwin GOARCH=amd64/arm64) and include them in the image
-      # or publish them separately.
+          chmod +x ./scraper-*
+          ./scraper-linux-amd64 --version
 
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create "${{ inputs.release_tag }}" \
-            --title "labsmith CLI ${{ inputs.release_tag }}" \
+            --title "Scraper CLI ${{ inputs.release_tag }}" \
             --notes "$(cat <<'EOF'
-          ## labsmith CLI
+          ## Scraper CLI
 
           Scraper binary for the Instruqt track generation plugin.
 
@@ -88,10 +75,19 @@ jobs:
           The plugin auto-installs this binary on first use. To install manually:
 
           ```bash
-          curl -fsSL https://github.com/instruqt/instruqt-track-plugin/releases/download/${{ inputs.release_tag }}/labsmith-linux-amd64 \
-            -o ~/.instruqt/bin/labsmith
-          chmod +x ~/.instruqt/bin/labsmith
+          # Linux (amd64)
+          curl -fsSL https://github.com/instruqt/ai-plugins/releases/download/${{ inputs.release_tag }}/scraper-linux-amd64 \
+            -o ~/.instruqt/bin/scraper
+          chmod +x ~/.instruqt/bin/scraper
+
+          # macOS (Apple Silicon)
+          curl -fsSL https://github.com/instruqt/ai-plugins/releases/download/${{ inputs.release_tag }}/scraper-darwin-arm64 \
+            -o ~/.instruqt/bin/scraper
+          chmod +x ~/.instruqt/bin/scraper
           ```
           EOF
           )" \
-            ./labsmith-linux-amd64
+            ./scraper-linux-amd64 \
+            ./scraper-linux-arm64 \
+            ./scraper-darwin-amd64 \
+            ./scraper-darwin-arm64
