@@ -141,11 +141,10 @@ Nested under `lab_config:` in the YAML.
 Alternative to `config.yml` — provisions a pre-built environment instead of declaring resources.
 
 Preset families include:
-- `sles-15-cloud-native`
-- `eck-*`
-- `managed-vm-elastic-*`
-- `highcpu8-*`
-- `temporal`
+- `vendor-a-cloud-native`
+- `vendor-b-*`
+- `vendor-c-*`
+- `vendor-d-*`
 - `dev-platform-node-gen2`
 
 When using a sandbox preset, `config.yml` is typically omitted or minimal.

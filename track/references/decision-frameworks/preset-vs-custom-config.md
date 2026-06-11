@@ -7,7 +7,7 @@ Deciding whether to use a sandbox preset or write a custom `config.yml` for trac
 ### Use a sandbox preset when ALL of these are true:
 
 - The preset's pre-installed tools and services match exactly what the track needs.
-- The track is a click-through demo against a managed UI (e.g., Kibana, Temporal UI).
+- The track is a click-through demo against a managed UI (e.g., a dashboard or workflow console).
 - No custom setup scripts are needed at track start (`track_scripts/`).
 - No custom images, secrets, or per-track sizing are required.
 - The preset is maintained by your organization or a trusted partner.

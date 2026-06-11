@@ -8,41 +8,41 @@ Presets are selected in the Instruqt web UI at the track level. The track reposi
 
 ## Preset Families
 
-### SUSE / Cloud Native
+### Vendor A (Cloud Native)
 
 | Preset | Hostname(s) | Description |
 |--------|-------------|-------------|
-| `sles-15-cloud-native` | `console` | SLES 15 with az, kubectl, helm pre-installed |
+| `vendor-a-cloud-native` | `console` | Linux with az, kubectl, helm pre-installed |
 
-### Elastic
-
-| Preset | Hostname(s) | Description |
-|--------|-------------|-------------|
-| `eck-8-15-0-genai-wave3` | `kubernetes-vm`, `lab-host-1` | ECK environment for GenAI workshops |
-| `managed-vm-elastic-highmem-*` | `kubernetes-vm`, `lab-host-1` | ECK pre-deployed, high memory. Zero `track_scripts` needed. |
-| `managed-elastic-9-x-0` | `kubernetes-vm`, `lab-host-1` | Lighter-weight preset for ES\|QL / serverless workshops |
-| `managed-vscode-elastic-*` | `kubernetes-vm`, `lab-host-1` | VS Code environment alongside Elastic stack |
-
-### Isovalent / Cilium
+### Vendor B (Search & Observability)
 
 | Preset | Hostname(s) | Description |
 |--------|-------------|-------------|
-| `highcpu8-nokind` | `server` | High-CPU node without Kind |
-| `highcpu8-2w-kpr` | `server` | High-CPU node with KPR |
+| `vendor-b-genai-wave3` | `kubernetes-vm`, `lab-host-1` | Kubernetes operator environment for GenAI workshops |
+| `vendor-b-highmem-*` | `kubernetes-vm`, `lab-host-1` | Operator pre-deployed, high memory. Zero `track_scripts` needed. |
+| `vendor-b-query-9-x-0` | `kubernetes-vm`, `lab-host-1` | Lighter-weight preset for query / serverless workshops |
+| `vendor-b-vscode-*` | `kubernetes-vm`, `lab-host-1` | VS Code environment alongside search stack |
 
-### Temporal
+### Vendor C (Networking)
 
 | Preset | Hostname(s) | Description |
 |--------|-------------|-------------|
-| `temporal` | `temporal1` | Typical tabs: VS Code on 8443, Temporal UI on 8080 |
+| `vendor-c-highcpu-nokind` | `server` | High-CPU node without Kind |
+| `vendor-c-highcpu-2w-kpr` | `server` | High-CPU node with KPR |
+
+### Vendor D (Workflow Engine)
+
+| Preset | Hostname(s) | Description |
+|--------|-------------|-------------|
+| `vendor-d-workflow` | `workflow1` | Typical tabs: VS Code on 8443, workflow UI on 8080 |
 
 ### Other
 
 | Preset | Hostname(s) | Description |
 |--------|-------------|-------------|
 | `dev-platform-node-gen2` | -- | Node-capable dev environment |
-| `aws-bootcamp-preset` | `cloud-client`, `vensim-host` | Illumio AWS bootcamp |
-| `cockroach-university-self-paced-preset` | -- | CockroachDB University self-paced labs |
+| `vendor-e-aws-bootcamp` | `cloud-client`, `vensim-host` | Vendor E AWS bootcamp |
+| `vendor-f-university-self-paced` | -- | Vendor F university self-paced labs |
 
 ## Hostname Cheat Sheet
 
@@ -50,10 +50,10 @@ The hostname to use in lifecycle scripts and tab definitions depends on the pres
 
 | Preset Pattern | Hostname(s) |
 |----------------|-------------|
-| `eck-*`, `managed-*-elastic-*` | `kubernetes-vm` + `lab-host-1` |
-| `sles-*` | `console` |
-| `highcpu8-*` | `server` |
-| `temporal` | `temporal1` |
+| `vendor-b-*` | `kubernetes-vm` + `lab-host-1` |
+| `vendor-a-*` | `console` |
+| `vendor-c-*` | `server` |
+| `vendor-d-*` | `workflow1` |
 
 Always check the preset documentation for the authoritative hostname list -- different presets within the same family may vary.
 
@@ -61,10 +61,10 @@ Always check the preset documentation for the authoritative hostname list -- dif
 
 ### Minimal Track with Preset
 
-A track using `managed-vm-elastic-highmem-*` needs no `config.yml` and no `track_scripts/`. The directory contains only challenge folders:
+A track using `vendor-b-highmem-*` needs no `config.yml` and no `track_scripts/`. The directory contains only challenge folders:
 
 ```
-my-elastic-track/
+my-preset-track/
   01-first-challenge/
     assignment.md
     setup-kubernetes-vm    # optional per-challenge setup
@@ -80,7 +80,7 @@ my-elastic-track/
 #!/bin/bash
 set -euxo pipefail
 
-# Preset: eck-8-15-0-genai-wave3
+# Preset: vendor-b-genai-wave3
 # Hostname: kubernetes-vm
-kubectl get pods -n elastic-system
+kubectl get pods -n operator-system
 ```

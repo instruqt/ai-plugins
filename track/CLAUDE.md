@@ -24,7 +24,7 @@ Every command invocation follows this structure:
 
 1. **Interpretation** — One sentence stating what you understood the user wants.
 2. **Actions** — No text output. The frontend renders task progress directly from the task list. Do not emit action labels, sub-steps, or progress text in chat.
-3. **Completion** — Exactly two sentences. First: a one-liner confirming what was done (e.g., "Company profile created for **SUSE**."). Second: a follow-up prompt offering changes or the next step. Do not expand, list, or describe the contents of the generated documents — the user can see them in the UI.
+3. **Completion** — Exactly two sentences. First: a one-liner confirming what was done (e.g., "Company profile created for **Acme Corp**."). Second: a follow-up prompt offering changes or the next step. Do not expand, list, or describe the contents of the generated documents — the user can see them in the UI.
 
 ### Error messages
 
