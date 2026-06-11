@@ -8,11 +8,11 @@ Do not create your own top-level task list. The invoking command owns the user-f
 
 ## Prerequisites
 
-Customer context must be loaded via `load-customer-context` skill.
+Context should be loaded via `load-context` skill (if available).
 
 ## Workflow
 
-1. Read `${TRACK_RESEARCH_DIR}/<company-slug>/style-guide.md`
+1. Read `${INSTRUQT_DATA_DIR}/companies/<company-slug>/style-guide.md` (if available)
 2. Before writing any content, internalize: tone, voice characteristics, terminology preferences
 3. Write content draft
 4. Review against style guide: does it sound like their docs?

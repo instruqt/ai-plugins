@@ -31,7 +31,7 @@ Must have a challenge plan at `${TRACK_OUTPUT_DIR}/<NN-slug>/plan.md`.
 
 1. Read track plan for overall context
 2. Read config.yml for infrastructure context
-3. If customer context exists, load it for brand-voice scoring
+3. Load available company and product context via `skills/load-context/SKILL.md` for brand-voice scoring
 
 ### Step 3: Spawn Review Agent
 
@@ -67,4 +67,4 @@ The scorecard is the deliverable. The user decides what to address.
 ## Important Notes
 
 - This command provides feedback, not auto-fixes
-- Customer context is optional but enables brand-voice scoring
+- Company/product context is optional but enables brand-voice scoring

@@ -26,9 +26,9 @@ Check for `track.yml` — if not found, show error: "No track found. This direct
 
 ### Step 2: Load Context (Optional)
 
-If customer context exists, load it — this enables brand-voice scoring:
-1. Check `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` for customer reference
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/load-customer-context/SKILL.md` for loading instructions
+Load available context dynamically:
+1. Read `${CLAUDE_PLUGIN_ROOT}/skills/load-context/SKILL.md` for loading instructions
+2. Load company, product, and existing track context if available — this enables brand-voice scoring
 
 ### Step 3: Spawn Review Agent
 
@@ -39,7 +39,7 @@ Agent(
   prompt="Read ${CLAUDE_PLUGIN_ROOT}/agents/review-generated.md for your full instructions.
 
   Review the track in the current directory.
-  Customer context: <company-slug or 'none'>
+  Data directory: ${INSTRUQT_DATA_DIR}
 
   Scoring guide: ${CLAUDE_PLUGIN_ROOT}/references/evaluation/scoring-guide.md
   Checklist rubrics: ${CLAUDE_PLUGIN_ROOT}/references/evaluation/checklist/generate/
@@ -66,4 +66,4 @@ The scorecard is the deliverable. The user decides what to address:
 ## Important Notes
 
 - This command provides feedback, not auto-fixes
-- Customer context is optional but enables brand-voice scoring
+- Company/product context is optional but enables brand-voice scoring

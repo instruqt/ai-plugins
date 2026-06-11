@@ -8,13 +8,13 @@ Maintain a live task list for this command. Start substantive work by recording 
 
 ## Arguments
 
-- `/track:generate-track` — generate a complete track, resuming from current state
-- `/track:generate-track --fresh` — ignore existing state and start from scratch
+- `/track:generate-all-challenges` — generate a complete track, resuming from current state
+- `/track:generate-all-challenges --fresh` — ignore existing state and start from scratch
 
 ## Paths
 
 Resolve paths:
-- `TRACK_RESEARCH_DIR`: if set use it, otherwise default to `~/.instruqt/companies`
+- `INSTRUQT_DATA_DIR`: if set use it, otherwise default to `~/.instruqt`
 - `TRACK_OUTPUT_DIR`: if set use it, otherwise default to `~/.instruqt/tracks`
 
 ## Workflow
@@ -23,7 +23,7 @@ Resolve paths:
 
 Scan the filesystem to determine what exists:
 
-**Research context** (`${TRACK_RESEARCH_DIR}/<company-slug>/`):
+**Research context** (`${INSTRUQT_DATA_DIR}/companies/<company-slug>/`):
 - [ ] `company.md` exists
 - [ ] `style-guide.md` exists
 - [ ] `products/` has at least one file
@@ -88,8 +88,8 @@ Report any issues found in existing content. If there are blocking issues in exi
 Work through each gap in order:
 
 **If research context is missing:**
-- Direct the user to run `/track:research-company` and `/track:research-product`
-- Cannot proceed without at least `company.md`
+- Suggest running `/track:research-company` and `/track:research-product` for better quality, but do not block
+- Proceed with available context
 
 **If track plan is missing:**
 - Direct the user to run `/track:plan-track`
@@ -139,7 +139,7 @@ After all challenges are generated (or already existed):
 
 | Error | Message |
 |-------|---------|
-| No research context | Run `/track:research-company` first |
+| No research context | Suggest `/track:research-company` for better quality, but proceed |
 | No track plan | Run `/track:plan-track` first |
 | Missing challenge plans | Run `/track:plan-challenge` for: [list missing] |
 | `instruqt` CLI not found | Validation will use internal checks only. Install the Instruqt CLI for full validation. |

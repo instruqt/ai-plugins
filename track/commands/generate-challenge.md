@@ -14,19 +14,19 @@ Maintain a live task list for this command. Start substantive work by recording 
 ## Prerequisites
 
 Resolve paths:
-- `TRACK_RESEARCH_DIR`: if set use it, otherwise default to `~/.instruqt/companies`
+- `INSTRUQT_DATA_DIR`: if set use it, otherwise default to `~/.instruqt`
 - `TRACK_OUTPUT_DIR`: if set use it, otherwise default to `~/.instruqt/tracks`
 
-1. Run `/track:research-company` to create customer context
-2. Run `/track:plan-track` to create the track plan
-3. Run `/track:plan-challenge <challenge>` to create the challenge plan
+A challenge plan (`${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`) must exist — run `/track:plan-challenge` first if missing.
 
 ## Context Sources
 
-**Customer context**: `${TRACK_RESEARCH_DIR}/<company-slug>/`
-**Track plan**: `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
-**Challenge plan**: `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
-**Infrastructure**: `${TRACK_OUTPUT_DIR}/config.yml`
+Context is loaded dynamically via `skills/load-context/SKILL.md`:
+- **Company context**: `${INSTRUQT_DATA_DIR}/companies/<company-slug>/` (if available)
+- **Product context**: `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/` (if available)
+- **Track plan**: `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
+- **Challenge plan**: `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
+- **Infrastructure**: `${TRACK_OUTPUT_DIR}/config.yml`
 
 ## Workflow
 
@@ -38,8 +38,8 @@ Resolve paths:
 
 ### Step 2: Load Context
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/load-customer-context/SKILL.md` for loading instructions:
-1. Read company, style guide, and product files
+Read `${CLAUDE_PLUGIN_ROOT}/skills/load-context/SKILL.md` for loading instructions:
+1. Load available company, product, and track context
 2. Read `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
 3. Read `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
 4. Read `${TRACK_OUTPUT_DIR}/config.yml`
@@ -76,14 +76,14 @@ Agent(
   Overwrite mode: <overwrite/skip/abort>
 
   Skills to load (ALL of these — do not skip any):
-  - ${CLAUDE_PLUGIN_ROOT}/skills/load-customer-context/SKILL.md
+  - ${CLAUDE_PLUGIN_ROOT}/skills/load-context/SKILL.md
   - ${CLAUDE_PLUGIN_ROOT}/skills/match-writing-style/SKILL.md
   - ${CLAUDE_PLUGIN_ROOT}/skills/write-content/SKILL.md
   - ${CLAUDE_PLUGIN_ROOT}/skills/write-scripts/SKILL.md
   - ${CLAUDE_PLUGIN_ROOT}/skills/validate-track/SKILL.md
 
   References directory: ${CLAUDE_PLUGIN_ROOT}/references/
-  Website content: ${TRACK_RESEARCH_DIR}/<company-slug>/website/
+  Data directory: ${INSTRUQT_DATA_DIR}
 
   Generate all resources with validation and scoring loops."
 )
@@ -112,7 +112,6 @@ Challenge "<title>" generated with issues.
 |-------|---------|
 | No track plan | Run `/track:plan-track` first |
 | No challenge plan | Run `/track:plan-challenge <challenge>` first |
-| No customer context | Run `/track:research-company` first |
 | Challenge not found | List available challenges |
 
 ### Step 6b: CLI Validation

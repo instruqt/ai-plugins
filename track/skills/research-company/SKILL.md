@@ -12,11 +12,11 @@ Run the `scrape-website` skill first to download site content.
 
 ## Workflow
 
-1. Read scraped HTML files from `${TRACK_RESEARCH_DIR}/<company-slug>/website/`
+1. Read scraped HTML files from `${INSTRUQT_DATA_DIR}/companies/<company-slug>/website/`
 2. Look for: About pages, Mission pages, Company pages, Careers pages, Footer content
 3. Extract: overview, industry, mission/values, differentiators, target market
 4. Read template: `templates/company.md`
-5. Write output: `${TRACK_RESEARCH_DIR}/<company-slug>/company.md`
+5. Write output: `${INSTRUQT_DATA_DIR}/companies/<company-slug>/company.md`
 
 ## Product Discovery
 

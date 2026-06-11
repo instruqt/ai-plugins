@@ -74,7 +74,7 @@ mcp__scraper__validate_scrape({ company_slug: "<slug>" })
 ## Output Structure
 
 ```
-<research-dir>/<company-slug>/
+<output-dir>/
   manifest.json
   sitemaps/<domain>.json
   website/

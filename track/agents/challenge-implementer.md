@@ -28,13 +28,12 @@ You are a challenge content implementer for Instruqt. Your job is to generate co
 
 ## Step 1: Load Context
 
-### Customer Context
-Load via `skills/load-customer-context/SKILL.md`:
-```
-${TRACK_RESEARCH_DIR}/<company-slug>/company.md
-${TRACK_RESEARCH_DIR}/<company-slug>/style-guide.md
-${TRACK_RESEARCH_DIR}/<company-slug>/products/*.md
-```
+### Company and Product Context
+Load via `skills/load-context/SKILL.md` — dynamically discovers available context:
+- Company: `${INSTRUQT_DATA_DIR}/companies/<company-slug>/` (company.md, style-guide.md)
+- Products: `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/product.md`
+
+Nothing is required — but available context improves branding, tone, and technical accuracy.
 
 ### Track and Challenge Context
 ```
@@ -51,7 +50,7 @@ Check for `${TRACK_OUTPUT_DIR}/.instruqt/scores.json`. If it exists, read the en
 If no scores exist for this challenge, proceed normally.
 
 ### Reference Documentation
-The challenge plan includes a "Reference Documentation" section listing doc pages relevant to this challenge. These have already been fetched and cleaned by the plan-challenge command. Read them from `${TRACK_RESEARCH_DIR}/<company-slug>/website/` — do NOT fetch anything from the web.
+The challenge plan includes a "Reference Documentation" section listing doc pages relevant to this challenge. These have already been fetched and cleaned by the plan-challenge command. Read them from the relevant company or product `website/` directories — do NOT fetch anything from the web.
 
 ### Skills
 Load ALL of these before generating — do not skip any:
@@ -177,7 +176,7 @@ Use the Agent tool to spawn scorer agents **in parallel**.
 | Scorer | Model | Rubric | Content Slice |
 |--------|-------|--------|---------------|
 | assignment-content | Sonnet | `references/evaluation/analytic/generate/assignment-content.md` | `<challenge>/assignment.md` + track plan (objectives) |
-| brand-voice | Sonnet | `references/evaluation/analytic/generate/brand-voice.md` | `<challenge>/assignment.md` + `${TRACK_RESEARCH_DIR}/<company>/style-guide.md` |
+| brand-voice | Sonnet | `references/evaluation/analytic/generate/brand-voice.md` | `<challenge>/assignment.md` + style-guide.md (if available) |
 | challenge-design | Sonnet | `references/evaluation/analytic/generate/challenge-design.md` | `<challenge>/assignment.md` + `<challenge>/check-*` + track plan |
 | script-quality | Haiku | `references/evaluation/analytic/generate/script-quality.md` | `<challenge>/setup-*`, `check-*`, `solve-*`, `cleanup-*` |
 | script-assignment-alignment | Sonnet | `references/evaluation/analytic/generate/script-assignment-alignment.md` | `<challenge>/assignment.md` + `<challenge>/check-*` + `<challenge>/solve-*` |
@@ -329,7 +328,7 @@ Write all scoring results to `${TRACK_OUTPUT_DIR}/.instruqt/scores.json`. If the
 - `status: "passed"` — all checklist items pass and all analytic criteria >= 4
 - `status: "escalated"` — user was asked about unresolved findings and chose to continue
 
-This file is the checkpoint for resume. `generate-track` reads it to determine which challenges need work.
+This file is the checkpoint for resume. `generate-all-challenges` reads it to determine which challenges need work.
 
 ## Step 11: Report Completion
 

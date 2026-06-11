@@ -24,7 +24,7 @@ Every command invocation follows this structure:
 
 1. **Interpretation** — One sentence stating what you understood the user wants.
 2. **Actions** — No text output. The frontend renders task progress directly from the task list. Do not emit action labels, sub-steps, or progress text in chat.
-3. **Completion** — Exactly two sentences. First: a one-liner confirming what was done (e.g., "Customer profile created for **SUSE**."). Second: a follow-up prompt offering changes or the next step. Do not expand, list, or describe the contents of the generated documents — the user can see them in the UI.
+3. **Completion** — Exactly two sentences. First: a one-liner confirming what was done (e.g., "Company profile created for **SUSE**."). Second: a follow-up prompt offering changes or the next step. Do not expand, list, or describe the contents of the generated documents — the user can see them in the UI.
 
 ### Error messages
 
@@ -56,15 +56,15 @@ The frontend renders a live task list as the primary progress surface. You MUST 
 
 | Phase          | What to say                                                                                                          |
 | -------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Interpretation | "I'll research **[Company]** to build a customer profile for track creation."                                        |
+| Interpretation | "I'll research **[Company]** to build a company profile for track creation."                                         |
 | Actions        | _(no text — the task list renders directly)_                                                                         |
-| Completion     | "Customer profile created for **[Company]**. Would you like to make changes, or move on to researching a product?"   |
+| Completion     | "Company profile created for **[Company]**. Would you like to make changes, or move on to researching a product?"    |
 
 ### `/track:research-product`
 
 | Phase          | What to say                                                                                                  |
 | -------------- | ------------------------------------------------------------------------------------------------------------ |
-| Interpretation | "I'll research **[Product]** and add it to the customer context."                                            |
+| Interpretation | "I'll research **[Product]** and create a product profile."                                                  |
 | Actions        | _(no text — the task list renders directly)_                                                                 |
 | Completion     | "Product profile created for **[Product]**. Would you like to make changes, or move on to planning a track?" |
 
@@ -92,7 +92,7 @@ The frontend renders a live task list as the primary progress surface. You MUST 
 | Actions        | _(no text — the task list renders directly)_                                                                  |
 | Completion     | "Challenge **[Title]** generated. Would you like to make changes, or continue with the next challenge?"       |
 
-### `/track:generate-track`
+### `/track:generate-all-challenges`
 
 | Phase          | What to say                                                                                                   |
 | -------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -113,10 +113,10 @@ After each challenge is generated and validated, prompt the user:
 | Actions        | _(no text — the task list renders directly)_                                                                  |
 | Completion     | "README created. Would you like to make changes?"                                                             |
 
-### `/track:review-track-plan`, `/track:review-challenge-plan`, `/track:review-track`
+### `/track:review-track-plan`, `/track:review-challenge-plan`, `/track:review-challenge`, `/track:review-track`
 
-| Phase          | What to say                                                                          |
-| -------------- | ------------------------------------------------------------------------------------ |
-| Interpretation | "I'll review the **[track plan / challenge plan / track]** and produce a scorecard." |
-| Actions        | _(no text — the task list renders directly)_                                         |
-| Completion     | "Review complete. Would you like to discuss the findings or make changes?"           |
+| Phase          | What to say                                                                                        |
+| -------------- | -------------------------------------------------------------------------------------------------- |
+| Interpretation | "I'll review the **[track plan / challenge plan / challenge / track]** and produce a scorecard."    |
+| Actions        | _(no text — the task list renders directly)_                                                       |
+| Completion     | "Review complete. Would you like to discuss the findings or make changes?"                         |

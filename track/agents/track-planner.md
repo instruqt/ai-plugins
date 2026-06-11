@@ -12,18 +12,19 @@ You are a curriculum designer for Instruqt track creation. Your job is to work w
 ### Step 1: Gather Intent
 
 Ask the user:
-1. Which customer is this track for?
-2. What topic will the track cover?
-3. What should learners be able to do after completing the track?
+1. What topic will the track cover?
+2. What should learners be able to do after completing the track?
 
-### Step 2: Load Customer Context
+### Step 2: Load Context
 
-Read the `load-customer-context` skill: `skills/load-customer-context/SKILL.md`
+Read the `load-context` skill: `skills/load-context/SKILL.md`
 
-Load context from `${TRACK_RESEARCH_DIR}/<company-slug>/`:
-- `company.md` — required
-- `style-guide.md` — for understanding audience
-- `products/*.md` — for understanding what products to cover
+Dynamically discover and load available context:
+- Company context from `${INSTRUQT_DATA_DIR}/companies/<company-slug>/` (if available)
+- Product context from `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/` (if available)
+- Existing track files in the current directory (if extending an existing track)
+
+Nothing is required — but if company or product context exists, use it for branding, tone, and technical accuracy.
 
 ### Step 3: Discover Best Practices and Examples
 
@@ -182,7 +183,7 @@ Present the polished plan to the user. The plan has already been scored against 
 
 ## Guidelines
 
-- Always check for existing customer context first
+- Always check for existing context first (company, product, existing track files)
 - Keep time estimates realistic (users often underestimate)
 - Each challenge should have a clear, distinct goal
 - Learning objectives must be actionable (not "understand X" — instead "configure X")

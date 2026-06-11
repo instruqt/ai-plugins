@@ -23,7 +23,7 @@ Gather all track content:
 - `config.yml` — track configuration, challenges, sandbox
 - All challenge directories: `<NN-slug>/assignment.md`, `<NN-slug>/setup-*`, `<NN-slug>/check-*`, `<NN-slug>/solve-*`, `<NN-slug>/cleanup-*`
 - `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` if it exists (for learning objectives context)
-- Customer context if available (for brand-voice scoring)
+- Company/product context if available (for brand-voice scoring)
 
 ## Step 2: Dispatch Checklist Scorers
 
@@ -76,7 +76,7 @@ Use the Agent tool to spawn analytic scorer agents **in parallel**.
 | Scorer | Model | Rubric | Content Slice |
 |--------|-------|--------|---------------|
 | assignment-content | Sonnet | `references/evaluation/analytic/generate/assignment-content.md` | `<challenge>/assignment.md` + track plan (objectives) |
-| brand-voice | Sonnet | `references/evaluation/analytic/generate/brand-voice.md` | `<challenge>/assignment.md` + style-guide.md (skip if no customer context) |
+| brand-voice | Sonnet | `references/evaluation/analytic/generate/brand-voice.md` | `<challenge>/assignment.md` + style-guide.md (skip if no company/product context) |
 | challenge-design | Sonnet | `references/evaluation/analytic/generate/challenge-design.md` | `<challenge>/assignment.md` + `<challenge>/check-*` + track plan |
 | script-quality | Haiku | `references/evaluation/analytic/generate/script-quality.md` | `<challenge>/setup-*`, `check-*`, `solve-*`, `cleanup-*` |
 | script-assignment-alignment | Sonnet | `references/evaluation/analytic/generate/script-assignment-alignment.md` | `<challenge>/assignment.md` + `<challenge>/check-*` + `<challenge>/solve-*` |
@@ -216,5 +216,5 @@ This makes review results available to subsequent commands. The implementer can 
 - This agent provides feedback ONLY — no track content files are modified (scores.json is plugin state, not content)
 - The user decides what to address after reviewing the scorecard
 - If the user asks to fix specific findings, they should use `/track:generate-challenge` or manual editing — the implementer reads scores.json to know what needs fixing
-- Skip brand-voice scoring if no customer context exists
+- Skip brand-voice scoring if no company/product context exists
 - Run track validation and `shellcheck <challenge>/*.sh` as part of the review (checklist needs the output)

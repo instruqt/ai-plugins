@@ -14,19 +14,20 @@ Maintain a live task list for this command. Start substantive work by recording 
 ## Prerequisites
 
 Resolve paths:
-- `TRACK_RESEARCH_DIR`: if set use it, otherwise default to `~/.instruqt/companies`
+- `INSTRUQT_DATA_DIR`: if set use it, otherwise default to `~/.instruqt`
 - `TRACK_OUTPUT_DIR`: if set use it, otherwise default to `~/.instruqt/tracks`
 
-1. Run `/track:research-company` to create customer context
-2. Run `/track:plan-track` to create the track plan with challenge roadmap
+A track plan (`${TRACK_OUTPUT_DIR}/.instruqt/plan.md`) must exist — run `/track:plan-track` first if missing.
 
 ## Context Sources
 
-**Track plan**: `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
-**Prior challenge plans**: `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
-**Prior generated content**: `${TRACK_OUTPUT_DIR}/<NN-slug>/assignment.md`, scripts
-**Customer context**: `${TRACK_RESEARCH_DIR}/<company-slug>/`
-**Infrastructure**: `${TRACK_OUTPUT_DIR}/config.yml`
+Context is loaded dynamically via `skills/load-context/SKILL.md`:
+- **Track plan**: `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
+- **Prior challenge plans**: `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
+- **Prior generated content**: `${TRACK_OUTPUT_DIR}/<NN-slug>/assignment.md`, scripts
+- **Company context**: `${INSTRUQT_DATA_DIR}/companies/<company-slug>/` (if available)
+- **Product context**: `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/` (if available)
+- **Infrastructure**: `${TRACK_OUTPUT_DIR}/config.yml`
 
 ## Workflow
 
@@ -50,7 +51,7 @@ Agent(
   Customer: <company-slug>
 
   Skills to load:
-  - ${CLAUDE_PLUGIN_ROOT}/skills/load-customer-context/SKILL.md
+  - ${CLAUDE_PLUGIN_ROOT}/skills/load-context/SKILL.md
 
   Templates to use:
   - ${CLAUDE_PLUGIN_ROOT}/templates/challenge-plan.md
@@ -60,7 +61,7 @@ Agent(
 ```
 
 The agent will:
-1. Read the track plan, customer context, and config.yml
+1. Read the track plan, available company/product context, and config.yml
 2. Read prior challenge plans AND generated content
 3. Plan assignment outline, tab layout, check/solve/setup scripts
 4. Amend config.yml if new resources are needed

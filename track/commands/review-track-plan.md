@@ -26,9 +26,9 @@ Check for `${TRACK_OUTPUT_DIR}/plan.md` — if not found, show error: "No track 
 
 ### Step 2: Load Context (Optional)
 
-If customer context exists, load it for additional context:
-1. Check `${TRACK_OUTPUT_DIR}/plan.md` for customer reference
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/load-customer-context/SKILL.md` for loading instructions
+Load available context dynamically:
+1. Read `${CLAUDE_PLUGIN_ROOT}/skills/load-context/SKILL.md` for loading instructions
+2. Load company, product, and existing track context if available
 
 ### Step 3: Spawn Review Agent
 
@@ -65,3 +65,4 @@ The scorecard is the deliverable. The user decides what to address:
 ## Important Notes
 
 - This command provides feedback, not auto-fixes
+- Company/product context is optional but enables brand-voice scoring

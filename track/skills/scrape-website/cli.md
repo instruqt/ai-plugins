@@ -132,7 +132,7 @@ labsmith validate <company-slug>
 ## Output Structure
 
 ```
-${TRACK_RESEARCH_DIR}/<company-slug>/
+<output-dir>/
   manifest.json
   sitemaps/<domain>.json
   website/

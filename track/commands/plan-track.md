@@ -14,15 +14,16 @@ Maintain a live task list for this command. Start substantive work by recording 
 ## Prerequisites
 
 Resolve paths:
-- `TRACK_RESEARCH_DIR`: if set use it, otherwise default to `~/.instruqt/companies`
+- `INSTRUQT_DATA_DIR`: if set use it, otherwise default to `~/.instruqt`
 - `TRACK_OUTPUT_DIR`: if set use it, otherwise default to `~/.instruqt/tracks`
-
-Run `/track:research-company` first to create customer context.
 
 ## Context Sources
 
-**Global customer context** (`${TRACK_RESEARCH_DIR}/<company-slug>/`)
-**Track-specific plan** (`${TRACK_OUTPUT_DIR}/.instruqt/plan.md` — created by this command)
+Context is loaded dynamically — nothing is required. Available sources:
+- **Company context** (`${INSTRUQT_DATA_DIR}/companies/<company-slug>/`) — if available
+- **Product context** (`${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/`) — if available
+- **Existing track files** (current directory) — if extending an existing track
+- **Track-specific plan** (`${TRACK_OUTPUT_DIR}/.instruqt/plan.md` — created by this command)
 
 ## Workflow
 
@@ -38,11 +39,11 @@ Run `/track:research-company` first to create customer context.
    └── track_scripts/
    ```
 
-### Step 2: Check Customer Context
+### Step 2: Load Context
 
-1. Ask which customer this track is for
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/load-customer-context/SKILL.md` for loading instructions
-3. If missing, direct user to run `/track:research-company` first
+1. Read `${CLAUDE_PLUGIN_ROOT}/skills/load-context/SKILL.md` for loading instructions
+2. Dynamically discover and load available company, product, and existing track context
+3. If no context exists, proceed anyway — the planner will work from the topic and user input
 
 ### Step 3: Spawn Track Planner
 
@@ -56,7 +57,7 @@ Agent(
   Topic hint: <topic if provided>
 
   Skills to load:
-  - ${CLAUDE_PLUGIN_ROOT}/skills/load-customer-context/SKILL.md
+  - ${CLAUDE_PLUGIN_ROOT}/skills/load-context/SKILL.md
 
   Templates to use:
   - ${CLAUDE_PLUGIN_ROOT}/templates/track-plan.md
@@ -94,7 +95,7 @@ Next: Plan each challenge in order:
 
 ## Important Notes
 
-- Always check for existing customer context first
+- Always check for existing context first (company, product, existing track files)
 - The track-planner agent handles the interactive planning
 - Track plan MUST be approved by the user before proceeding
 - Store plan in `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` (track-specific, not global)

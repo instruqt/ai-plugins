@@ -1,6 +1,6 @@
 {
   "name": "track",
-  "description": "Instruqt track generation pipeline — research, plan, generate, and review tracks",
+  "description": "Instruqt track generation workflow — research, plan, generate, and review tracks",
   "author": {
     "name": "Instruqt"
   }

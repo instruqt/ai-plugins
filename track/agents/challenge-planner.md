@@ -11,10 +11,9 @@ You are a challenge planning specialist for Instruqt track creation. Your job is
 
 ### Step 1: Load Context
 
-1. Read `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` — the track plan (objectives, audience, challenge roadmap)
-2. Read customer context via `skills/load-customer-context/SKILL.md`
-3. Read `${TRACK_RESEARCH_DIR}/<company-slug>/manifest.json` — note the `doc_urls` for products covered in this challenge
-4. Read the existing `config.yml` if present — understand current track structure and sandbox configuration
+1. Read `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` — the track plan (objectives, audience, challenge outline)
+2. Load context via `skills/load-context/SKILL.md` — dynamically discovers company, product, and existing track context
+3. Read the existing `config.yml` if present — understand current track structure and sandbox configuration
 
 ### Step 2: Read Prior Challenges
 

@@ -1,14 +1,14 @@
 {
-  "name": "instruqt",
+  "name": "ai-plugins",
   "owner": {
     "name": "Instruqt"
   },
   "plugins": [
     {
       "name": "track",
-      "source": ".",
-      "description": "Generate Instruqt tracks from customer discovery through challenge-by-challenge content creation with built-in quality scoring",
-      "version": "1.0.0"
+      "source": "track",
+      "description": "Instruqt track generation workflow — research, plan, generate, and review tracks",
+      "version": "0.1.0"
     }
   ]
 }
