@@ -2,7 +2,7 @@
 
 When content references earlier material, it should do so consistently and without contradicting prior explanations.
 
-This applies across all content types: assignment.md instructions, assignment steps, check script feedback messages, solve scripts, and notes/tabs.
+This applies across all content types: assignment.md instructions, assignment steps, check script feedback messages, solve scripts, notes/tabs, and quizzes.
 
 When content references earlier material:
 - Use the same terminology

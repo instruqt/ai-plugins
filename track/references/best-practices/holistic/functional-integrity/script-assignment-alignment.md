@@ -18,6 +18,8 @@ Evaluates whether what the assignment.md asks the learner to do actually matches
 - The solve script should be a minimal, correct execution of the assignment instructions -- nothing more, nothing less
 - Fail messages in the check script should tell the learner which step they missed or got wrong
 
+Check scripts are the primary mechanism for validating that learners have understood and applied the concept. Each check script should validate the key learning objective of its challenge — not peripheral details.
+
 ## What to Watch For
 
 - Assignments that say "create X" but check scripts look for a differently named or located X
@@ -26,3 +28,4 @@ Evaluates whether what the assignment.md asks the learner to do actually matches
 - Assignments with ambiguous instructions where the check script expects one specific interpretation
 - Check scripts with no fail messages, or messages that do not help the learner identify what to fix
 - Solve scripts that do not actually pass the check script
+- Setup scripts that run long operations better placed in an earlier challenge's setup

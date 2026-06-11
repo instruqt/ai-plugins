@@ -16,7 +16,10 @@ When a challenge begins, the environment must already be in the correct state fo
 - Are prerequisite files/directories present?
 - Are required services running?
 - Is the git state correct (right branch, right repo)?
-- Has the setup script run before the user sees the assignment?
+
+**Setup timing:** In Instruqt, the user sees the assignment while the setup script is still running. The assignment should not instruct the user to interact with anything the setup script is still preparing. For challenges with noticeable setup time, use pre-challenge notes (`notes:` in the challenge config) to keep learners engaged during loading, and add a note at the top of the assignment to set expectations (e.g., "Your environment is being prepared — this takes about 30 seconds").
+
+Each challenge has its own setup script (`setup-<host>`), not one global setup. Keep per-challenge setup scripts focused on what that specific challenge needs. Long-running setup (package installs, large downloads) should happen in the first challenge's setup when possible, with later challenges doing only incremental state changes.
 
 **Setup-check-solve consistency:**
 - The setup script for challenge N+1 should assume only the state that the check script for challenge N validates (or that the solve script for challenge N produces)

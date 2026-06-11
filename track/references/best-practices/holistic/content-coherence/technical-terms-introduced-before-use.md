@@ -21,6 +21,10 @@ Before you can commit changes, you need to **stage** them. The staging area
 
 After introduction, use the term consistently without re-explaining. Check script feedback messages should use the introduced terms, reinforcing vocabulary.
 
+The depth of introduction should match the target audience. Beginner tracks explain terms with analogies and context. Intermediate and advanced tracks can introduce terms more briefly — a one-line definition or even inline context may suffice. The goal is that no term appears unexplained, not that every term gets a paragraph.
+
 ## What to Watch For
 
 - Technical terms used in check script messages that haven't been taught yet
+- Over-explaining terms the target audience already knows (risks being patronizing)
+- Terms introduced only in a note or sidebar that the learner might skip

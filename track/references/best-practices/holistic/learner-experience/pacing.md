@@ -15,7 +15,9 @@ Challenges should be consistently paced to keep learners engaged without fatigue
 - Each challenge should take roughly the same amount of time (3-10 minutes)
 - No single challenge should take more than 15 minutes
 - Conclusion/summary challenges help users consolidate learning
+- Total track duration should generally stay within 30-60 minutes. Longer tracks risk fatigue and drop-off — consider splitting into a multi-track learning path instead.
 
 ## What to Watch For
 
 - Challenges that take wildly different amounts of time
+- Tracks that exceed 60 minutes total — consider whether they should be split

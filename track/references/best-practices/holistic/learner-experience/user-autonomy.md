@@ -12,7 +12,9 @@ The amount of written context, troubleshooting notes, and reflection prompts sho
 | 4 | Good | Guidance level is well-calibrated. Independent sections have thorough context and callouts. Guided sections are activity-focused. One minor adjustment would improve the fit. |
 | 5 | Excellent | Guidance level is precisely calibrated throughout. Every section provides exactly the amount of context its learners need -- no more, no less. Independent learners never feel abandoned. Supported learners never feel lectured at. |
 
-Tracks exist on a spectrum from fully instructor-supported to fully independent. The key question is: if the learner gets confused at this point, is there a human available to help? Where the answer is no, the content itself must provide that support.
+Tracks exist on a spectrum from fully instructor-supported to fully independent. The delivery context (self-paced vs. instructor-led) is defined in the track plan. If the track plan does not specify, default to self-paced — tracks are commonly used for both, but self-paced requires more written support and is the safer default.
+
+The key question is: if the learner gets confused at this point, is there a human available to help? Where the answer is no, the content itself must provide that support.
 
 **More supported** (instructor present, guided workshops):
 - Shorter written instructions -- the instructor fills gaps verbally

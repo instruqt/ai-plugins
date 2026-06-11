@@ -20,8 +20,11 @@ Walk through the track mentally:
 5. Every challenge can be solved (solve scripts work and pass the check script)
 6. The track can be completed from start to finish without blockers
 
+Solve scripts are required for every challenge. They serve as the automated test path — without them, there is no way to verify the track works end-to-end programmatically (via `instruqt track test`).
+
 ## What to Watch For
 
 - Challenge N completion breaking challenge N+1's preconditions
 - Solve scripts that leave the environment in a state that blocks later challenges
 - Circular dependencies between resources
+- Missing solve scripts — without them, automated testing (`instruqt track test`) cannot verify the track

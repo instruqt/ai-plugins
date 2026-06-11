@@ -12,6 +12,8 @@ If the description says "No prior experience required", the content must not use
 | 4 | Good | Content stays within the stated prerequisites. All significant concepts are introduced. One minor assumption exists that slightly exceeds the prerequisite boundary. |
 | 5 | Excellent | The content strictly honors the stated prerequisites. Every concept outside the prerequisite boundary is introduced and explained before use. A learner meeting exactly the listed prerequisites would never be lost. |
 
+Prerequisites are defined in the track plan (audience and prerequisites sections) and displayed in the track description on Instruqt. The content must honor these exactly — no more, no less.
+
 Content must not:
 - Use terminology without explaining it first
 - Assume users know what foundational concepts are without introduction
@@ -22,3 +24,4 @@ Content must not:
 
 - Content that assumes knowledge the prerequisites say isn't needed
 - Technical terms used before they're introduced
+- Prerequisites that are stated but never actually needed (misleading the learner about what they need to know)

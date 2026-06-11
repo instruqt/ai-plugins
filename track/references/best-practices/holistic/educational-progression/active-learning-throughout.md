@@ -18,7 +18,11 @@ Users should be DOING things at every stage, not just reading. Check that concep
 - Commands users should learn (git config user.name) -> users do this
 - Configuration that's the learning objective -> users do this
 
+**One key concept per challenge:**
+Each challenge should focus on validating one main concept using check scripts. Prefer multiple smaller challenges over one large challenge that tests many things at once. This keeps checks focused, makes failures easier to diagnose, and gives learners a clear sense of progress.
+
 ## What to Watch For
 
 - Active learning absent in certain challenges (all reading, no doing)
 - Pre-configured settings in setup scripts that should be learning objectives
+- A single challenge trying to validate too many concepts at once — split it into multiple challenges

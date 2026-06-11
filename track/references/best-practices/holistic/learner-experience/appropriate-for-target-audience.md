@@ -1,6 +1,6 @@
 # Appropriate for Target Audience
 
-The track should match its stated skill level in terminology, explanations, and challenge complexity -- evaluated across all challenges.
+The track should match its stated skill level in terminology, explanations, and challenge complexity -- evaluated across all challenges. The target audience is defined in the track plan (audience section).
 
 ## Criteria
 
@@ -32,3 +32,5 @@ The track should match its stated skill level in terminology, explanations, and 
 
 - Inconsistent difficulty level (suddenly much harder without progression)
 - Content that talks AT users rather than guiding them
+- Beginner tracks that over-explain to the point of being patronizing — explain what's needed, not everything possible
+- Advanced tracks that under-explain novel concepts just because the audience is advanced (new concepts still need introduction regardless of audience level)

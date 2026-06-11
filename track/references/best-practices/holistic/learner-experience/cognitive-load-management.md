@@ -16,7 +16,9 @@ Evaluates whether the track avoids overwhelming users with too much information 
 - Let users practice before introducing the next concept
 - Use progressive disclosure (basic first, details later)
 - Don't front-load all the theory before any practice
+- Each challenge should teach one main concept, validated by its check script — prefer many smaller challenges over fewer large ones that test multiple concepts at once
 
 ## What to Watch For
 
 - Challenges that dump large amounts of theory with no practice
+- A single challenge trying to teach and validate multiple unrelated concepts — split it
