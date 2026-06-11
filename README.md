@@ -8,6 +8,19 @@ A collection of Claude Code plugins for building and managing Instruqt content.
 |--------|-------------|
 | **track** | End-to-end track generation — from company and product research through challenge implementation with built-in quality scoring |
 
+## Prerequisites
+
+**Claude Code** — the plugin runs inside Claude Code (CLI, desktop app, web app, or the VS Code / JetBrains extensions).
+
+- **Linux** and **macOS**: supported natively
+- **Windows**: supported via [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) (use the CLI or VS Code with the WSL remote extension)
+- **Web** (claude.ai/code): supported — runs on a cloud Linux VM
+
+**Recommended (optional):**
+
+- **[Instruqt CLI](https://docs.instruqt.com/docs/cli-installation)** — enables `instruqt track validate` and `instruqt track test` for server-side validation and end-to-end testing. Without it, the plugin still runs its own structural checks, but can't catch platform-specific issues like slug conflicts or version requirements.
+- **[shellcheck](https://github.com/koalaman/shellcheck)** — enables lint-quality checks on lifecycle scripts. Without it, script validation is less thorough.
+
 ## Setup
 
 ### 1. Add the marketplace

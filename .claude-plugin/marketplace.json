@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "track",
-      "source": "track",
+      "source": "./track",
       "description": "Instruqt track generation workflow — research, plan, generate, and review tracks",
       "version": "0.1.0"
     }
