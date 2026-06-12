@@ -47,7 +47,7 @@ Agent(
 
   Track plan: ${TRACK_OUTPUT_DIR}/plan.md
   Config: ${TRACK_OUTPUT_DIR}/config.yml
-  Data directory: ${INSTRUQT_DATA_DIR}
+  Data directory: ${CLAUDE_PLUGIN_DATA}
 
   Scoring guide: ${CLAUDE_PLUGIN_ROOT}/references/evaluation/scoring-guide.md
   Checklist rubrics: ${CLAUDE_PLUGIN_ROOT}/references/evaluation/checklist/generate/

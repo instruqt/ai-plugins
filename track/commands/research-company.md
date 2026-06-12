@@ -17,13 +17,13 @@ Arguments use labeled `key:value` syntax:
 
 ## Prerequisites
 
-Resolve `INSTRUQT_DATA_DIR`: if set use it, otherwise default to `~/.instruqt`.
+`CLAUDE_PLUGIN_DATA` is provided by the plugin framework.
 
 ## Context Directory
 
-Company context is stored in `${INSTRUQT_DATA_DIR}/companies/<company-slug>/`:
+Company context is stored in `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/`:
 ```
-${INSTRUQT_DATA_DIR}/companies/
+${CLAUDE_PLUGIN_DATA}/companies/
   <company-slug>/
     company.md
     style-guide.md
@@ -36,9 +36,9 @@ ${INSTRUQT_DATA_DIR}/companies/
         <path>.md
 ```
 
-Product context is stored separately in `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/`:
+Product context is stored separately in `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/`:
 ```
-${INSTRUQT_DATA_DIR}/products/
+${CLAUDE_PLUGIN_DATA}/products/
   <product-slug>/
     product.md
     manifest.json
@@ -50,7 +50,7 @@ ${INSTRUQT_DATA_DIR}/products/
 
 ### Step 1: Check Existing Context
 
-1. List `${INSTRUQT_DATA_DIR}/` to see existing company directories
+1. List `${CLAUDE_PLUGIN_DATA}/` to see existing company directories
 2. If a company slug is provided or can be inferred, check existing files
 3. Summarize what's already documented
 
@@ -62,7 +62,7 @@ ${INSTRUQT_DATA_DIR}/products/
 - Proceed to scraping
 
 **If `slug:` only (no `url:`):**
-- Load existing context from `${INSTRUQT_DATA_DIR}/companies/<company-slug>/`
+- Load existing context from `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/`
 - If the user provided instructions (prefixed message), apply those edits to the existing files (e.g. update company.md, style-guide.md, or products)
 - Do not scrape — work only with existing local content
 - After editing, skip to Step 14 (Present Results)
@@ -75,18 +75,24 @@ ${INSTRUQT_DATA_DIR}/products/
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/scrape-website/SKILL.md` and follow its mode detection. Use the loaded skill for all scraping operations in this command.
 
-1. Create output directory: `mkdir -p ${INSTRUQT_DATA_DIR}/<company-slug>`
+Set the scraper output directory before running any scraper commands:
+```bash
+export SCRAPER_DATA_DIR="${CLAUDE_PLUGIN_DATA}/companies"
+```
+
+1. Create output directory: `mkdir -p ${CLAUDE_PLUGIN_DATA}/companies/<company-slug>`
 2. Discover the sitemap for the primary domain (company-slug: `<slug>`, url: `<url>`)
-3. Get sitemap entries to review the available URLs
-4. Filter URLs — keep company info, products, docs, blog. Exclude careers, legal, login, duplicates.
+3. Check if llms.txt was detected (the skill's sitemap list will show this). If so, skip steps 4-5 and go directly to step 6 — the scraper uses llms.txt automatically.
+4. Get sitemap entries to review the available URLs
+5. Filter URLs — keep company info, products, docs, blog. Exclude careers, legal, login, duplicates.
    Select matching patterns and deselect excluded patterns using the skill's sitemap update operation.
-5. Scrape all selected URLs from the sitemap
+6. Scrape all selected URLs from the sitemap
 
 ### Step 4: Discover and Scrape External Domains
 
 After scraping, aggregate external links for the primary domain using the skill.
 
-Read `${INSTRUQT_DATA_DIR}/companies/<company-slug>/manifest.json` and check the `external_urls` section. Domains are listed with frequency counts.
+Read `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/manifest.json` and check the `external_urls` section. Domains are listed with frequency counts.
 
 1. Drop domains with fewer than 3 mentions (already filtered by threshold)
 2. Any domain with 20+ mentions: ALWAYS ask the user about it — high frequency means it could be an acquisition or owned product, regardless of how it looks
@@ -124,7 +130,7 @@ Do NOT scrape the doc pages — just store the sitemaps. The challenge implement
 
 ### Step 6: Update Manifest
 
-Update `${INSTRUQT_DATA_DIR}/companies/<company-slug>/manifest.json` to add domain relationships and documentation references. The manifest already has `domains` and `external_urls` from the scraping steps. Add:
+Update `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/manifest.json` to add domain relationships and documentation references. The manifest already has `domains` and `external_urls` from the scraping steps. Add:
 
 1. Set `relationship` for each domain in `domains` (e.g., "primary", "acquired product", "documentation site")
 2. Add a `documentation` section for doc domains referencing their sitemaps:
@@ -162,18 +168,19 @@ All content is now local and cleaned. The agent does analysis only — no web fe
 
 ```
 Agent(
+  subagent_type="track:company-researcher",
   prompt="Read ${CLAUDE_PLUGIN_ROOT}/agents/company-researcher.md for your full instructions.
 
   Company slug: <slug>
   Primary domain: <primary-domain>
-  Website content: ${INSTRUQT_DATA_DIR}/companies/<slug>/website/
+  Website content: ${CLAUDE_PLUGIN_DATA}/companies/<slug>/website/
 
   The website directory contains content from these domains:
   - <primary-domain> — THIS IS THE COMPANY. Focus company.md and style-guide.md on this domain's content.
   - <additional-domain-1> — <relationship, e.g. 'acquired product' or 'product documentation site'>
   - (list all additional domains that were scraped, or omit this section if only the primary domain was scraped)
 
-  Start by reading the manifest: ${INSTRUQT_DATA_DIR}/companies/<slug>/manifest.json
+  Start by reading the manifest: ${CLAUDE_PLUGIN_DATA}/companies/<slug>/manifest.json
   Then read the per-domain index.json files to find relevant pages by title.
   Focus your company and style analysis on files under website/<primary-domain>/.
 
@@ -197,9 +204,9 @@ The agent returns three sections in its response: `=== COMPANY.MD ===`, `=== STY
 Parse the company-researcher's response and write the files:
 
 1. Extract content between `=== COMPANY.MD ===` and `=== STYLE-GUIDE.MD ===`
-2. Write to `${INSTRUQT_DATA_DIR}/companies/<company-slug>/company.md`
+2. Write to `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/company.md`
 3. Extract content between `=== STYLE-GUIDE.MD ===` and `=== PRODUCTS ===`
-4. Write to `${INSTRUQT_DATA_DIR}/companies/<company-slug>/style-guide.md`
+4. Write to `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/style-guide.md`
 5. Parse the products list from the `=== PRODUCTS ===` section
 
 ### Step 10: Let User Select Products to Research
@@ -246,6 +253,7 @@ For each confirmed product, spawn a `product-researcher` agent **in parallel**:
 
 ```
 Agent(
+  subagent_type="track:product-researcher",
   prompt="Read ${CLAUDE_PLUGIN_ROOT}/agents/product-researcher.md for your full instructions.
 
   Company slug: <slug>
@@ -273,8 +281,8 @@ Each agent returns the full product document as its response.
 
 For each product-researcher response:
 
-1. Create directory: `mkdir -p ${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>`
-2. Write the response content to `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/product.md`
+1. Create directory: `mkdir -p ${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>`
+2. Write the response content to `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/product.md`
 
 ### Step 14: Present Results
 
@@ -290,8 +298,8 @@ After all files are written:
 - The command owns all scraping — agents only analyze local files
 - Always check existing context first to avoid duplicate work
 - Product researchers run in parallel for speed
-- Store company context in `${INSTRUQT_DATA_DIR}/companies/<company-slug>/` (global across tracks)
-- Store product context in `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/` (independent of company)
+- Store company context in `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/` (global across tracks)
+- Store product context in `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/` (independent of company)
 - Add a "Products" section to `company.md` referencing product slugs so the association is documented
 - If a company-slug argument is provided, use it as-is; otherwise derive: lowercase, replace spaces with hyphens
 - The manifest is the source of truth for mapping content to products — keep it updated

@@ -14,16 +14,16 @@ Maintain a live task list for this command. Start substantive work by recording 
 ## Prerequisites
 
 Resolve paths:
-- `INSTRUQT_DATA_DIR`: if set use it, otherwise default to `~/.instruqt`
-- `TRACK_OUTPUT_DIR`: if set use it, otherwise default to `~/.instruqt/tracks`
+- `CLAUDE_PLUGIN_DATA`: provided by the plugin framework
+- `TRACK_OUTPUT_DIR`: if set use it, otherwise default to the current working directory
 
 A challenge plan (`${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`) must exist — run `/track:plan-challenge` first if missing.
 
 ## Context Sources
 
 Context is loaded dynamically via `skills/load-context/SKILL.md`:
-- **Company context**: `${INSTRUQT_DATA_DIR}/companies/<company-slug>/` (if available)
-- **Product context**: `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/` (if available)
+- **Company context**: `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/` (if available)
+- **Product context**: `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/` (if available)
 - **Track plan**: `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
 - **Challenge plan**: `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
 - **Prior generated content**: `${TRACK_OUTPUT_DIR}/<NN-slug>/assignment.md`, lifecycle scripts
@@ -85,7 +85,7 @@ Agent(
   - ${CLAUDE_PLUGIN_ROOT}/skills/validate-track/SKILL.md
 
   References directory: ${CLAUDE_PLUGIN_ROOT}/references/
-  Data directory: ${INSTRUQT_DATA_DIR}
+  Data directory: ${CLAUDE_PLUGIN_DATA}
 
   Generate all resources with validation and scoring loops."
 )

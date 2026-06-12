@@ -18,7 +18,7 @@ Do not create your own top-level task list. The invoking command owns the user-f
    - Anti-patterns (terms and patterns they avoid)
 4. Extract 2-3 example excerpts that exemplify their style
 5. Read template: `templates/style-guide.md`
-6. Write output: `${INSTRUQT_DATA_DIR}/companies/<company-slug>/style-guide.md`
+6. Write output: `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/style-guide.md`
 
 ## Best Practices Reference
 

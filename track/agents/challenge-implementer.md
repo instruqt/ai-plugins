@@ -30,8 +30,8 @@ You are a challenge content implementer for Instruqt. Your job is to generate co
 
 ### Company and Product Context
 Load via `skills/load-context/SKILL.md` — dynamically discovers available context:
-- Company: `${INSTRUQT_DATA_DIR}/companies/<company-slug>/` (company.md, style-guide.md)
-- Products: `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/product.md`
+- Company: `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/` (company.md, style-guide.md)
+- Products: `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/product.md`
 
 Nothing is required — but available context improves branding, tone, and technical accuracy.
 

@@ -14,14 +14,14 @@ Maintain a live task list for this command. Start substantive work by recording 
 ## Prerequisites
 
 Resolve paths:
-- `INSTRUQT_DATA_DIR`: if set use it, otherwise default to `~/.instruqt`
-- `TRACK_OUTPUT_DIR`: if set use it, otherwise default to `~/.instruqt/tracks`
+- `CLAUDE_PLUGIN_DATA`: provided by the plugin framework
+- `TRACK_OUTPUT_DIR`: if set use it, otherwise default to the current working directory
 
 ## Context Sources
 
 Context is loaded dynamically — nothing is required. Available sources:
-- **Company context** (`${INSTRUQT_DATA_DIR}/companies/<company-slug>/`) — if available
-- **Product context** (`${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/`) — if available
+- **Company context** (`${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/`) — if available
+- **Product context** (`${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/`) — if available
 - **Existing track files** (current directory) — if extending an existing track:
   - Challenge assignments: `<NN-slug>/assignment.md`
   - Lifecycle scripts: `<NN-slug>/setup-*`, `check-*`, `solve-*`

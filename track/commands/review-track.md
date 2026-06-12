@@ -39,7 +39,7 @@ Agent(
   prompt="Read ${CLAUDE_PLUGIN_ROOT}/agents/review-generated.md for your full instructions.
 
   Review the track in the current directory.
-  Data directory: ${INSTRUQT_DATA_DIR}
+  Data directory: ${CLAUDE_PLUGIN_DATA}
 
   Scoring guide: ${CLAUDE_PLUGIN_ROOT}/references/evaluation/scoring-guide.md
   Checklist rubrics: ${CLAUDE_PLUGIN_ROOT}/references/evaluation/checklist/generate/

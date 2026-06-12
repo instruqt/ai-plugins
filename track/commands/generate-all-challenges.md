@@ -14,8 +14,8 @@ Maintain a live task list for this command. Start substantive work by recording 
 ## Paths
 
 Resolve paths:
-- `INSTRUQT_DATA_DIR`: if set use it, otherwise default to `~/.instruqt`
-- `TRACK_OUTPUT_DIR`: if set use it, otherwise default to `~/.instruqt/tracks`
+- `CLAUDE_PLUGIN_DATA`: provided by the plugin framework
+- `TRACK_OUTPUT_DIR`: if set use it, otherwise default to the current working directory
 
 ## Workflow
 
@@ -23,7 +23,7 @@ Resolve paths:
 
 Scan the filesystem to determine what exists:
 
-**Research context** (`${INSTRUQT_DATA_DIR}/companies/<company-slug>/`):
+**Research context** (`${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/`):
 - [ ] `company.md` exists
 - [ ] `style-guide.md` exists
 - [ ] `products/` has at least one file
