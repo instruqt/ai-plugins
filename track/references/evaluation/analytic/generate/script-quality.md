@@ -57,7 +57,7 @@ Score 1: Scripts fail on re-run, pre-configure what learners should do themselve
 Evaluate whether scripts follow shell scripting best practices: correct shebangs, appropriate set flags per script type (no pipefail for check scripts, `set -euxo pipefail` for setup/solve/cleanup), quoted variables, error handling, and consistent style.
 
 Score 4: Consistent headers with correct set flags per script type. Quoted variables, proper error handling, uniform style throughout.
-Score 5: Correct headers for shell type and script type. All variables quoted, stderr suppressed in check scripts, explicit exit codes, clean and consistent style across all scripts.
+Score 5: Correct headers for shell type and script type. All variables quoted, stderr suppressed in check scripts, explicit exit codes, clean and consistent style across all scripts. Check scripts have no unconditional `exit 0` masking. Setup retry loops have finite iteration counts. Tool installations are version-pinned with checksum verification for direct downloads. Long-running services use systemd unit files instead of nohup.
 Score 3: Proper headers with basic error handling, minor quoting or style issues.
 Score 2: Shebangs present but incorrect set flags for the script type. Several unquoted variables.
 Score 1: No shebangs, no set flags, unquoted variables, mixed indentation and style.

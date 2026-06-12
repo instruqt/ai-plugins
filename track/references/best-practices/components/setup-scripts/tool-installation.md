@@ -100,15 +100,46 @@ Bad -- using latest tag for container images:
 docker pull nginx:latest  # Unpredictable content
 ```
 
+### Checksum verification for direct downloads
+
+When downloading binaries directly, verify the SHA256 checksum to detect corrupted or tampered downloads:
+
+```bash
+HELM_VERSION="v3.14.0"
+curl -fsSL -o /tmp/helm.tar.gz \
+  "https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz"
+echo "a2ef76850709c2beb3c763c171ab9a0a94e4be4159fc2da8b3e2c9bb0e12b5c6  /tmp/helm.tar.gz" \
+  | sha256sum -c -
+tar xzf /tmp/helm.tar.gz -C /tmp && mv /tmp/linux-amd64/helm /usr/local/bin/
+```
+
+### dpkg lock handling
+
+On Ubuntu-based images, `unattended-upgrades` runs automatically after boot and holds the dpkg lock. Setup scripts that run `apt-get install` immediately after the bootstrap sentinel may fail with "Unable to acquire the dpkg frontend lock." Wait for the lock to release before running apt:
+
+```bash
+# Disable unattended-upgrades and wait for any running instance to finish
+systemctl disable --now unattended-upgrades 2>/dev/null || true
+while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do
+  echo "Waiting for dpkg lock..."
+  sleep 5
+done
+
+apt-get update -qq
+apt-get install -y -qq jq=1.6-2.1ubuntu3
+```
+
 ## What to Watch For
 
 - Version pinning is critical for reproducibility; unpinned installs cause intermittent track failures when upstream releases change
+- **Never use `/releases/latest/download/` URLs** -- these change when upstream cuts a new release, silently breaking the track
 - Use `curl -fsSL` (fail silently on HTTP errors, show errors, follow redirects) not bare `curl`
 - GPG keys should go in `/usr/share/keyrings/` not the deprecated `apt-key add` method
 - Architecture detection (`dpkg --print-architecture` or `uname -m`) is needed for multi-arch images
 - When backgrounding installations, each `wait $PID` must be checked for failure, especially under `set -e`
 - Pre-pulling Docker images (`docker pull image:tag &`) in track-level setup avoids pull delays during challenges
 - If a tool is needed on every track, consider baking it into a custom sandbox image instead of installing at runtime
+- On Ubuntu-based images, the dpkg lock may be held by `unattended-upgrades` at boot -- always wait for the lock before running `apt-get`
 - When installing from vendor manifests or install scripts hosted on GitHub, pin to a specific git commit SHA rather than a branch name — branches can be force-pushed, tags can be moved, but commit SHAs are immutable:
 
 ```bash

@@ -1,3 +1,6 @@
+---
+severity: blocking
+---
 # Missing Equals in DEBIAN_FRONTEND
 
 Writing `export DEBIAN_FRONTEND noninteractive` with a missing `=` sign.

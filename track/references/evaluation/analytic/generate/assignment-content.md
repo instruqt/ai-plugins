@@ -17,7 +17,7 @@ Score 1: Bare list of commands or steps with no explanation. The learner has no 
 Evaluate whether assignments follow a consistent structure: introduction (context setting), concept explanation, hands-on steps, and reinforcement (summary or connection to next challenge).
 
 Score 4: Consistent structure across assignments. Each section serves its purpose -- introduction sets context, steps are clearly delineated, and the assignment closes with a summary or bridge to the next challenge.
-Score 5: Clear, consistent, and well-paced structure throughout. Each section flows naturally into the next. Transitions are smooth and the reader never feels lost.
+Score 5: Clear, consistent, and well-paced structure throughout. Each section flows naturally into the next. Transitions are smooth and the reader never feels lost. Challenges end with an activity summary pattern (recap of what was accomplished + preview of the next challenge).
 Score 3: A recognizable flow exists but transitions between sections are abrupt. The structure is present but not polished.
 Score 2: Some structure is present but assignments are missing an introduction or skip explanation before steps.
 Score 1: No discernible structure. Content jumps randomly between concepts, commands, and explanations.

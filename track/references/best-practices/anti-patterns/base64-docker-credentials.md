@@ -1,3 +1,6 @@
+---
+severity: blocking
+---
 # Base64 Docker Credentials
 
 Hardcoding dockerconfigjson credentials as base64 strings in setup scripts.

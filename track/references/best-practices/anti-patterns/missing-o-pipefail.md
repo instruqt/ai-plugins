@@ -1,3 +1,6 @@
+---
+severity: blocking
+---
 # Missing -o in Pipefail
 
 Writing `set -eux pipefail` instead of `set -euxo pipefail` (missing `-o` before `pipefail`).

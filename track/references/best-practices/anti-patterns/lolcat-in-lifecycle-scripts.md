@@ -1,3 +1,6 @@
+---
+severity: advisory
+---
 # Lolcat in Lifecycle Scripts
 
 Using `lolcat`, `cowsay`, `ponysay`, or similar tools that produce ANSI escape sequences in lifecycle script output.

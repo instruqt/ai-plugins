@@ -96,6 +96,34 @@ Bad -- inconsistent heading levels:
 ## Step 3: And This
 ```
 
+### Activity summary pattern
+
+End each challenge with a brief recap of what was accomplished and a preview of the next challenge. This reinforces learning and creates a natural transition:
+
+```markdown
+---
+
+## Activity Summary
+
+In this challenge you deployed a sample application to the cluster and verified it was running with two replicas.
+
+Click **Check** to continue to the next challenge, where you will configure monitoring for the application.
+```
+
+### Result feedback pattern
+
+After every command the learner runs, include explicit feedback on what success looks like. This helps learners self-verify before hitting Check:
+
+```markdown
+Run the install command:
+
+```bash,run
+helm install prometheus oci://ghcr.io/prometheus/charts/prometheus --version 25.8.0
+```
+
+**Result:** Check the output for a "STATUS: deployed" line. If the install succeeded, you will see the release summary with all resource names listed.
+```
+
 ## What to Watch For
 
 - Every challenge should end with an explicit completion marker telling the learner what triggers the check
@@ -104,3 +132,4 @@ Bad -- inconsistent heading levels:
 - Context or pre-work sections (background info, credential display) should be visually separated from the action steps
 - If the challenge has more than 5-6 steps, consider whether it should be split into multiple challenges
 - The completion marker should tell the learner what state to be in, not just say "click Check" -- this helps them self-diagnose before running the check script
+- An activity summary at the end of each challenge reinforces what was learned and reduces the "what just happened?" feeling between challenges

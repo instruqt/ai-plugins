@@ -29,3 +29,17 @@ Verify that scripts are placed in the correct challenge directories: each challe
 
 - **1 (pass):** All scripts are in their respective challenge directories.
 - **0 (fail):** One or more scripts are in the wrong directory or in a shared/root location.
+
+## Setup retry loops have bounded iteration counts
+
+Verify that polling/retry loops in setup scripts have a maximum attempt count and do not loop indefinitely.
+
+- **1 (pass):** All retry/polling loops have a finite iteration count or maximum attempt guard.
+- **0 (fail):** One or more retry loops use unbounded `until`/`while` loops with no maximum attempts.
+
+## Solve scripts use set -euxo pipefail
+
+Verify that solve scripts include `set -euxo pipefail` to fail fast on errors.
+
+- **1 (pass):** All solve scripts include `set -euxo pipefail`.
+- **0 (fail):** One or more solve scripts are missing `set -euxo pipefail`.

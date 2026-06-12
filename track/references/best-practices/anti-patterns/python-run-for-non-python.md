@@ -1,3 +1,6 @@
+---
+severity: advisory
+---
 # Python Run for Non-Python Content
 
 Using the ` ```python,run ` code fence for content that is not Python code.

@@ -1,3 +1,6 @@
+---
+severity: blocking
+---
 # Bake Credentials Into Images
 
 Embedding long-lived credentials (API keys, private keys, tokens) into custom VM or container images.

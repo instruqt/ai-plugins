@@ -1,3 +1,6 @@
+---
+severity: blocking
+---
 # Sleep Instead of Polling
 
 Using `sleep N` as a substitute for infrastructure readiness polling.

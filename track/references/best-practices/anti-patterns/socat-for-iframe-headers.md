@@ -1,3 +1,6 @@
+---
+severity: advisory
+---
 # Socat for Iframe Headers
 
 Using `socat` to fix iframe-blocking HTTP headers like `X-Frame-Options` or `Content-Security-Policy`.

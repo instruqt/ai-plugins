@@ -1,3 +1,6 @@
+---
+severity: advisory
+---
 # Commented-Out Set Flags
 
 Writing `#set -euxo pipefail` instead of `set -euxo pipefail` (missing space after `#` or intended as active code).

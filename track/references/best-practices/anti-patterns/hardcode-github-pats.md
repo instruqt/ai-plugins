@@ -1,3 +1,6 @@
+---
+severity: blocking
+---
 # Hardcode GitHub PATs
 
 Hardcoding GitHub Personal Access Tokens or repository tokens directly in lifecycle scripts.

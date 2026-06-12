@@ -1,3 +1,6 @@
+---
+severity: blocking
+---
 # Invalid GCP Role
 
 Using `roles/writer` as a GCP IAM role -- it does not exist.

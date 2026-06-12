@@ -1,3 +1,6 @@
+---
+severity: advisory
+---
 # Vestigial Nginx-Zones Container
 
 Copying the nginx-zones container from Consul HVD (HashiCorp Validated Designs) configurations into new tracks.

@@ -1,3 +1,6 @@
+---
+severity: blocking
+---
 # Skip Cleanup for Costed Resources
 
 Omitting cleanup scripts for tracks that provision external or costed resources.

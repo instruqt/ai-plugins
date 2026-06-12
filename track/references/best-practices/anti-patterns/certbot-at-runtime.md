@@ -1,3 +1,6 @@
+---
+severity: advisory
+---
 # Certbot at Runtime
 
 Running `certbot certonly` at runtime when `provision_ssl_certificate: true` is available.

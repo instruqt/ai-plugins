@@ -86,6 +86,39 @@ until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]; do
 done
 ```
 
+Good -- agent port readiness after sentinel (needed before `agent variable set/get`):
+
+```bash
+#!/bin/bash
+until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]; do
+  sleep 1
+done
+
+# Agent port must be ready before using agent variable commands
+while ! ss -tuln | grep -q ':15779'; do
+  sleep 1
+done
+
+agent variable set SETUP_COMPLETE "true"
+```
+
+Good -- cross-host SSH readiness for multi-VM tracks:
+
+```bash
+#!/bin/bash
+# On the primary host, wait for a remote host to finish bootstrapping
+until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]; do
+  sleep 1
+done
+
+ssh -qo StrictHostKeyChecking=accept-new \
+    -o ConnectionAttempts=180 \
+    remote-host \
+    "until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]; do sleep 1; done"
+
+# Both hosts are now ready
+```
+
 ## What to Watch For
 
 - The sentinel wait must be the very first logic in every track-level setup script
@@ -93,3 +126,4 @@ done
 - Using the wrong sentinel file for the host type (e.g., host-bootstrap-completed on a cloud-client)
 - Using `sleep N` as a substitute for polling the sentinel file
 - Using `test -f` instead of a loop -- the file may not exist yet when the script starts
+- Using `agent variable set` before the agent on port 15779 is ready -- the command silently fails or errors

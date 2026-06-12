@@ -160,6 +160,14 @@
 - `best-practices/anti-patterns/sleep-instead-of-polling.md` — Sleep instead of polling: using sleep N as a substitute for infrastructure readiness polling
 - `best-practices/anti-patterns/socat-for-iframe-headers.md` — Socat for iframe headers: using socat to fix X-Frame-Options or Content-Security-Policy headers
 - `best-practices/anti-patterns/vestigial-nginx-zones.md` — Vestigial nginx-zones container: copying unused nginx-zones from Consul HVD configs into new tracks
+- `best-practices/anti-patterns/exit-zero-masking-check-failures.md` — Exit 0 masking check failures: unconditional exit 0 at end of check scripts silently passing learners
+- `best-practices/anti-patterns/pipe-to-shell-without-verification.md` — Pipe to shell without verification: curl | bash installs with no checksum or version pinning
+- `best-practices/anti-patterns/unpinned-latest-release-downloads.md` — Unpinned latest release downloads: /releases/latest/download/ URLs that break on upstream releases
+- `best-practices/anti-patterns/chmod-777-on-files.md` — chmod 777 on files: world-writable permissions teaching bad security habits
+- `best-practices/anti-patterns/or-true-swallowing-check-errors.md` — Or-true swallowing check errors: || true on validation commands preventing check failures
+- `best-practices/anti-patterns/credentials-in-scripts.md` — Credentials in scripts: passwords, tokens, API keys embedded in lifecycle scripts or dotfiles
+- `best-practices/anti-patterns/personal-container-images.md` — Personal container images: images from personal registries that break when maintainer leaves
+- `best-practices/anti-patterns/snap-install-for-standard-tools.md` — Snap install for standard tools: snap overhead when direct binary downloads or apt are available
 
 ## Infrastructure
 
