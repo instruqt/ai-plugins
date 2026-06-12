@@ -64,12 +64,14 @@ Score each criterion 1-5. Return ONLY valid JSON:
   "criteria": {
     "<criterion-name>": {
       "score": <1-5>,
+      "criterion_text": "<exact criterion text from the rubric — copy verbatim>",
       "finding": "<specific actionable finding or null>"
     }
   }
 }
 
 - Score 4 is the production baseline
+- "criterion_text" must be copied word-for-word from the rubric — do not paraphrase
 - "finding" is null when score >= 4
 - "finding" must reference specific sections of the plan
 ```
@@ -103,12 +105,14 @@ Give one overall score 1-5. Return ONLY valid JSON:
   "criteria": {
     "overall": {
       "score": <1-5>,
+      "criterion_text": "<exact rubric text for the quality level — copy verbatim>",
       "finding": "<rationale and specific issues, or null>"
     }
   }
 }
 
 - Score 4 is the production baseline
+- "criterion_text" must be copied word-for-word from the rubric — do not paraphrase
 - "finding" must explain what drags the score down and reference specific sections
 ```
 
@@ -122,7 +126,7 @@ Gather all JSON responses from scorer agents.
 
 ```json
 [
-  {"rubric": "<name>", "scope": "<challenge-slug>", "criterion": "<name>", "score": <N>, "finding": "<text or null>"}
+  {"rubric": "<name>", "scope": "<challenge-slug>", "criterion": "<name>", "criterion_text": "<verbatim rubric text>", "score": <N>, "finding": "<text or null>"}
 ]
 ```
 
@@ -168,10 +172,10 @@ After presenting the scorecard, write scoring results to `${TRACK_OUTPUT_DIR}/.i
   "challenge_plans": {
     "<NN-challenge-slug>": {
       "analytic": {
-        "<rubric>": { "<criterion>": { "score": 4, "finding": null } }
+        "<rubric>": { "<criterion>": { "score": 4, "criterion_text": "...", "finding": null } }
       },
       "holistic": {
-        "challenge-coherence": { "overall": { "score": 4, "finding": null } }
+        "challenge-coherence": { "overall": { "score": 4, "criterion_text": "...", "finding": null } }
       },
       "status": "passed | needs_work"
     }

@@ -158,12 +158,14 @@ Check each item. Return ONLY valid JSON:
   "criteria": {
     "<item>": {
       "score": <0 or 1>,
+      "criterion_text": "<exact item text from the checklist — copy verbatim>",
       "finding": "<what is wrong, or null if passing>"
     }
   }
 }
 
 - 1 = passes, 0 = fails
+- "criterion_text" must be copied word-for-word from the checklist — do not paraphrase
 - "finding" must be specific enough to fix immediately
 ```
 
@@ -220,12 +222,14 @@ Score each criterion 1-5. Return ONLY valid JSON:
   "criteria": {
     "<criterion-name>": {
       "score": <1-5>,
+      "criterion_text": "<exact criterion text from the rubric — copy verbatim>",
       "finding": "<specific actionable finding or null>"
     }
   }
 }
 
 - Score 4 is the production baseline
+- "criterion_text" must be copied word-for-word from the rubric — do not paraphrase
 - "finding" is null when score >= 4
 - "finding" must reference specific locations (file paths, section names)
 ```
@@ -301,12 +305,14 @@ Give one overall score 1-5. Return ONLY valid JSON:
   "criteria": {
     "overall": {
       "score": <1-5>,
+      "criterion_text": "<exact rubric text for the quality level — copy verbatim>",
       "finding": "<rationale and specific issues, or null>"
     }
   }
 }
 
 - Score 4 is the production baseline
+- "criterion_text" must be copied word-for-word from the rubric — do not paraphrase
 - "finding" must explain what drags the score down and reference specific sections
 ```
 
@@ -323,13 +329,13 @@ Write all scoring results to `${TRACK_OUTPUT_DIR}/.instruqt/scores.json`. If the
   "challenges": {
     "<NN-challenge-slug>": {
       "checklist": {
-        "<rubric>": { "<item>": { "score": 0, "finding": "..." } }
+        "<rubric>": { "<item>": { "score": 0, "criterion_text": "...", "finding": "..." } }
       },
       "analytic": {
-        "<rubric>": { "<criterion>": { "score": 4, "finding": null } }
+        "<rubric>": { "<criterion>": { "score": 4, "criterion_text": "...", "finding": null } }
       },
       "holistic": {
-        "<rubric>": { "overall": { "score": 4, "finding": null } }
+        "<rubric>": { "overall": { "score": 4, "criterion_text": "...", "finding": null } }
       },
       "status": "passed | escalated"
     }
