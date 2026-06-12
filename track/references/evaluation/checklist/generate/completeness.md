@@ -30,9 +30,9 @@ Verify that track.yml exists, parses as valid YAML, and contains required track 
 - **1 (pass):** track.yml is present with valid metadata.
 - **0 (fail):** track.yml is missing, fails to parse, or is missing required metadata fields.
 
-## Challenge directories match track.yml
+## Challenge directories match assignment.md slugs
 
-Verify that every challenge listed in track.yml has a corresponding directory, and every challenge directory is referenced in track.yml.
+Verify that every challenge directory follows the NN-slug naming convention and that each directory contains an assignment.md whose `slug:` field matches the directory name (minus the number prefix).
 
-- **1 (pass):** Perfect 1:1 mapping between track.yml challenge entries and challenge directories.
-- **0 (fail):** One or more challenges are orphaned (directory exists but not in track.yml) or missing (in track.yml but no directory).
+- **1 (pass):** Every challenge directory uses NN-slug format, and the slug in each assignment.md matches its directory name.
+- **0 (fail):** One or more challenge directories are missing the numbered prefix, or the slug in assignment.md does not match the directory name.

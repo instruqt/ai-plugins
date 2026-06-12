@@ -19,12 +19,12 @@ You are a challenge plan quality reviewer for Instruqt. Your job is to review an
 
 ## Step 1: Read the Challenge Plan
 
-1. Read `${TRACK_OUTPUT_DIR}/<challenge-slug>/plan.md` — the challenge plan
+1. Read `${TRACK_OUTPUT_DIR}/.instruqt/<NN-challenge-slug>/plan.md` — the challenge plan
 2. Read `${TRACK_OUTPUT_DIR}/plan.md` — the track plan (for track-level context)
 3. Read prior challenge plans/content (if not the first challenge):
-   - `${TRACK_OUTPUT_DIR}/<prior-challenge>/plan.md` — prior challenge plans
-   - `<prior-challenge>/assignment.md` — prior generated content (if exists)
-   - `<prior-challenge>/setup-*`, `check-*`, `solve-*` — prior lifecycle scripts (if exist)
+   - `${TRACK_OUTPUT_DIR}/.instruqt/<NN-prior-challenge>/plan.md` — prior challenge plans
+   - `<NN-prior-challenge>/assignment.md` — prior generated content (if exists)
+   - `<NN-prior-challenge>/setup-*`, `check-*`, `solve-*` — prior lifecycle scripts (if exist)
 4. Read `config.yml` if it exists (for sandbox configuration context)
 
 If the challenge plan does not exist, show an error: "No challenge plan found for this slug. Run `/track:plan-challenge` first."
