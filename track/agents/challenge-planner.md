@@ -21,8 +21,8 @@ If this is NOT the first challenge:
 
 1. Read `${TRACK_OUTPUT_DIR}/<previous-challenge>/plan.md` — what was *planned* for prior challenges
 2. Read the *actually generated* content for prior challenges:
-   - `<challenge-slug>/assignment.md` — assignment content
-   - `<challenge-slug>/setup-*`, `check-*`, `solve-*` — lifecycle scripts
+   - `<NN-challenge-slug>/assignment.md` — assignment content
+   - `<NN-challenge-slug>/setup-*`, `check-*`, `solve-*` — lifecycle scripts
 3. Extract from prior challenges:
    - **Prerequisites met**: what was taught and practiced
    - **Sandbox state**: what hosts, tools, and files exist

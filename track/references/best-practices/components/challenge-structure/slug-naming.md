@@ -26,7 +26,7 @@ Challenge slugs serve as both URL identifiers and human-readable labels in the c
 
 ### Slug Must Match Directory Name
 
-The slug in track.yml must match the directory name (minus the number prefix):
+The slug in the challenge's assignment.md frontmatter must match the directory name (minus the number prefix):
 
 ```
 Directory: 03-configure-vault-transit/
@@ -36,13 +36,13 @@ Slug:      configure-vault-transit
 Good -- slugs form a readable table of contents:
 
 ```yaml
-challenges:
-- slug: explore-the-cluster
-- slug: deploy-sample-application
-- slug: configure-ingress
-- slug: enable-monitoring
-- slug: scale-under-load
-- slug: troubleshoot-connectivity
+# Slug fields from each challenge's assignment.md frontmatter, shown together for comparison:
+- slug: explore-the-cluster           # 01-explore-the-cluster/assignment.md
+- slug: deploy-sample-application     # 02-deploy-sample-application/assignment.md
+- slug: configure-ingress             # 03-configure-ingress/assignment.md
+- slug: enable-monitoring             # 04-enable-monitoring/assignment.md
+- slug: scale-under-load              # 05-scale-under-load/assignment.md
+- slug: troubleshoot-connectivity     # 06-troubleshoot-connectivity/assignment.md
 ```
 
 Reading just the slugs tells you: explore, deploy, configure networking, add monitoring, scale, then debug.
@@ -50,18 +50,18 @@ Reading just the slugs tells you: explore, deploy, configure networking, add mon
 Good -- consistent verb-noun pattern:
 
 ```yaml
-challenges:
-- slug: create-vault-server
-- slug: configure-auth-method
-- slug: write-secrets
-- slug: create-acl-policy
-- slug: enable-audit-logging
+# Per-challenge assignment.md slugs, shown together for comparison:
+- slug: create-vault-server           # 01-create-vault-server/assignment.md
+- slug: configure-auth-method         # 02-configure-auth-method/assignment.md
+- slug: write-secrets                 # 03-write-secrets/assignment.md
+- slug: create-acl-policy             # 04-create-acl-policy/assignment.md
+- slug: enable-audit-logging          # 05-enable-audit-logging/assignment.md
 ```
 
 Bad -- meaningless slugs:
 
 ```yaml
-challenges:
+# Per-challenge assignment.md slugs:
 - slug: challenge-1
 - slug: challenge-2
 - slug: challenge-3
@@ -70,7 +70,7 @@ challenges:
 Bad -- inconsistent style:
 
 ```yaml
-challenges:
+# Per-challenge assignment.md slugs:
 - slug: create-vault-server       # verb-noun
 - slug: auth_methods              # underscore, no verb
 - slug: SecretManagement          # camelCase
@@ -80,14 +80,14 @@ challenges:
 Bad -- overly long:
 
 ```yaml
-challenges:
+# Per-challenge assignment.md slug:
 - slug: configure-the-hashicorp-vault-transit-secrets-engine-for-encryption-as-a-service
 ```
 
 Bad -- overly abbreviated:
 
 ```yaml
-challenges:
+# Per-challenge assignment.md slug:
 - slug: cfg-vlt-trs
 ```
 
@@ -107,11 +107,12 @@ Starting slugs with an action verb creates consistency and signals what the lear
 
 ### Slug vs Title
 
-The slug is a URL-safe identifier, not the display title. The title (in track.yml) can be more expressive:
+The slug is a URL-safe identifier, not the display title. The title (in the challenge's assignment.md frontmatter) can be more expressive:
 
 ```yaml
-- slug: configure-ingress           # URL-safe, concise
-  title: Configure Ingress Routing  # Human-readable, can use capitals
+# In a challenge's assignment.md frontmatter:
+slug: configure-ingress           # URL-safe, concise
+title: Configure Ingress Routing  # Human-readable, can use capitals
 ```
 
 Do not try to make the slug identical to the title -- they serve different purposes.

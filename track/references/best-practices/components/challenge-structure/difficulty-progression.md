@@ -14,7 +14,7 @@ Evaluates whether the difficulty field on each challenge accurately reflects the
 
 ## Guidance
 
-The `difficulty` field on each challenge accepts four values: `basic`, `intermediate`, `advanced`, or an empty string (unset). This field is visible to learners and helps them gauge effort before starting each challenge.
+The `difficulty` field in each challenge's `assignment.md` frontmatter accepts four values: `basic`, `intermediate`, `advanced`, or an empty string (unset). This field is visible to learners and helps them gauge effort before starting each challenge.
 
 ### What Each Level Means
 
@@ -30,61 +30,62 @@ A well-structured track starts with basic challenges and ramps to intermediate o
 Good -- progressive difficulty:
 
 ```yaml
-challenges:
-- slug: explore-environment
+# Per-challenge assignment.md difficulty fields, shown together for comparison:
+- slug: explore-environment       # 01-explore-environment/assignment.md
   difficulty: basic
-- slug: configure-service
+- slug: configure-service         # 02-configure-service/assignment.md
   difficulty: basic
-- slug: deploy-application
+- slug: deploy-application        # 03-deploy-application/assignment.md
   difficulty: intermediate
-- slug: add-monitoring
+- slug: add-monitoring            # 04-add-monitoring/assignment.md
   difficulty: intermediate
-- slug: troubleshoot-issue
+- slug: troubleshoot-issue        # 05-troubleshoot-issue/assignment.md
   difficulty: advanced
 ```
 
 Good -- short track with gentle ramp:
 
 ```yaml
-challenges:
-- slug: introduction
+# Per-challenge assignment.md difficulty fields:
+- slug: introduction              # 01-introduction/assignment.md
   difficulty: basic
-- slug: hands-on-exercise
+- slug: hands-on-exercise         # 02-hands-on-exercise/assignment.md
   difficulty: intermediate
-- slug: apply-independently
+- slug: apply-independently       # 03-apply-independently/assignment.md
   difficulty: intermediate
 ```
 
 Bad -- all the same difficulty:
 
 ```yaml
-challenges:
-- slug: explore-environment
+# Per-challenge assignment.md difficulty fields:
+- slug: explore-environment       # 01-explore-environment/assignment.md
   difficulty: intermediate
-- slug: configure-service
+- slug: configure-service         # 02-configure-service/assignment.md
   difficulty: intermediate
-- slug: deploy-application
+- slug: deploy-application        # 03-deploy-application/assignment.md
   difficulty: intermediate
-- slug: troubleshoot-issue
+- slug: troubleshoot-issue        # 04-troubleshoot-issue/assignment.md
   difficulty: intermediate
 ```
 
 Bad -- difficulty decreases:
 
 ```yaml
-challenges:
-- slug: complex-setup
+# Per-challenge assignment.md difficulty fields:
+- slug: complex-setup             # 01-complex-setup/assignment.md
   difficulty: advanced
-- slug: simple-verification
-  difficulty: basic       # Easier than the previous -- ramp goes backward
+- slug: simple-verification       # 02-simple-verification/assignment.md
+  difficulty: basic               # Easier than the previous -- ramp goes backward
 ```
 
 Bad -- labels do not match content:
 
 ```yaml
+# 03-deploy-application/assignment.md
 # Challenge has step-by-step instructions with every command provided
-- slug: deploy-application
-  difficulty: advanced    # Should be basic or intermediate
+slug: deploy-application
+difficulty: advanced              # Should be basic or intermediate
 ```
 
 ### Matching Labels to Content Signals

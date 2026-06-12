@@ -38,7 +38,7 @@ Nothing is required — but available context improves branding, tone, and techn
 ### Track and Challenge Context
 ```
 ${TRACK_OUTPUT_DIR}/.instruqt/plan.md                     # Track plan
-${TRACK_OUTPUT_DIR}/.instruqt/<challenge-slug>/plan.md    # Challenge plan (from /plan-challenge)
+${TRACK_OUTPUT_DIR}/.instruqt/<NN-challenge-slug>/plan.md # Challenge plan (from /plan-challenge)
 ```
 
 ### Prior Challenge Content
@@ -77,11 +77,11 @@ Load ALL of these before generating — do not skip any:
 ## Step 2: Check Existing Files
 
 Check for existing files that would be overwritten:
-- `<challenge-slug>/assignment.md` — assignment content
-- `<challenge-slug>/setup-*` — setup scripts
-- `<challenge-slug>/check-*` — check scripts
-- `<challenge-slug>/solve-*` — solve scripts
-- `<challenge-slug>/cleanup-*` — cleanup scripts
+- `<NN-challenge-slug>/assignment.md` — assignment content
+- `<NN-challenge-slug>/setup-*` — setup scripts
+- `<NN-challenge-slug>/check-*` — check scripts
+- `<NN-challenge-slug>/solve-*` — solve scripts
+- `<NN-challenge-slug>/cleanup-*` — cleanup scripts
 
 Handle based on mode (overwrite/skip/abort) passed by the command.
 
@@ -89,12 +89,12 @@ Handle based on mode (overwrite/skip/abort) passed by the command.
 
 1. Read `skills/write-content/SKILL.md` — loads relevant knowledge-base guides
 2. Read `skills/match-writing-style/SKILL.md` — apply customer voice
-3. Write `<challenge-slug>/assignment.md`
+3. Write `<NN-challenge-slug>/assignment.md`
 
 ## Step 4: Generate Lifecycle Scripts
 
 1. Read `skills/write-scripts/SKILL.md` for script patterns
-2. Generate scripts in `<challenge-slug>/`:
+2. Generate scripts in `<NN-challenge-slug>/`:
    - `setup-<host>` — setup scripts, prepare the environment before the challenge starts
    - `check-<host>` — check scripts, validate the learner completed the challenge
    - `solve-<host>` — solve scripts, auto-complete the challenge (used for testing)
@@ -351,7 +351,7 @@ This file is the checkpoint for resume. `generate-all-challenges` reads it to de
 Challenge "[Title]" generation complete.
 
 Files created:
-- <challenge-slug>/
+- <NN-challenge-slug>/
   - assignment.md
   - [list lifecycle scripts: setup-*, check-*, solve-*, cleanup-*]
 - config.yml updates:
