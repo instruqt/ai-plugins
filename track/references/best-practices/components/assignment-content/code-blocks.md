@@ -69,6 +69,28 @@ kubectl get pods
 ```
 ~~~
 
+### Expected output blocks
+
+After every command the learner runs, show the expected output so they can self-verify before clicking Check. Use `text,nocopy` for expected output:
+
+~~~markdown
+Run the version check:
+
+```bash,run
+vault version
+```
+
+Expected output:
+
+```text,nocopy
+Vault v1.15.4 (9d6e6e7a7d...)
+```
+~~~
+
+### Modifier coverage
+
+Every executable command in the assignment should have either `,run` or `,copy`. Blocks without a modifier require manual copy-paste, which slows learners down and introduces typo risk. Reserve bare fenced blocks (no modifier) only for display-only content where `nocopy` would also be appropriate.
+
 ## What to Watch For
 
 - Blocks containing angle-bracket placeholders (`<DOCUMENT_ID>`, `<YOUR_NAME>`) must never use the run modifier
@@ -76,3 +98,4 @@ kubectl get pods
 - Output blocks should use nocopy to prevent learners from accidentally pasting terminal output
 - Every code block needs a language tag -- even plain text should use `text`
 - The run modifier only works with terminal-compatible language tags (bash, sh, powershell)
+- Code blocks without any modifier force manual copy-paste -- every command the learner needs to execute should have `,run` or `,copy`

@@ -157,6 +157,23 @@ notes:
       # (this belongs in the assignment, not in notes)
 ```
 
+### Progressive exercise notes
+
+For tracks with sequential exercises that build on each other, use notes that reference what was learned and preview what's changing. This creates continuity between challenges:
+
+```yaml
+notes:
+- type: text
+  contents: |-
+    # Moving to Structured Activities
+
+    In the previous exercise, tool calls ran inline and the system
+    couldn't track their progress.
+
+    In this exercise you'll fix that by extracting tool calls into
+    structured activities with proper error handling.
+```
+
 ## What to Watch For
 
 - Notes are a loading screen, not a lesson -- keep them short and motivating, not instructional
@@ -167,3 +184,4 @@ notes:
 - Do not duplicate assignment content in notes -- notes set context, assignments give instructions
 - Video slides should be short (30-60 seconds); learners cannot pause them during loading
 - Image URLs must be publicly accessible HTTPS URLs; broken images show as empty slides
+- Progressive notes that reference prior challenges create continuity -- use them for multi-exercise tracks where each challenge builds on the last

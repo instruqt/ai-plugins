@@ -22,3 +22,4 @@ Consistent naming across the track for YAML configuration, scripts, assignments,
 
 - Inconsistent naming conventions across challenge directories, scripts, and configuration files
 - Missing cleanup scripts when challenges create temporary state that should be cleaned up
+- **Image filenames** should use `kebab-case-descriptive-name.png` -- avoid spaces, `@` characters, and screenshot tool output names like `CleanShot 2024-05-21 at 14.34.52@2x.png` or `Feb-04-2026_at_11.36.08-image.png`, which break URLs and are impossible to reference reliably in markdown

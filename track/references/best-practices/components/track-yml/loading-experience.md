@@ -20,12 +20,22 @@ The loading experience spans three mechanisms that must work together: `enhanced
 
 ### enhanced_loading
 
-This field controls whether the Instruqt platform shows the enhanced loading overlay. It exists at two levels:
+This field controls the initial loading experience. It exists at two levels:
 
-**Track level** -- set to `false` in `track.yml` to allow notes slides to display as the loading overlay:
+- **`enhanced_loading: true`** -- drops the learner directly into the lab immediately. The sandbox provisions in the background while the learner can already see and interact with the environment. No notes slides are shown.
+- **`enhanced_loading: false`** (or omitted) -- shows a loading screen during sandbox provisioning. Notes slides display during this time, keeping the learner engaged while they wait.
+
+**Best practice:** Use `enhanced_loading: true` when sandbox startup is fast (< 15 seconds). Use `enhanced_loading: false` with notes slides when startup is slow -- the notes keep the learner engaged during the wait.
+
+**Track level** -- set in `track.yml`:
 
 ```yaml
-# track.yml (top level)
+# track.yml -- fast startup, drop learner straight into the lab
+enhanced_loading: true
+```
+
+```yaml
+# track.yml -- slow startup, show notes slides while provisioning
 enhanced_loading: false
 ```
 
@@ -34,14 +44,12 @@ enhanced_loading: false
 - **First challenge**: leave as `null` (omit the field) or set to `false`. The first challenge uses the track-level setting.
 - **Subsequent challenges**: set to `false` to allow notes slides to display during challenge transitions.
 
-Good -- track.yml sets enhanced_loading at track level:
+Good -- slow-starting track uses notes to engage learners during provisioning:
 
 ```yaml
 # track.yml
 enhanced_loading: false
 ```
-
-Good -- first challenge assignment.md frontmatter with notes (inherits track-level enhanced_loading):
 
 ```yaml
 # 01-intro/assignment.md (YAML frontmatter)
@@ -61,6 +69,13 @@ tabs:
   hostname: workstation
 ```
 
+Good -- fast-starting track drops learner straight into the lab:
+
+```yaml
+# track.yml
+enhanced_loading: true
+```
+
 Good -- subsequent challenge assignment.md frontmatter with explicit enhanced_loading override:
 
 ```yaml
@@ -78,13 +93,6 @@ tabs:
 - title: Terminal
   type: terminal
   hostname: workstation
-```
-
-Bad -- enhanced_loading: true at track level blocks notes slides:
-
-```yaml
-# track.yml -- notes slides will not display during loading
-enhanced_loading: true
 ```
 
 ### Notes Slides
@@ -140,15 +148,15 @@ tabs:
   hostname: workstation
 ```
 
-Bad -- notes defined in assignment.md but track-level enhanced_loading not set to false:
+Bad -- notes defined but enhanced_loading: true skips them (learner goes straight to lab, never sees notes):
 
 ```yaml
-# track.yml -- this blocks notes slides from displaying
+# track.yml -- immediate lab start, notes will not display
 enhanced_loading: true
 ```
 
 ```yaml
-# 01-intro/assignment.md (YAML frontmatter) -- these notes will not display
+# 01-intro/assignment.md (YAML frontmatter) -- these notes are wasted
 slug: intro
 type: challenge
 title: Introduction
@@ -198,6 +206,18 @@ lab_config:
   - "Almost ready..."
 ```
 
+Good -- branded custom loading messages that match the track's topic:
+
+```yaml
+# track.yml
+lab_config:
+  loadingMessages:
+  - "Spinning up your Kubernetes cluster..."
+  - "Deploying sample microservices..."
+  - "Configuring monitoring stack..."
+  - "Your environment is almost ready!"
+```
+
 Bad -- both active and conflicting:
 
 ```yaml
@@ -218,10 +238,11 @@ notes:
 
 ## What to Watch For
 
-- Track-level enhanced_loading not set to false in track.yml when notes slides are defined in assignment.md -- notes will not display
-- Notes slides defined in assignment.md but never seen because enhanced_loading overrides them
+- `enhanced_loading: true` means the learner goes straight into the lab -- notes slides will not display. Only use `true` when startup is fast enough that notes aren't needed.
+- Notes slides defined in assignment.md but `enhanced_loading: true` at track level -- the notes are wasted, learners never see them
 - loadingMessages and notes slides both active, creating a cluttered loading screen
-- First challenge missing a notes slide -- the initial provisioning (longest wait) has no content
+- First challenge missing a notes slide when startup is slow -- the initial provisioning (longest wait) has no content
 - Image URLs in notes that are broken or slow to load -- test them before publishing
 - Notes text that is too long -- learners skim during loading, keep it concise and scannable
 - Subsequent challenges missing enhanced_loading: false in their assignment.md when they have notes -- notes will not display on transition
+- Custom `loadingMessages` arrays are a lightweight alternative to notes when you want branded messages without the overhead of splash images

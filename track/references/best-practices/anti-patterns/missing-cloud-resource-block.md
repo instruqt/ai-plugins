@@ -1,3 +1,6 @@
+---
+severity: blocking
+---
 # Missing Cloud Resource Block
 
 Referencing cloud environment variables like `INSTRUQT_AWS_ACCOUNT_*`, `INSTRUQT_AZURE_SUBSCRIPTION_*`, or `INSTRUQT_GCP_PROJECT_*` without a matching resource block in config.yml.

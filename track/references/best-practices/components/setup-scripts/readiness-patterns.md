@@ -118,6 +118,50 @@ done
 retry_with_jitter 12 5 "curl -sf https://api.example.com/health"
 ```
 
+### Finite retry loops
+
+Every polling loop MUST have a bounded iteration count. Nearly all real-world tracks use infinite `until` loops that hang forever when a service fails to start, eventually hitting Instruqt's 55-minute timeout with no diagnostic output. Always use a finite `for` loop or a counter inside an `until` loop:
+
+```bash
+# Bounded retry with timeout message
+for i in $(seq 1 30); do
+  if curl -sf http://localhost:8080/health; then
+    echo "Service ready"
+    break
+  fi
+  if [ "$i" -eq 30 ]; then
+    echo "ERROR: Service failed to start within 60 seconds"
+    exit 1
+  fi
+  sleep 2
+done
+```
+
+Bad -- infinite loop that hangs forever if the service never starts:
+
+```bash
+until curl -s http://localhost:8080/health; do
+  sleep 2
+done
+```
+
+### Agent port readiness
+
+When a setup script uses `agent variable set` or `agent variable get`, the Instruqt agent on port 15779 must be ready first. Add a port readiness check after the bootstrap sentinel:
+
+```bash
+until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]; do
+  sleep 1
+done
+
+# Wait for agent to accept connections before using agent variable
+while ! ss -tuln | grep -q ':15779'; do
+  sleep 1
+done
+
+agent variable set MY_VAR "my-value"
+```
+
 ## What to Watch For
 
 - **Fixed `sleep 30` before a service check** — brittle; fails when the service takes 31 seconds or wastes 29 seconds when it starts in 1 second
@@ -126,3 +170,4 @@ retry_with_jitter 12 5 "curl -sf https://api.example.com/health"
 - **Same backoff strategy for local and remote** — exponential backoff for localhost adds unnecessary delay; flat retry for cloud APIs risks rate limiting
 - **No jitter in multi-host setups** — three VMs all polling a leader at exactly 2s, 4s, 8s intervals create synchronized load spikes
 - **Polling with `set -e` and no error suppression** — the first failed curl exits the script; use `|| true` inside retry logic or wrap in a function
+- **Infinite retry loops** — a missing max attempt count means a failed service hangs the entire track until Instruqt kills the script at the 55-minute timeout

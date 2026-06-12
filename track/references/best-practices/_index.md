@@ -135,3 +135,11 @@
 - `anti-patterns/sleep-instead-of-polling.md` — Sleep instead of polling: using sleep N as a substitute for infrastructure readiness polling
 - `anti-patterns/socat-for-iframe-headers.md` — Socat for iframe headers: using socat to fix X-Frame-Options or Content-Security-Policy headers
 - `anti-patterns/vestigial-nginx-zones.md` — Vestigial nginx-zones container: copying unused nginx-zones from Consul HVD configs into new tracks
+- `anti-patterns/exit-zero-masking-check-failures.md` — Exit 0 masking check failures: unconditional exit 0 at end of check scripts silently passing learners
+- `anti-patterns/pipe-to-shell-without-verification.md` — Pipe to shell without verification: curl | bash installs with no checksum or version pinning
+- `anti-patterns/unpinned-latest-release-downloads.md` — Unpinned latest release downloads: /releases/latest/download/ URLs that break on upstream releases
+- `anti-patterns/chmod-777-on-files.md` — chmod 777 on files: world-writable permissions teaching bad security habits
+- `anti-patterns/or-true-swallowing-check-errors.md` — Or-true swallowing check errors: || true on validation commands preventing check failures
+- `anti-patterns/credentials-in-scripts.md` — Credentials in scripts: passwords, tokens, API keys embedded in lifecycle scripts or dotfiles
+- `anti-patterns/personal-container-images.md` — Personal container images: images from personal registries that break when maintainer leaves
+- `anti-patterns/snap-install-for-standard-tools.md` — Snap install for standard tools: snap overhead when direct binary downloads or apt are available

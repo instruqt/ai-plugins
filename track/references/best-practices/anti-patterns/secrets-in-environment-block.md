@@ -1,3 +1,6 @@
+---
+severity: blocking
+---
 # Secrets in Environment Block
 
 Placing SSH keys, API keys, or other secret material in config.yml's `environment:` block.
