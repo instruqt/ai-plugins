@@ -68,7 +68,7 @@ scraper sitemap get <company-slug> <domain> [--filter <pattern>] [--selected] [-
 Selects or deselects entries by URL patterns. Patterns support `*` wildcard.
 
 ```bash
-scraper sitemap update <company-slug> <domain> --select "*/docs/*" "*/blog/*"
+scraper sitemap update <company-slug> <domain> --select "*/docs/*" --select "*/blog/*"
 scraper sitemap update <company-slug> <domain> --deselect "*/careers/*"
 ```
 
@@ -114,6 +114,16 @@ scraper validate <company-slug>
 scraper sitemap discover <company-slug> https://<domain>
 ```
 
+### Check for llms.txt
+
+After discovering the sitemap, check if llms.txt was detected:
+
+```bash
+scraper sitemap list <company-slug>
+```
+
+If the sitemap has `llmsTxt` or `llmsFullTxt` set, skip Steps 2-3 (review and select) and go directly to Step 4 (scrape). The scraper uses llms.txt automatically and ignores URL selection.
+
 ### Step 2: Review entries
 
 ```bash
@@ -126,8 +136,8 @@ Keep: homepage, about, products, solutions, features, pricing, blog, docs, use c
 Exclude: careers, legal, privacy, login, signup, press releases, media kits, localized variants.
 
 ```bash
-scraper sitemap update <company-slug> <domain> --select "*/docs/*" "*/blog/*" "*/products/*"
-scraper sitemap update <company-slug> <domain> --deselect "*/careers/*" "*/legal/*"
+scraper sitemap update <company-slug> <domain> --select "*/docs/*" --select "*/blog/*" --select "*/products/*"
+scraper sitemap update <company-slug> <domain> --deselect "*/careers/*" --deselect "*/legal/*"
 ```
 
 ### Step 4: Scrape selected URLs

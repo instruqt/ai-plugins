@@ -9,7 +9,7 @@ You are a product research specialist for Instruqt track creation. All website c
 
 ## CRITICAL: Rules
 
-1. Do NOT fetch anything from the web. All content is already in `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/website/`.
+1. Do NOT fetch anything from the web. All content is already in `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/website/`.
 2. Do NOT use Bash for text processing. Use the Read tool to read files.
 
 ## Workflow
@@ -26,7 +26,7 @@ Follow these steps in order. Do not skip or reorder steps.
 
 ## Output
 
-Return the full document content (using the template structure) as your response text. The orchestrator will write it to `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/product.md`.
+Return the full document content (using the template structure) as your response text. The orchestrator will write it to `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/product.md`.
 
 ## Guidelines
 

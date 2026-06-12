@@ -9,12 +9,12 @@ Do not create your own top-level task list. The invoking command owns the user-f
 ## Paths
 
 These should already be resolved by the calling command:
-- `${INSTRUQT_DATA_DIR}`: base data directory. Default `~/.instruqt`
+- `${CLAUDE_PLUGIN_DATA}`: base data directory (provided by the plugin framework)
 - `${TRACK_OUTPUT_DIR}`: local track state directory (absolute path)
 
 Derived paths:
-- Companies: `${INSTRUQT_DATA_DIR}/companies/<company-slug>/`
-- Products: `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/`
+- Companies: `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/`
+- Products: `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/`
 
 ## Two-phase approach: discover, then read
 
@@ -22,8 +22,8 @@ Derived paths:
 
 Check which context exists without reading file contents. This is just `ls` / file-exists checks:
 
-- **Company**: does `${INSTRUQT_DATA_DIR}/companies/<company-slug>/company.md` exist? `style-guide.md`?
-- **Products**: which product directories exist under `${INSTRUQT_DATA_DIR}/products/<company-slug>/`?
+- **Company**: does `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/company.md` exist? `style-guide.md`?
+- **Products**: which product directories exist under `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/`?
 - **Track**: does `track.yml`, `config.yml`, `.instruqt/plan.md` exist in the working directory?
 - **Challenge plans**: which `.instruqt/<NN-slug>/plan.md` files exist?
 - **Generated content**: which `<NN-slug>/assignment.md` files exist?
@@ -66,7 +66,7 @@ Only load product files that the track actually covers:
 
 ## Context locations
 
-### Company context (`${INSTRUQT_DATA_DIR}/companies/<company-slug>/`)
+### Company context (`${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/`)
 
 ```
 company.md            # Company info (mission, values, industry)
@@ -75,7 +75,7 @@ manifest.json         # Scraping metadata, domain relationships
 website/              # Scraped website content
 ```
 
-### Product context (`${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/`)
+### Product context (`${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/`)
 
 ```
 product.md            # Product details (features, architecture, use cases)

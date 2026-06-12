@@ -13,7 +13,7 @@ Maintain a live task list for this command. Start substantive work by recording 
 ## Prerequisites
 
 Resolve paths:
-- `TRACK_OUTPUT_DIR`: if set use it, otherwise default to `~/.instruqt/tracks`
+- `TRACK_OUTPUT_DIR`: if set use it, otherwise default to the current working directory
 
 At minimum, the track must have:
 1. `track.yml`

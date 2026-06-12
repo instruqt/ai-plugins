@@ -12,7 +12,7 @@ Context should be loaded via `load-context` skill (if available).
 
 ## Workflow
 
-1. Read `${INSTRUQT_DATA_DIR}/companies/<company-slug>/style-guide.md` (if available)
+1. Read `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/style-guide.md` (if available)
 2. Before writing any content, internalize: tone, voice characteristics, terminology preferences
 3. Write content draft
 4. Review against style guide: does it sound like their docs?

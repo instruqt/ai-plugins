@@ -17,7 +17,7 @@ Run the `scrape-website` skill if product docs haven't been scraped yet.
 3. Extract: overview, key features, use cases, technical details, integrations, documentation links
 4. Focus on track-creation-specific info: setup requirements, core workflows, concepts to teach
 5. Read template: `templates/product.md`
-6. Write output: `${INSTRUQT_DATA_DIR}/products/<company-slug>/<product-slug>/product.md`
+6. Write output: `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/product.md`
 
 ## Product Slug
 
