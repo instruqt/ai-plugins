@@ -38,9 +38,10 @@ Using the track plan's roadmap for this challenge, create a detailed plan:
 1. **Assignment outline**: title, what the assignment covers, which concepts are new vs. prior knowledge
 2. **Tab layout**: which tabs the challenge needs (terminal, editor, browser, etc.)
 3. **Steps**: what to check, what the learner should accomplish at each step
-4. **Lifecycle scripts**: setup scripts (pre-challenge environment prep), check scripts (validate learner actions), solve scripts (auto-complete for skip), cleanup scripts (if needed)
-5. **Sandbox changes**: new hosts, ports, resources to add to `config.yml` (or none if reusing)
-6. **Concepts**: which need full scaffolding (new) vs. confident reference (taught before)
+4. **Prerequisites manifest**: every capability the assignment depends on, stated as a *functional* outcome (CLI authenticated, runtime can import the SDK, service answering — not just "installed"), each with a Verify command that proves function and a "Provided by" pointer (track setup / a prior challenge slug / this challenge). Derive these from the assignment steps and the prior-state analysis; capabilities already provided by track setup or earlier challenges are referenced, not re-declared. This manifest drives the setup verification tail and is checked by validation.
+5. **Lifecycle scripts**: setup scripts (pre-challenge environment prep, ending with a verification tail that asserts each "Provided by: this challenge" prerequisite), check scripts (validate learner actions), solve scripts (auto-complete for skip), cleanup scripts (if needed)
+6. **Sandbox changes**: new hosts, ports, resources to add to `config.yml` (or none if reusing)
+7. **Concepts**: which need full scaffolding (new) vs. confident reference (taught before)
 
 ### Step 4: Score the Plan
 

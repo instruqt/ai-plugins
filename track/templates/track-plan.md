@@ -29,6 +29,15 @@
 - **Estimated startup time:** [e.g., ~30s for containers, ~2min for VMs]
 - **Special requirements:** [e.g., nested virtualization, GPU, specific machine type]
 
+## Track-Level Prerequisites
+
+Capabilities installed **once** by track-level setup (`track_scripts/setup-<host>`) and relied on across challenges — base CLIs, runtimes, authenticated cloud access, shared services. State each as a functional outcome with the command that proves it works; challenge plans reference these as "Provided by: track setup" rather than re-declaring them. Track setup must verify each one (see the verification tail in `write-scripts`).
+
+| Capability (functional after track setup) | Host | Verify command |
+|--------------------------------------------|------|----------------|
+| [e.g. gcloud authenticated as the workshop service account] | [host] | [e.g. `gcloud auth list --filter=status:ACTIVE --format='value(account)'`] |
+| [e.g. kubectl reaches the cluster on context "workshop"] | [host] | [e.g. `kubectl cluster-info`] |
+
 ## Track Configuration
 
 - **Duration:** [e.g., ~45 min]

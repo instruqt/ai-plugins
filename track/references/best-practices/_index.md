@@ -58,6 +58,7 @@
 - `components/setup-scripts/environment-configuration.md` — Environment configuration: shell env vars, prompt customization, working directory, completions
 - `components/setup-scripts/hot-start-awareness.md` — Hot start awareness: handling hot-start and invite-link scenarios with empty user-specific env vars
 - `components/setup-scripts/tool-installation.md` — Tool installation: version pinning, platform detection, speed optimization in setup scripts
+- `components/setup-scripts/prerequisite-verification.md` — Prerequisite verification: install ≠ functional, the setup verification tail, per-tool-class functional checks (authenticated CLIs, runtime+package imports, reachable services)
 - `components/setup-scripts/readiness-patterns.md` — Readiness patterns: retry helpers, exponential backoff, jitter, HTTP status polling, dual probes for service availability
 - `components/setup-scripts/debugging-patterns.md` — Debugging patterns: PS4 line-numbered xtrace, ERR traps, banner-echo for log navigation in sandboxes
 

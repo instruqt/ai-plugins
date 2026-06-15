@@ -34,6 +34,17 @@ Do not create your own top-level task list. The invoking command owns the user-f
 - Run `shellcheck` on all scripts (if available)
 - Scripts must be executable (`chmod +x`)
 
+### Prerequisite Verification
+
+Cross-check each challenge's Prerequisites manifest against its setup scripts. The manifest lives in the challenge plan (`${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`, "Prerequisites" section); track-level capabilities live in the track plan (`${TRACK_OUTPUT_DIR}/.instruqt/plan.md`, "Track-Level Prerequisites").
+
+- Every manifest row marked "Provided by: this challenge" (or the track plan rows, for `track_scripts/setup-<host>`) must have a matching assertion in the corresponding setup script — the Verify command, or an equivalent functional check, appears in the script's verification tail.
+- Flag manifest rows whose Verify command only tests existence (`command -v`, `which`, `[ -f ... ]`) when the capability implies function (auth, a reachable backend, an importable package) — these pass at setup but fail at runtime.
+- Flag setup scripts that install a tool/runtime/package or start a service but have no verification tail at all.
+- Do not require re-verification of capabilities marked "Provided by: track setup" or a prior challenge slug in per-challenge setup — those are verified where they are provided.
+
+If a challenge plan has no Prerequisites section, note it as a warning (the plan predates this convention) rather than blocking.
+
 ### Structural Checks
 
 - Challenge directories follow `NN-slug` numbering convention
@@ -79,7 +90,8 @@ If shellcheck is not installed, note it as a warning but do not block generation
 1. Read config.yml and check platform limits
 2. Validate YAML syntax across all files
 3. Check all scripts for convention compliance
-4. Verify structural integrity (directories, files, naming)
-5. Run shellcheck on all bash scripts (if available)
-6. Run `instruqt track validate` (if CLI available)
-7. Report findings grouped by severity (blocking → warning → suggestion)
+4. Cross-check Prerequisites manifests against setup verification tails
+5. Verify structural integrity (directories, files, naming)
+6. Run shellcheck on all bash scripts (if available)
+7. Run `instruqt track validate` (if CLI available)
+8. Report findings grouped by severity (blocking → warning → suggestion)

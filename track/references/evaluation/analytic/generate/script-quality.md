@@ -44,13 +44,13 @@ Score 1: Scripts fail on second run due to duplicate operations or conflicts.
 
 ## Setup script safety
 
-Evaluate whether setup scripts are idempotent, avoid pre-configuring learning objectives, and handle bootstrap sentinel waits for dependent services.
+Evaluate whether setup scripts are idempotent, avoid pre-configuring learning objectives, handle bootstrap sentinel waits for dependent services, and verify that the prerequisites the challenge depends on are actually functional (not merely installed).
 
-Score 4: Idempotent, cleanly separate infrastructure setup from learning objectives. Bootstrap sentinel waits ensure dependent services are ready before the challenge starts.
-Score 5: Fully idempotent, strict separation between setup and learning. Bootstrap waits have explicit timeouts. Hot-start edge cases are handled -- setup adapts if prior challenge state exists.
-Score 3: Idempotent, mostly avoid pre-configuring learning objectives, but missing service readiness waits that could cause race conditions.
-Score 2: Partially idempotent with some overlap between setup and learning objectives.
-Score 1: Scripts fail on re-run, pre-configure what learners should do themselves, and have no service readiness checks.
+Score 4: Idempotent, cleanly separate infrastructure setup from learning objectives. Bootstrap sentinel waits ensure dependent services are ready before the challenge starts. A verification tail asserts each capability the script provides is functional — authenticated CLIs, importable packages under the interpreter the learner uses, services accepting connections — failing loudly with a located message if any is not.
+Score 5: Fully idempotent, strict separation between setup and learning. Bootstrap waits have explicit timeouts. Hot-start edge cases are handled -- setup adapts if prior challenge state exists. Verification tail covers every capability with functional (not existence-only) checks, uses bounded readiness polling for capabilities that take time to become true, and maps cleanly to the challenge plan's Prerequisites manifest.
+Score 3: Idempotent, mostly avoid pre-configuring learning objectives, but missing service readiness waits that could cause race conditions, or the verification tail checks only existence (`command -v`) where function is required (auth, reachable backend, importable package).
+Score 2: Partially idempotent with some overlap between setup and learning objectives, or no verification tail — tools/runtimes/packages are installed but never confirmed usable.
+Score 1: Scripts fail on re-run, pre-configure what learners should do themselves, and have no service readiness checks or prerequisite verification.
 
 ## Shell best practices
 
