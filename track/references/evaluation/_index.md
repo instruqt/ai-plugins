@@ -1,6 +1,7 @@
 # Evaluation Reference Index
 
 - `scoring-guide.md` — Scoring guide: global score-level definitions (0-1 checklist, 1-5 analytic/holistic), calibration for scorer agents
+- `scorer-prompts.md` — Scorer prompt templates (analytic/holistic/checklist) the orchestrating agent uses to build each scorer sub-agent's prompt
 
 ## Analytic: Plan Track
 

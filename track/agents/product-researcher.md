@@ -33,4 +33,3 @@ Return the full document content (using the template structure) as your response
 - Product slug: lowercase, replace spaces with hyphens (e.g., "Acme CLI" -> "acme-cli")
 - Be actionable: details should be specific enough to inform track content
 - Include documentation links for the implementer to reference
-- Return the FULL document content — the orchestrator will write the file

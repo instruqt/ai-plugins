@@ -59,44 +59,11 @@ Dispatch 5 analytic scorer agents in parallel using the Agent tool. Each scorer 
 | time-estimates | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-challenge/time-estimates.md` | Challenge plan draft |
 | infrastructure-changes | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-challenge/infrastructure-changes.md` | Challenge plan draft + `config.yml` (if exists) |
 
-**Analytic scorer prompt template:**
-
-```
-You are a track quality scorer. Score the provided content against the rubric.
-
-## Scoring Guide
-[contents of ${CLAUDE_PLUGIN_ROOT}/references/evaluation/scoring-guide.md]
-
-## Rubric
-[contents of the rubric file]
-
-## Content to Score
-[the challenge plan draft and any additional context from the content slice]
-
-## Instructions
-Score each criterion 1-5. Return ONLY valid JSON:
-
-{
-  "rubric": "<name>",
-  "scope": "<challenge-slug>",
-  "criteria": {
-    "<criterion-name>": {
-      "score": <1-5>,
-      "criterion_text": "<exact criterion text from the rubric — copy verbatim>",
-      "finding": "<specific actionable finding or null>"
-    }
-  }
-}
-
-- Score 4 is the production baseline
-- "criterion_text" must be copied word-for-word from the rubric — do not paraphrase
-- "finding" is null when score >= 4
-- "finding" must reference specific sections of the plan
-```
+Build each scorer's prompt from the **analytic** template in `${CLAUDE_PLUGIN_ROOT}/references/evaluation/scorer-prompts.md` (scope: `<challenge-slug>`; content slice: the challenge plan draft plus any additional context from the table).
 
 **Collect and fix (analytic):**
 
-1. Collect JSON results from all 6 scorer agents
+1. Collect JSON results from all 5 scorer agents
 2. If ALL criteria across all rubrics score >= 4: analytic scoring passed, proceed to Step 4b
 3. If any criterion < 4:
    a. Fix the plan based on findings
@@ -112,39 +79,7 @@ After analytic scoring passes (or caps out), dispatch the holistic scorer.
 |--------|-------|--------|---------------|
 | challenge-coherence | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/holistic/plan-challenge/challenge-coherence.md` | Challenge plan draft + `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` + prior challenge content |
 
-**Holistic scorer prompt template:**
-
-```
-You are a track quality reviewer. Evaluate the provided content as a whole.
-
-## Scoring Guide
-[contents of ${CLAUDE_PLUGIN_ROOT}/references/evaluation/scoring-guide.md]
-
-## Rubric
-[contents of the rubric file]
-
-## Content to Review
-[the complete challenge plan draft, track plan, and prior challenge context]
-
-## Instructions
-Give one overall score 1-5. Return ONLY valid JSON:
-
-{
-  "rubric": "challenge-coherence",
-  "scope": "<challenge-slug>",
-  "criteria": {
-    "overall": {
-      "score": <1-5>,
-      "criterion_text": "<exact rubric text for the quality level — copy verbatim>",
-      "finding": "<rationale and specific issues, or null>"
-    }
-  }
-}
-
-- Score 4 is the production baseline
-- "criterion_text" must be copied word-for-word from the rubric — do not paraphrase
-- "finding" must explain what drags the score down and reference specific sections
-```
+Build the scorer's prompt from the **holistic** template in `${CLAUDE_PLUGIN_ROOT}/references/evaluation/scorer-prompts.md` (rubric: `challenge-coherence`; scope: `<challenge-slug>`; content slice: the complete challenge plan draft, track plan, and prior challenge context).
 
 **Collect and fix (holistic):**
 

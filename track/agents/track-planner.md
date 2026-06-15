@@ -79,42 +79,9 @@ Dispatch 4 analytic scorer agents in parallel using the Agent tool. Each scorer 
 | learning-objectives | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-track/learning-objectives.md` | Track plan draft |
 | audience-definition | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-track/audience-definition.md` | Track plan draft |
 | challenge-roadmap | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-track/challenge-roadmap.md` | Track plan draft |
-| sandbox-requirements | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-track/sandbox-requirements.md` | Track plan draft |
+| infrastructure-design | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/analytic/plan-track/infrastructure-design.md` | Track plan draft |
 
-**Analytic scorer prompt template:**
-
-```
-You are a track quality scorer. Score the provided content against the rubric.
-
-## Scoring Guide
-[contents of ${CLAUDE_PLUGIN_ROOT}/references/evaluation/scoring-guide.md]
-
-## Rubric
-[contents of the rubric file]
-
-## Content to Score
-[the complete track plan draft]
-
-## Instructions
-Score each criterion 1-5. Return ONLY valid JSON:
-
-{
-  "rubric": "<name>",
-  "scope": "track plan",
-  "criteria": {
-    "<criterion-name>": {
-      "score": <1-5>,
-      "criterion_text": "<exact criterion text from the rubric — copy verbatim>",
-      "finding": "<specific actionable finding or null>"
-    }
-  }
-}
-
-- Score 4 is the production baseline
-- "criterion_text" must be copied word-for-word from the rubric — do not paraphrase
-- "finding" is null when score >= 4
-- "finding" must reference specific sections of the plan
-```
+Build each scorer's prompt from the **analytic** template in `${CLAUDE_PLUGIN_ROOT}/references/evaluation/scorer-prompts.md` (scope: `track plan`; content slice: the complete track plan draft).
 
 **Collect and fix (analytic):**
 
@@ -134,39 +101,7 @@ After analytic scoring passes (or caps out), dispatch the holistic scorer.
 |--------|-------|--------|---------------|
 | learning-coherence | Sonnet | `${CLAUDE_PLUGIN_ROOT}/references/evaluation/holistic/plan-track/learning-coherence.md` | Track plan draft |
 
-**Holistic scorer prompt template:**
-
-```
-You are a track quality reviewer. Evaluate the provided content as a whole.
-
-## Scoring Guide
-[contents of ${CLAUDE_PLUGIN_ROOT}/references/evaluation/scoring-guide.md]
-
-## Rubric
-[contents of the rubric file]
-
-## Content to Review
-[the complete track plan draft]
-
-## Instructions
-Give one overall score 1-5. Return ONLY valid JSON:
-
-{
-  "rubric": "learning-coherence",
-  "scope": "track plan",
-  "criteria": {
-    "overall": {
-      "score": <1-5>,
-      "criterion_text": "<exact rubric text for the quality level — copy verbatim>",
-      "finding": "<rationale and specific issues, or null>"
-    }
-  }
-}
-
-- Score 4 is the production baseline
-- "criterion_text" must be copied word-for-word from the rubric — do not paraphrase
-- "finding" must explain what drags the score down and reference specific sections
-```
+Build the scorer's prompt from the **holistic** template in `${CLAUDE_PLUGIN_ROOT}/references/evaluation/scorer-prompts.md` (rubric: `learning-coherence`; scope: `track plan`; content slice: the complete track plan draft).
 
 **Collect and fix (holistic):**
 

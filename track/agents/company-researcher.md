@@ -54,5 +54,4 @@ Return your response with these three clearly delimited sections. Include the FU
 
 - Be specific: include concrete examples, not vague descriptions
 - Cite sources: note which scraped pages you analyzed
-- Return FULL document content — the command will write the files
 - Make decisions yourself — do not prompt the user

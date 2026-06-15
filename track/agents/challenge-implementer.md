@@ -135,39 +135,7 @@ Use the Agent tool to spawn checklist scorer agents **in parallel**.
 | validation | Haiku | `references/evaluation/checklist/generate/validation.md` | Track validation output + `shellcheck` output |
 | conventions | Haiku | `references/evaluation/checklist/generate/conventions.md` | `config.yml` + `<challenge>/assignment.md` + `<challenge>/` script listing |
 
-**Checklist scorer prompt template:**
-
-```
-You are a track quality checker. Verify the provided content against the checklist.
-
-## Scoring Guide
-[contents of references/evaluation/scoring-guide.md]
-
-## Checklist
-[contents of the checklist rubric file]
-
-## Content to Check
-[the relevant content slice]
-
-## Instructions
-Check each item. Return ONLY valid JSON:
-
-{
-  "rubric": "<name>",
-  "scope": "<what was checked>",
-  "criteria": {
-    "<item>": {
-      "score": <0 or 1>,
-      "criterion_text": "<exact item text from the checklist — copy verbatim>",
-      "finding": "<what is wrong, or null if passing>"
-    }
-  }
-}
-
-- 1 = passes, 0 = fails
-- "criterion_text" must be copied word-for-word from the checklist — do not paraphrase
-- "finding" must be specific enough to fix immediately
-```
+Build each scorer's prompt from the **checklist** template in `${CLAUDE_PLUGIN_ROOT}/references/evaluation/scorer-prompts.md` (scope: what was checked; content slice: from the table).
 
 **Collect and fix (checklist):**
 
@@ -199,42 +167,7 @@ Use the Agent tool to spawn scorer agents **in parallel**.
 | script-assignment-alignment | Sonnet | `references/evaluation/analytic/generate/script-assignment-alignment.md` | `<challenge>/assignment.md` + `<challenge>/check-*` + `<challenge>/solve-*` |
 | tab-layout | Haiku | `references/evaluation/analytic/generate/tab-layout.md` | `<challenge>/assignment.md` (tabs frontmatter) + `config.yml` (ports, hostnames) |
 
-**Analytic scorer prompt template:**
-
-```
-You are a track quality scorer. Score the provided content against the rubric.
-
-## Scoring Guide
-[contents of references/evaluation/scoring-guide.md]
-
-## Rubric
-[contents of the rubric file]
-
-## Content to Score
-[the relevant content slice]
-
-## Instructions
-Score each criterion 1-5. Return ONLY valid JSON:
-
-{
-  "rubric": "<name>",
-  "scope": "<what was scored, e.g. 01-getting-started>",
-  "criteria": {
-    "<criterion-name>": {
-      "score": <1-5>,
-      "criterion_text": "<exact criterion text from the rubric — copy verbatim>",
-      "finding": "<specific actionable finding or null>"
-    }
-  }
-}
-
-- Score 4 is the production baseline
-- "criterion_text" must be copied word-for-word from the rubric — do not paraphrase
-- "finding" is null when score >= 4
-- "finding" must reference specific locations (file paths, section names)
-```
-
-Use `model: haiku` or `model: sonnet` on the Agent call as specified in the table above.
+Build each scorer's prompt from the **analytic** template in `${CLAUDE_PLUGIN_ROOT}/references/evaluation/scorer-prompts.md` (scope: what was scored, e.g. `01-getting-started`; content slice: from the table). Use `model: haiku` or `model: sonnet` on the Agent call as specified in the table above.
 
 ### Collect and Fix (Challenge Analytic)
 
@@ -282,39 +215,7 @@ Dispatch holistic scorers for reference context. **No fix loop** — the score i
 | learning-coherence | Sonnet | `references/evaluation/holistic/plan-track/learning-coherence.md` | Full track plan + all generated content |
 | challenge-coherence | Sonnet | `references/evaluation/holistic/plan-challenge/challenge-coherence.md` | Challenge plan + all generated challenge content |
 
-**Holistic scorer prompt template:**
-
-```
-You are a track quality reviewer. Evaluate the provided content as a whole.
-
-## Scoring Guide
-[contents of references/evaluation/scoring-guide.md]
-
-## Rubric
-[contents of the rubric file]
-
-## Content to Review
-[the full content for this stage]
-
-## Instructions
-Give one overall score 1-5. Return ONLY valid JSON:
-
-{
-  "rubric": "<name>",
-  "scope": "<what was reviewed>",
-  "criteria": {
-    "overall": {
-      "score": <1-5>,
-      "criterion_text": "<exact rubric text for the quality level — copy verbatim>",
-      "finding": "<rationale and specific issues, or null>"
-    }
-  }
-}
-
-- Score 4 is the production baseline
-- "criterion_text" must be copied word-for-word from the rubric — do not paraphrase
-- "finding" must explain what drags the score down and reference specific sections
-```
+Build each scorer's prompt from the **holistic** template in `${CLAUDE_PLUGIN_ROOT}/references/evaluation/scorer-prompts.md` (scope: what was reviewed; content slice: from the table).
 
 Collect the holistic scores and include them in the completion report.
 
