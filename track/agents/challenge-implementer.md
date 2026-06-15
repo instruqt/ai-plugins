@@ -105,7 +105,7 @@ Handle based on mode (overwrite/skip/abort) passed by the command.
 
 ### Shell Compatibility
 
-Follow the shell conventions in `skills/write-scripts/SKILL.md` exactly — `#!/bin/bash` with `set -euxo pipefail` for setup/solve/cleanup scripts, and `#!/bin/bash` with no `set -e`/`-o pipefail` for check scripts (they must run every assertion). These are the conventions `validate-track` enforces.
+Follow the shell conventions in `skills/write-scripts/SKILL.md` → "Shebang and Set Flags" exactly, choosing by host image: bash images (`#!/bin/bash` + `set -euxo pipefail`), Alpine without bash (install bash in setup, then the bash form), or POSIX-sh-only images (`#!/bin/sh` + `set -eu`). Check scripts never use `set -e`/`-o pipefail` (any shell) — they must run every assertion. These are the conventions `validate-track` enforces.
 
 ## Step 5: Validate Track
 

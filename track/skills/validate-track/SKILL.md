@@ -28,9 +28,12 @@ Do not create your own top-level task list. The invoking command owns the user-f
 
 ### Script Checks
 
-- All scripts must have `#!/bin/bash` shebang
-- Setup/solve/cleanup scripts must have `set -euxo pipefail`
-- Check scripts must NOT have `set -euo pipefail` or `set -e`
+Shebang and set flags must match the host image (see `write-scripts` → "Shebang and Set Flags"):
+- bash host: `#!/bin/bash`; setup/solve/cleanup use `set -euxo pipefail`
+- Alpine/POSIX-sh host (and the bootstrap script that installs bash): `#!/bin/sh`; setup/solve/cleanup use `set -eu`
+
+Plus, regardless of shell:
+- Check scripts must NOT have `set -e` or `set -o pipefail` — they must run every assertion
 - Run `shellcheck` on all scripts (if available)
 - Scripts must be executable (`chmod +x`)
 
