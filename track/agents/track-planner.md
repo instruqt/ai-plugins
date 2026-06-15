@@ -200,3 +200,4 @@ When drafting `track.yml`, use conservative defaults unless the user explicitly 
 
 - **`pausable: false`** — do not make tracks pausable by default. Only set `pausable: true` (and `pausable_ttl`) when the user explicitly requests pause/resume, e.g. a multi-session or multi-day track. Pausable adds suspend/resume state constraints (see `references/track-format/track-yml.md`); don't take them on unrequested.
 - **`loadingMessages: false`** — do not configure custom loading messages. Never author custom `loadingMessages` arrays. When sandbox startup is slow and the learner needs engagement, use notes slides (in each challenge's `assignment.md` frontmatter) as the single loading-experience mechanism.
+- **`show_timer: true`** — show the countdown by default so learners can pace themselves against the track's `timelimit`. Only set `show_timer: false` for presenter-paced live demos or open-ended exploratory tracks where the timelimit is just a safety cap.

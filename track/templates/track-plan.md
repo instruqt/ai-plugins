@@ -43,6 +43,7 @@ Capabilities installed **once** by track-level setup (`track_scripts/setup-<host
 - **Duration:** [e.g., ~45 min]
 - **Difficulty:** [Basic / Intermediate / Advanced / Basic → Advanced (progressive)]
 - **Pausable:** No (default — enable only if the user explicitly requests pause/resume; add TTL if so)
+- **Show timer:** Yes (default — hide only for presenter-paced or open-ended tracks)
 - **Hot start:** [Recommended / Not needed]
 
 ## Challenge Roadmap

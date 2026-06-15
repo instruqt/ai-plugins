@@ -47,7 +47,7 @@ Score 1: Lab_config is missing or entirely default with no consideration of the 
 Evaluate whether pausable, skipping_enabled, and other behavioral settings match the track's delivery context and content.
 
 Score 4: `pausable: false` (the default) unless the user explicitly requested pause/resume for a multi-session track. skipping_enabled reflects whether challenges are independent or sequential. Settings are coherent with each other.
-Score 5: All behavioral settings are deliberately configured with the delivery context in mind. `pausable` stays `false` unless explicitly requested, and when enabled it has an appropriate TTL and suspend-safe state. show_timer is set based on whether time pressure adds value or stress.
+Score 5: All behavioral settings are deliberately configured with the delivery context in mind. `pausable` stays `false` unless explicitly requested, and when enabled it has an appropriate TTL and suspend-safe state. `show_timer` is `true` (the default, so learners can pace themselves) except on presenter-paced or open-ended tracks where it is deliberately hidden.
 Score 3: Key settings are configured but some are left at defaults that don't match the context (e.g., skipping enabled on a strongly sequential track).
 Score 2: Settings are inconsistent — e.g., `pausable: true` without an explicit request or with a short/missing TTL, or skipping enabled when challenges have hard dependencies.
 Score 1: All behavioral settings are defaults with no consideration of the track's needs.

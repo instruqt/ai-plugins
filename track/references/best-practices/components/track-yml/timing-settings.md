@@ -22,18 +22,18 @@ These are established conventions used by major Instruqt customers:
 
 | Use Case | timelimit | idle_timeout | show_timer | Notes |
 |----------|-----------|--------------|------------|-------|
-| Instructional lab (guided) | 5400 (90m) | 1800 (30m) | false | Short focused labs with instructor pacing |
-| Short workshop | 7200 (2h) | 3600 (1h) | false | Self-paced but bounded |
-| Standard HVD workshop | 28800 (8h) | 7200 (2h) | false | Full-day hands-on workshop |
-| Long multi-product workshop | 28800 (8h) | 28800 (8h) | false | Extended sessions, no idle teardown |
-| Live-presenter demo | varies | 0 | false | idle_timeout: 0 keeps sandbox alive indefinitely |
+| Instructional lab (guided) | 5400 (90m) | 1800 (30m) | true | Short focused labs with instructor pacing |
+| Short workshop | 7200 (2h) | 3600 (1h) | true | Self-paced but bounded |
+| Standard HVD workshop | 28800 (8h) | 7200 (2h) | true | Full-day hands-on workshop |
+| Long multi-product workshop | 28800 (8h) | 28800 (8h) | true | Extended sessions, no idle teardown |
+| Live-presenter demo | varies | 0 | false | Presenter-paced, not learner-paced — countdown is a distraction |
 
 Good -- standard workshop timing:
 
 ```yaml
 timelimit: 28800
 idle_timeout: 7200
-show_timer: false
+show_timer: true
 ```
 
 Good -- focused instructional lab:
@@ -41,7 +41,7 @@ Good -- focused instructional lab:
 ```yaml
 timelimit: 5400
 idle_timeout: 1800
-show_timer: false
+show_timer: true
 ```
 
 ### idle_timeout: 0
@@ -58,27 +58,22 @@ idle_timeout: 0
 
 ### show_timer
 
-Most tracks set `show_timer: false`. Showing the timer creates anxiety and is only appropriate for certification-style assessments or timed challenges where the pressure is intentional.
+Default to `show_timer: true`. The track has a `timelimit`, and showing the countdown lets learners pace themselves and see how much time remains rather than being surprised by a teardown. Set it on any track with a meaningful time limit.
 
-Good -- timer hidden for learning-focused track:
+Hide the timer (`show_timer: false`) only when a countdown would mislead or distract rather than help: presenter-paced live demos, or open-ended exploratory tracks where the `timelimit` is just a generous safety cap, not a real budget the learner should watch.
+
+Good -- timer shown so learners can pace themselves:
+
+```yaml
+show_timer: true
+timelimit: 5400
+```
+
+Acceptable -- timer hidden on a presenter-paced live demo:
 
 ```yaml
 show_timer: false
-```
-
-Acceptable -- timer shown for assessment:
-
-```yaml
-show_timer: true
-timelimit: 3600
-```
-
-Bad -- timer shown on a casual introductory lab:
-
-```yaml
-# Learner sees a countdown on a "Getting Started" track
-show_timer: true
-timelimit: 5400
+idle_timeout: 0
 ```
 
 ### Calculating Appropriate Timelimit
@@ -90,6 +85,6 @@ A rough heuristic: estimate the average completion time, then multiply by 2-3x t
 - timelimit too short for the number of challenges -- learners hit the wall before finishing
 - timelimit excessively long for a simple track -- wastes cloud resources on abandoned sandboxes
 - idle_timeout: 0 on anything that is not a live-presenter track
-- show_timer: true on learning-focused (non-assessment) tracks
+- show_timer: false hiding the countdown on a track with a real timelimit -- the default is true so learners can pace themselves; only hide it for presenter-paced or open-ended tracks
 - Timing copied from another track without adjusting for different scope or complexity
 - No idle_timeout specified -- relying on platform defaults that may not match the track's needs
