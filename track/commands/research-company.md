@@ -66,7 +66,7 @@ ${CLAUDE_PLUGIN_DATA}/products/
 
 ### Step 3: Scrape Primary Domain
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/scrape-website/SKILL.md` and follow its mode detection. Use the loaded skill for all scraping operations in this command.
+Read `${CLAUDE_PLUGIN_ROOT}/skills/scrape-website/SKILL.md` and follow its instructions. Use the loaded skill for all scraping operations in this command.
 
 Set the scraper output directory before running any scraper commands:
 ```bash

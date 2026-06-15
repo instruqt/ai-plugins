@@ -32,7 +32,7 @@ Products are independent of companies — no company research is required, thoug
 
 ### Step 2: Scrape Product Docs (if URL provided)
 
-If a product URL was provided, read `${CLAUDE_PLUGIN_ROOT}/skills/scrape-website/SKILL.md` and follow its mode detection. Set the output directory first:
+If a product URL was provided, read `${CLAUDE_PLUGIN_ROOT}/skills/scrape-website/SKILL.md` and follow its instructions. Set the output directory first:
 
 ```bash
 export SCRAPER_DATA_DIR="${CLAUDE_PLUGIN_DATA}/products/<company-slug>"
