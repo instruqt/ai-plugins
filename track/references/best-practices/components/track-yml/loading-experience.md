@@ -10,7 +10,7 @@ Evaluates whether the track's loading experience -- enhanced_loading, notes slid
 | 2 | Below Standard | enhanced_loading or notes configured but not correctly -- notes do not display, or loading messages conflict with notes slides |
 | 3 | Adequate | Loading messages enabled OR notes slides present, but not both working together; transitions between loading and first challenge are abrupt |
 | 4 | Good | Notes display correctly during provisioning; enhanced_loading settings are correct per challenge; loadingMessages do not conflict (production baseline) |
-| 5 | Excellent | Loading experience creates anticipation -- splash image followed by text intro via notes, custom loading messages match brand, smooth transition into first challenge |
+| 5 | Excellent | Loading experience creates anticipation -- splash image followed by text intro via notes, `loadingMessages` disabled so nothing competes, smooth transition into first challenge |
 
 ## Guidance
 
@@ -167,12 +167,9 @@ notes:
 
 ### loadingMessages and Notes Interaction
 
-`loadingMessages` in track.yml's `lab_config` and notes slides in assignment.md frontmatter serve similar purposes. When both are active, they can compete for attention. Choose one primary mechanism:
+`loadingMessages` in track.yml's `lab_config` and notes slides in assignment.md frontmatter serve similar purposes, and when both are active they compete for attention. Use **notes slides as the single loading-experience mechanism** and keep `loadingMessages: false`. Do not author custom `loadingMessages` lists — notes slides are richer (splash images, formatted text) and avoid the conflict entirely.
 
-- **Notes slides** for rich, branded, multi-slide loading experiences
-- **loadingMessages** for simple text messages during provisioning
-
-Good -- notes as primary, loading messages disabled in track.yml:
+Good -- notes as the loading experience, loadingMessages disabled in track.yml:
 
 ```yaml
 # track.yml
@@ -195,7 +192,7 @@ notes:
     Your environment is being prepared...
 ```
 
-Good -- loading messages as primary in track.yml, no notes in assignment.md:
+Bad -- custom loadingMessages list instead of notes slides:
 
 ```yaml
 # track.yml
@@ -206,19 +203,7 @@ lab_config:
   - "Almost ready..."
 ```
 
-Good -- branded custom loading messages that match the track's topic:
-
-```yaml
-# track.yml
-lab_config:
-  loadingMessages:
-  - "Spinning up your Kubernetes cluster..."
-  - "Deploying sample microservices..."
-  - "Configuring monitoring stack..."
-  - "Your environment is almost ready!"
-```
-
-Bad -- both active and conflicting:
+Bad -- loadingMessages left enabled while notes are also active, so they conflict:
 
 ```yaml
 # track.yml
@@ -245,4 +230,4 @@ notes:
 - Image URLs in notes that are broken or slow to load -- test them before publishing
 - Notes text that is too long -- learners skim during loading, keep it concise and scannable
 - Subsequent challenges missing enhanced_loading: false in their assignment.md when they have notes -- notes will not display on transition
-- Custom `loadingMessages` arrays are a lightweight alternative to notes when you want branded messages without the overhead of splash images
+- Custom `loadingMessages` arrays in place of notes slides -- keep `loadingMessages: false` and use notes (even a single text slide) for loading engagement

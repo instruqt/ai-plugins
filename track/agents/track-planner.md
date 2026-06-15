@@ -193,3 +193,10 @@ Present the polished plan to the user. The plan has already been scored against 
 - Keep time estimates realistic (users often underestimate)
 - Each challenge should have a clear, distinct goal
 - Learning objectives must be actionable (not "understand X" — instead "configure X")
+
+### Track behavior defaults (track.yml)
+
+When drafting `track.yml`, use conservative defaults unless the user explicitly asks otherwise:
+
+- **`pausable: false`** — do not make tracks pausable by default. Only set `pausable: true` (and `pausable_ttl`) when the user explicitly requests pause/resume, e.g. a multi-session or multi-day track. Pausable adds suspend/resume state constraints (see `references/track-format/track-yml.md`); don't take them on unrequested.
+- **`loadingMessages: false`** — do not configure custom loading messages. Never author custom `loadingMessages` arrays. When sandbox startup is slow and the learner needs engagement, use notes slides (in each challenge's `assignment.md` frontmatter) as the single loading-experience mechanism.
