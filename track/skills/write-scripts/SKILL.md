@@ -75,6 +75,22 @@ Scripts are named by type and target host:
 - `solve-<hostname>` — auto-solves the challenge on `<hostname>`
 - `cleanup-<hostname>` — resets state on `<hostname>` after the challenge
 
-## Shell Compatibility
+## Shebang and Set Flags
 
-All Instruqt lifecycle scripts use bash. The shebang must be `#!/bin/bash`.
+The code blocks above show the **bash** form, which is the default. Pick the shebang and flags by what the host image provides:
+
+1. **bash available (default).** Debian/Ubuntu images, or any host with `bash` on `PATH`.
+   - `#!/bin/bash`; setup/solve/cleanup use `set -euxo pipefail`; check scripts use no `set -e`/`-o pipefail`.
+
+2. **Alpine container without bash.** Alpine's `/bin/sh` is BusyBox `ash` and ships no `bash`. Install it once at the top of the track/challenge setup script, then use the bash form everywhere after:
+   ```sh
+   #!/bin/sh
+   set -eu
+   apk add --no-cache bash
+   ```
+   The bootstrapping setup script itself is `#!/bin/sh` + `set -eu` (it runs before bash exists). Every script after the install — solve, cleanup, check — uses the bash form. This is the preferred Alpine path: it keeps the `-x` xtrace and `-o pipefail` guarantees, which surface in the Instruqt logs and are where authors debug `instruqt track test` failures.
+
+3. **POSIX sh only (fallback).** A host with no bash and no way to add it (minimal/distroless images). Use POSIX sh:
+   - `#!/bin/sh`; setup/solve/cleanup use `set -eu` (POSIX sh has no portable `-o pipefail` or `-x`); check scripts use no `set -e`.
+
+When unsure which case applies, check the host image in the challenge plan / `config.yml`.

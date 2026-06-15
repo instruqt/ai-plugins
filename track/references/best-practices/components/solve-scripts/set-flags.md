@@ -23,6 +23,8 @@ Every solve script should start with:
 set -euxo pipefail
 ```
 
+**On non-bash hosts.** Alpine's `/bin/sh` (BusyBox `ash`) and other minimal images may ship no bash. Prefer installing bash early in setup (`apk add --no-cache bash` on Alpine) so solve scripts keep the full `set -euxo pipefail`. When that isn't possible, write the solve script as `#!/bin/sh` + `set -eu` — the portable subset; `-o pipefail` and `-x` are not guaranteed in POSIX sh. On a `/bin/sh` host, `set -eu` is the baseline (treat it as the score-4 equivalent); the `-x`/pipefail levels in the table above apply to bash.
+
 ### What each flag does
 
 | Flag | Effect | Why it matters for solve |

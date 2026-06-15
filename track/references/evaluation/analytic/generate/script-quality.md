@@ -1,6 +1,6 @@
 # Script Quality
 
-Evaluates the quality and correctness of generated check, solve, setup, and cleanup scripts. Check scripts must NOT use `set -euo pipefail` or `set -e` -- they test for failure conditions and need to handle non-zero exit codes gracefully. Setup, solve, and cleanup scripts use `set -euxo pipefail` to fail fast on errors.
+Evaluates the quality and correctness of generated check, solve, setup, and cleanup scripts. Check scripts must NOT use `set -euo pipefail` or `set -e` -- they test for failure conditions and need to handle non-zero exit codes gracefully. Setup, solve, and cleanup scripts fail fast with `set -euxo pipefail` on bash, or `set -eu` on a POSIX `/bin/sh` host (e.g. Alpine before bash is installed).
 
 ## Check script patterns
 
@@ -54,7 +54,7 @@ Score 1: Scripts fail on re-run, pre-configure what learners should do themselve
 
 ## Shell best practices
 
-Evaluate whether scripts follow shell scripting best practices: correct shebangs, appropriate set flags per script type (no pipefail for check scripts, `set -euxo pipefail` for setup/solve/cleanup), quoted variables, error handling, and consistent style.
+Evaluate whether scripts follow shell scripting best practices: correct shebangs for the host shell, appropriate set flags per script type (no pipefail for check scripts; `set -euxo pipefail` for bash setup/solve/cleanup, or `set -eu` on `/bin/sh` hosts), quoted variables, error handling, and consistent style.
 
 Score 4: Consistent headers with correct set flags per script type. Quoted variables, proper error handling, uniform style throughout.
 Score 5: Correct headers for shell type and script type. All variables quoted, stderr suppressed in check scripts, explicit exit codes, clean and consistent style across all scripts. Check scripts have no unconditional `exit 0` masking. Setup retry loops have finite iteration counts. Tool installations are version-pinned with checksum verification for direct downloads. Long-running services use systemd unit files instead of nohup.

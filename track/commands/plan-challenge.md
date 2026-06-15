@@ -35,7 +35,7 @@ The agent reads the track plan, prior challenge plans and generated content, and
 
 ### Step 3: Fetch Reference Documentation
 
-After approval, fetch any doc pages listed in the plan's Reference Documentation section so the implementer has them as local files — read `${CLAUDE_PLUGIN_ROOT}/skills/scrape-website/SKILL.md` and follow its mode detection. Fetching after approval avoids wasted work if the plan changes.
+After approval, fetch any doc pages listed in the plan's Reference Documentation section so the implementer has them as local files — read `${CLAUDE_PLUGIN_ROOT}/skills/scrape-website/SKILL.md` and follow its instructions. Fetching after approval avoids wasted work if the plan changes.
 
 ### Step 4: Next Steps
 
