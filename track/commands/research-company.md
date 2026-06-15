@@ -1,10 +1,6 @@
 # Research Company Command
 
-You are helping a user research their company and writing style for Instruqt track creation.
-
-## Progress reporting
-
-Maintain a live task list for this command. Start substantive work by recording one entry per top-level step using user-facing labels (no tool, agent, or file names). Mark one entry in-progress at a time; complete entries as soon as each step finishes. Do not narrate progress in chat — the frontend renders the task list directly.
+You are helping a user research their company and writing style for Instruqt track creation. The command owns all scraping; agents only analyze local files.
 
 ## Arguments
 
@@ -14,10 +10,6 @@ Arguments use labeled `key:value` syntax:
 - `/track:research-company url:<company-url>` — research the company, derive slug from URL
 - `/track:research-company slug:<company-slug>` — load existing context for editing (no scraping)
 - `/track:research-company` (no argument) — show existing context status or ask for URL
-
-## Prerequisites
-
-`CLAUDE_PLUGIN_DATA` is provided by the plugin framework.
 
 ## Context Directory
 
@@ -39,11 +31,12 @@ ${CLAUDE_PLUGIN_DATA}/companies/
 Product context is stored separately in `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/`:
 ```
 ${CLAUDE_PLUGIN_DATA}/products/
-  <product-slug>/
-    product.md
-    manifest.json
-    sitemaps/
-    website/
+  <company-slug>/
+    <product-slug>/
+      product.md
+      manifest.json
+      sitemaps/
+      website/
 ```
 
 ## Workflow
@@ -184,14 +177,6 @@ Agent(
   Then read the per-domain index.json files to find relevant pages by title.
   Focus your company and style analysis on files under website/<primary-domain>/.
 
-  Skills to load:
-  - ${CLAUDE_PLUGIN_ROOT}/skills/research-company/SKILL.md
-  - ${CLAUDE_PLUGIN_ROOT}/skills/analyze-writing-style/SKILL.md
-
-  Templates to use:
-  - ${CLAUDE_PLUGIN_ROOT}/templates/company.md
-  - ${CLAUDE_PLUGIN_ROOT}/templates/style-guide.md
-
   Analyze the scraped content, create company and style guide docs, and identify all products.
   Additional domains should appear as products, not as the company itself."
 )
@@ -265,12 +250,6 @@ Agent(
   Additional context: read the per-domain index.json to find more pages by title.
   Only search within the domain directory listed above — do not scan other domains.
 
-  Skills to load:
-  - ${CLAUDE_PLUGIN_ROOT}/skills/research-product/SKILL.md
-
-  Templates to use:
-  - ${CLAUDE_PLUGIN_ROOT}/templates/product.md
-
   Analyze the scraped content for this product and return the full product document."
 )
 ```
@@ -295,12 +274,6 @@ After all files are written:
 
 ## Important Notes
 
-- The command owns all scraping — agents only analyze local files
-- Always check existing context first to avoid duplicate work
-- Product researchers run in parallel for speed
-- Store company context in `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/` (global across tracks)
-- Store product context in `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/` (independent of company)
-- Add a "Products" section to `company.md` referencing product slugs so the association is documented
-- If a company-slug argument is provided, use it as-is; otherwise derive: lowercase, replace spaces with hyphens
-- The manifest is the source of truth for mapping content to products — keep it updated
-- Agents should read per-domain `index.json` to find relevant pages by title, not scan all files
+- The manifest is the source of truth for mapping content to products — keep it updated.
+- Add a "Products" section to `company.md` referencing product slugs so the association is documented.
+- Company-slug: use the argument as-is if provided; otherwise derive (lowercase, spaces to hyphens).

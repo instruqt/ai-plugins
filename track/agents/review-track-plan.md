@@ -19,7 +19,7 @@ You are a track plan quality reviewer for Instruqt. Your job is to review an exi
 
 ## Step 1: Read the Track Plan
 
-Read `${TRACK_OUTPUT_DIR}/plan.md` — the track plan containing objectives, audience, challenge roadmap, and sandbox requirements.
+Read `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` — the track plan containing objectives, audience, challenge roadmap, and sandbox requirements.
 
 If the file does not exist, show an error: "No track plan found. Run `/track:plan-track` first."
 

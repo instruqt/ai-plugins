@@ -2,10 +2,6 @@
 
 You are helping a user plan a single challenge of an Instruqt track in detail.
 
-## Progress reporting
-
-Maintain a live task list for this command. Start substantive work by recording one entry per top-level step using user-facing labels (no tool, agent, or file names). Mark one entry in-progress at a time; complete entries as soon as each step finishes. Do not narrate progress in chat — the frontend renders the task list directly.
-
 ## Arguments
 
 - `/track:plan-challenge <challenge-slug>` — plan a specific challenge from the track roadmap
@@ -13,65 +9,33 @@ Maintain a live task list for this command. Start substantive work by recording 
 
 ## Prerequisites
 
-Resolve paths:
-- `CLAUDE_PLUGIN_DATA`: provided by the plugin framework
-- `TRACK_OUTPUT_DIR`: if set use it, otherwise default to the current working directory
-
-A track plan (`${TRACK_OUTPUT_DIR}/.instruqt/plan.md`) must exist — run `/track:plan-track` first if missing.
-
-## Context Sources
-
-Context is loaded dynamically via `skills/load-context/SKILL.md`:
-- **Track plan**: `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
-- **Prior challenge plans**: `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
-- **Prior generated content**: `${TRACK_OUTPUT_DIR}/<NN-slug>/assignment.md`, scripts
-- **Company context**: `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/` (if available)
-- **Product context**: `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/` (if available)
-- **Infrastructure**: `${TRACK_OUTPUT_DIR}/config.yml`
+A track plan (`${TRACK_OUTPUT_DIR}/.instruqt/plan.md`) must exist — run `/track:plan-track` first if missing. Plan challenges in order; each builds on the ones before it.
 
 ## Workflow
 
 ### Step 1: Verify Prerequisites
 
-1. Check `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` exists — if not, direct to `/track:plan-track`
-2. Match the challenge argument to the track roadmap
-3. If no match, list available challenges
+1. Check `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` exists — if not, direct to `/track:plan-track`.
+2. Match the challenge argument to the track roadmap. If no match, list available challenges.
 
 ### Step 2: Spawn Challenge Planner
-
-Use the Agent tool to spawn a `challenge-planner` agent:
 
 ```
 Agent(
   prompt="Read ${CLAUDE_PLUGIN_ROOT}/agents/challenge-planner.md for your full instructions.
-
   Track plan: ${TRACK_OUTPUT_DIR}/.instruqt/plan.md
   Config: ${TRACK_OUTPUT_DIR}/config.yml
   Challenge: <challenge-slug>
   Customer: <company-slug>
-
-  Skills to load:
-  - ${CLAUDE_PLUGIN_ROOT}/skills/load-context/SKILL.md
-
-  Templates to use:
-  - ${CLAUDE_PLUGIN_ROOT}/templates/challenge-plan.md
-
   Plan this challenge in detail."
 )
 ```
 
-The agent will:
-1. Read the track plan, available company/product context, and config.yml
-2. Read prior challenge plans AND generated content
-3. Plan assignment outline, tab layout, check/solve/setup scripts
-4. Amend config.yml if new resources are needed
-5. Present for user approval
+The agent reads the track plan, prior challenge plans and generated content, and available context; plans the assignment outline, tab layout, and check/solve/setup scripts; amends `config.yml` if new resources are needed; and presents for approval. Challenge plans ALWAYS require user approval — accuracy here prevents expensive rework during generation.
 
 ### Step 3: Fetch Reference Documentation
 
-After the challenge plan is approved, fetch any doc pages listed in the plan's Reference Documentation section. The implementer needs these as local files.
-
-Read `${CLAUDE_PLUGIN_ROOT}/skills/scrape-website/SKILL.md` and follow its mode detection.
+After approval, fetch any doc pages listed in the plan's Reference Documentation section so the implementer has them as local files — read `${CLAUDE_PLUGIN_ROOT}/skills/scrape-website/SKILL.md` and follow its mode detection. Fetching after approval avoids wasted work if the plan changes.
 
 ### Step 4: Next Steps
 
@@ -84,11 +48,3 @@ Next: Generate this challenge:
 Or plan the next challenge:
   /track:plan-challenge <next-challenge-slug>
 ```
-
-## Important Notes
-
-- Challenge plans ALWAYS require user approval — no batch mode
-- The challenge-planner reads generated content from prior challenges, not just plans
-- Plans must be created in order (challenge-1 before challenge-2)
-- Challenge plans inform generation — accuracy here prevents expensive rework
-- Doc pages are fetched AFTER plan approval — no wasted fetching if the plan changes

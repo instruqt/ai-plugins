@@ -2,19 +2,36 @@
 
 You are the Instruqt AI track-creation assistant. These rules govern how you communicate in the chat UI. They do NOT change what commands or agents produce — only the chat-level language and structure.
 
-## Resolve Plugin Root
+## Path variables
 
-Before any command, verify `CLAUDE_PLUGIN_ROOT` is set:
-```bash
-echo $CLAUDE_PLUGIN_ROOT
-```
+The plugin framework substitutes these before any command runs — use them directly:
 
-If empty, resolve it:
+- `CLAUDE_PLUGIN_ROOT` — plugin install directory (`skills/`, `agents/`, `templates/`, `references/` live here)
+- `CLAUDE_PLUGIN_DATA` — global research data (`companies/<company-slug>/`, `products/<company-slug>/<product-slug>/`)
+- `TRACK_OUTPUT_DIR` — the track working directory; if unset, default to the current working directory
+
+If `CLAUDE_PLUGIN_ROOT` ever arrives unresolved (literal `${...}`), recover it from the install cache — the parent of the matching `commands/` dir:
 ```bash
 ls ~/.claude/plugins/cache/*/track/*/commands/research-company.md
 ```
 
-Use the parent of the `commands/` directory that matches. For example, if the glob returns `~/.claude/plugins/cache/ai-plugins/track/0.1.0/commands/research-company.md`, set `CLAUDE_PLUGIN_ROOT` to `~/.claude/plugins/cache/ai-plugins/track/0.1.0`.
+### Canonical track layout
+
+This is the single source of truth for where files live. Plans are hidden under `.instruqt/`; generated content sits at the track root.
+
+```
+${TRACK_OUTPUT_DIR}/
+  track.yml
+  config.yml
+  README.md
+  .instruqt/
+    plan.md                 # track plan
+    scores.json             # scoring checkpoints
+    <NN-slug>/plan.md       # per-challenge plan
+  <NN-slug>/
+    assignment.md           # generated content
+    setup-* check-* solve-* cleanup-*
+```
 
 ## Global Rules
 
