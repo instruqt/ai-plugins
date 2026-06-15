@@ -1,6 +1,6 @@
 {
   "name": "track",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Instruqt track generation workflow — research, plan, generate, and review tracks",
   "author": {
     "name": "Instruqt"
