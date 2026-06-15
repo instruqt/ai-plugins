@@ -10,7 +10,7 @@ Evaluates whether lab_config sub-fields are configured to create an optimal layo
 | 2 | Below Standard | lab_config present but layout mismatched to content -- reading-heavy track with a tiny sidebar, or code-heavy track with an oversized sidebar |
 | 3 | Adequate | Layout is functional but not optimized -- default sidebar size when the content would benefit from adjustment, or missing feedback settings |
 | 4 | Good | Layout matches content type; sidebar_size appropriate; feedback settings configured; default_layout chosen deliberately (production baseline) |
-| 5 | Excellent | Custom loading messages match brand; layout tested across content types; sidebar and layout create an optimal reading-to-doing ratio |
+| 5 | Excellent | `loadingMessages` disabled with notes slides handling loading engagement; layout tested across content types; sidebar and layout create an optimal reading-to-doing ratio |
 
 ## Guidance
 
@@ -76,19 +76,11 @@ lab_config:
 
 ### loadingMessages
 
-Controls messages shown while the sandbox provisions. Can be `true` (default messages), `false` (no messages), or a custom list:
+Controls messages shown while the sandbox provisions. Can be `true` (default messages), `false` (no messages), or a custom list.
 
-Good -- custom loading messages for branding:
+**Standard: set `loadingMessages: false`.** Do not author custom loading-message lists. When the sandbox is slow to provision and the learner needs engagement, use notes slides (in each challenge's `assignment.md` frontmatter) as the single loading-experience mechanism — see `loading-experience.md`.
 
-```yaml
-lab_config:
-  loadingMessages:
-  - "Provisioning your cloud environment..."
-  - "Installing the latest version of Vault..."
-  - "Configuring demo policies and secrets..."
-```
-
-Good -- disabled when using notes slides as the loading experience:
+Good -- disabled; notes slides handle the loading experience:
 
 ```yaml
 lab_config:
@@ -112,5 +104,5 @@ Common themes: `modern-dark` (recommended default), `original`.
 - default_layout left as AssignmentRight when the track is a wide-dashboard walkthrough that would benefit from AssignmentBottom
 - sidebar_size at default (33) when the content is clearly code-heavy (should be 30) or reading-heavy (should be 40+)
 - Missing feedback settings on tracks deployed to production catalogs
-- loadingMessages: true (default) when the track has custom notes slides -- the messages and slides compete for attention
+- `loadingMessages` left at `true` (default) or set to a custom list -- the standard is `false`; use notes slides for loading engagement so messages and slides don't compete for attention
 - Theme not specified, resulting in inconsistent appearance across an organization's track catalog
