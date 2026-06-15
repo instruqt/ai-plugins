@@ -20,11 +20,6 @@ Do not create your own top-level task list. The invoking command owns the user-f
 5. Read template: `templates/style-guide.md`
 6. Write output: `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/style-guide.md`
 
-## Best Practices Reference
-
-For detailed guidance on style analysis dimensions and techniques, read:
-- `references/best-practices/components/brand-voice/` — what to look for in voice and tone
-
 ## Quality Checklist
 
 - [ ] All template sections completed

@@ -14,7 +14,6 @@ Load the relevant generation guides from the knowledge base using `discover-best
 - `references/best-practices/components/assignment-content/` — step structure, code blocks, admonitions, collapsibles, variable interpolation
 - `references/best-practices/components/tab-design/` — terminal, service, code, browser tab patterns
 - `references/best-practices/components/notes-slides/` — pre-challenge notes and loading experience
-- `references/best-practices/components/brand-voice/` — tone and voice matching (when available)
 
 ### Per-Script Guidance
 - `references/best-practices/components/check-scripts/` — assertion patterns, fail-message quality, no-pipefail rule

@@ -105,15 +105,7 @@ Handle based on mode (overwrite/skip/abort) passed by the command.
 
 ### Shell Compatibility
 
-Check the challenge plan for host images.
-
-**Setup, solve, and cleanup scripts:**
-- Alpine-based: `#!/bin/sh` with `set -eu`
-- Ubuntu/Debian-based: `#!/bin/bash` with `set -euo pipefail`
-
-**Check scripts (any host):**
-- `#!/bin/bash` with `set -u` only (no `set -e` or `pipefail`)
-- Check scripts test for failure conditions — commands are expected to return non-zero
+Follow the shell conventions in `skills/write-scripts/SKILL.md` exactly — `#!/bin/bash` with `set -euxo pipefail` for setup/solve/cleanup scripts, and `#!/bin/bash` with no `set -e`/`-o pipefail` for check scripts (they must run every assertion). These are the conventions `validate-track` enforces.
 
 ## Step 5: Validate Track
 

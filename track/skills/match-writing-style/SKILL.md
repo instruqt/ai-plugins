@@ -19,11 +19,6 @@ Context should be loaded via `load-context` skill (if available).
 5. Apply terminology substitutions from the style guide table
 6. Do a "read-aloud test" — would this fit on their documentation site?
 
-## Best Practices Reference
-
-For detailed guidance on style matching techniques:
-- `references/best-practices/components/brand-voice/` — voice and tone matching patterns
-
 ## Fallback
 
 If no style guide exists, use neutral professional tone:
