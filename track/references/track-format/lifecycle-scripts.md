@@ -100,7 +100,14 @@ export DEBIAN_FRONTEND=noninteractive
 
 apt-get update
 apt-get install -y jq curl
+
+# Verification tail: assert the capabilities this script provides are functional,
+# not just installed. Fail loudly so a broken setup surfaces here, not as a wall
+# the learner hits mid-challenge. See best-practices/.../setup-scripts/prerequisite-verification.md
+command -v jq >/dev/null || { echo "SETUP VERIFICATION FAILED: jq not usable" >&2; exit 1; }
 ```
+
+End every setup script (track-level and per-challenge) with this verification tail, asserting each capability from the plan's Prerequisites manifest. Install ≠ functional — a CLI may be unauthenticated, a package installed for the wrong interpreter, a service not yet accepting connections.
 
 ### check
 

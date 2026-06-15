@@ -95,7 +95,7 @@ Handle based on mode (overwrite/skip/abort) passed by the command.
 
 1. Read `skills/write-scripts/SKILL.md` for script patterns
 2. Generate scripts in `<NN-challenge-slug>/`:
-   - `setup-<host>` — setup scripts, prepare the environment before the challenge starts
+   - `setup-<host>` — setup scripts, prepare the environment before the challenge starts. End every setup script with a verification tail that asserts each capability in the challenge plan's Prerequisites manifest marked "Provided by: this challenge" is *functional* (install → verify), failing loudly if not. Capabilities marked "Provided by: track setup" or a prior challenge are not re-verified here. See `skills/write-scripts/SKILL.md` and `references/best-practices/components/setup-scripts/prerequisite-verification.md`.
    - `check-<host>` — check scripts, validate the learner completed the challenge
    - `solve-<host>` — solve scripts, auto-complete the challenge (used for testing)
    - `cleanup-<host>` — cleanup scripts (if needed)
