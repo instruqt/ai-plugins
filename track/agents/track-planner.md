@@ -181,7 +181,7 @@ Give one overall score 1-5. Return ONLY valid JSON:
 ### Step 7: Write Track Plan
 
 1. Read template: `templates/track-plan.md`
-2. Write to: `${TRACK_OUTPUT_DIR}/plan.md`
+2. Write to: `${TRACK_OUTPUT_DIR}/.instruqt/plan.md`
 
 ### Step 8: Present for Approval
 

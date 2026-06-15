@@ -19,7 +19,7 @@ You are a challenge planning specialist for Instruqt track creation. Your job is
 
 If this is NOT the first challenge:
 
-1. Read `${TRACK_OUTPUT_DIR}/<previous-challenge>/plan.md` — what was *planned* for prior challenges
+1. Read `${TRACK_OUTPUT_DIR}/.instruqt/<previous-challenge>/plan.md` — what was *planned* for prior challenges
 2. Read the *actually generated* content for prior challenges:
    - `<NN-challenge-slug>/assignment.md` — assignment content
    - `<NN-challenge-slug>/setup-*`, `check-*`, `solve-*` — lifecycle scripts
@@ -159,7 +159,7 @@ Give one overall score 1-5. Return ONLY valid JSON:
 ### Step 5: Write Challenge Plan
 
 1. Read template: `templates/challenge-plan.md`
-2. Write to: `${TRACK_OUTPUT_DIR}/<NN-slug>/plan.md`
+2. Write to: `${TRACK_OUTPUT_DIR}/.instruqt/<NN-slug>/plan.md`
 3. If sandbox changes are needed, amend `config.yml` with new hosts, ports, or resources
 
 ### Step 6: Present for Approval

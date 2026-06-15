@@ -20,7 +20,7 @@ You are a challenge plan quality reviewer for Instruqt. Your job is to review an
 ## Step 1: Read the Challenge Plan
 
 1. Read `${TRACK_OUTPUT_DIR}/.instruqt/<NN-challenge-slug>/plan.md` — the challenge plan
-2. Read `${TRACK_OUTPUT_DIR}/plan.md` — the track plan (for track-level context)
+2. Read `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` — the track plan (for track-level context)
 3. Read prior challenge plans/content (if not the first challenge):
    - `${TRACK_OUTPUT_DIR}/.instruqt/<NN-prior-challenge>/plan.md` — prior challenge plans
    - `<NN-prior-challenge>/assignment.md` — prior generated content (if exists)
@@ -35,7 +35,7 @@ Use the Agent tool to spawn 5 analytic scorer agents **in parallel**.
 
 | Scorer | Model | Rubric | Content Slice |
 |--------|-------|--------|---------------|
-| assignment-flow | Sonnet | `references/evaluation/analytic/plan-challenge/assignment-flow.md` | Challenge plan + `${TRACK_OUTPUT_DIR}/plan.md` |
+| assignment-flow | Sonnet | `references/evaluation/analytic/plan-challenge/assignment-flow.md` | Challenge plan + `${TRACK_OUTPUT_DIR}/.instruqt/plan.md` |
 | script-design | Sonnet | `references/evaluation/analytic/plan-challenge/script-design.md` | Challenge plan (scripts section) |
 | builds-on-prior | Sonnet | `references/evaluation/analytic/plan-challenge/builds-on-prior.md` | Challenge plan + prior challenge plans/content |
 | time-estimates | Sonnet | `references/evaluation/analytic/plan-challenge/time-estimates.md` | Challenge plan |

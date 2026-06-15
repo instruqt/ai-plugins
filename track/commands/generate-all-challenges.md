@@ -1,21 +1,11 @@
-# Generate Track Command
+# Generate All Challenges Command
 
-You are helping a user generate an Instruqt track. This command detects the current state of the track, presents it, and picks up from wherever the user left off — or starts fresh if they prefer.
-
-## Progress reporting
-
-Maintain a live task list for this command. Start substantive work by recording one entry per top-level step using user-facing labels (no tool, agent, or file names). Mark one entry in-progress at a time; complete entries as soon as each step finishes. Do not narrate progress in chat — the frontend renders the task list directly.
+You are helping a user generate an Instruqt track. This command detects the current state of the track, presents it, and picks up from wherever the user left off — or starts fresh if they prefer. It is **idempotent** — run it as many times as needed.
 
 ## Arguments
 
 - `/track:generate-all-challenges` — generate a complete track, resuming from current state
 - `/track:generate-all-challenges --fresh` — ignore existing state and start from scratch
-
-## Paths
-
-Resolve paths:
-- `CLAUDE_PLUGIN_DATA`: provided by the plugin framework
-- `TRACK_OUTPUT_DIR`: if set use it, otherwise default to the current working directory
 
 ## Workflow
 
@@ -149,10 +139,6 @@ After all challenges are generated (or already existed):
 
 ## Important Notes
 
-- This command is **idempotent** — run it as many times as needed, it always picks up from the current state
-- Existing content is always re-validated before generating new content
-- Challenges are generated strictly in order — later challenges may depend on earlier ones
-- Validation runs automatically after every new challenge — no way to skip it
-- Testing is always the user's choice — auto-test, manual, or skip
-- The `id` field in track.yml and assignment.md frontmatter is intentionally omitted — Instruqt assigns UUIDs on first `instruqt track push`
-- "Start over" preserves research context (company.md, products) — only regenerates track plan and challenge content
+- Challenges are generated strictly in order — later challenges may depend on earlier ones.
+- The `id` field in track.yml and assignment.md frontmatter is intentionally omitted — Instruqt assigns UUIDs on first `instruqt track push`.
+- "Start over" preserves research context (company.md, products) — only regenerates track plan and challenge content.
