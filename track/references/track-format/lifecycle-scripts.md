@@ -22,10 +22,11 @@ The filename suffix encodes the target hostname: `setup-host01`, `check-mongodb`
 
 ### Shebangs
 
-- `#!/bin/bash` or `#!/usr/bin/env bash` — standard Linux
-- `#!/bin/sh` — Alpine or stripped containers where bash is not installed
-- `#!/bin/bash -xe` — shorthand that enables xtrace and errexit but omits pipefail; useful for setup scripts where you want verbose logging without pipefail side effects
+- `#!/bin/bash` or `#!/usr/bin/env bash` — standard Linux (Debian/Ubuntu). Put flags in the body, not the shebang: setup/solve/cleanup use `set -euxo pipefail`; check scripts use no `set -e`/`set -o pipefail` (they must run every assertion).
+- `#!/bin/sh` with `set -eu` — Alpine or stripped containers without bash. On Alpine, prefer `apk add --no-cache bash` in setup and then use the bash form, which keeps the `-x`/pipefail guarantees; POSIX `sh` has no portable `-o pipefail` or `-x`.
 - Windows VMs: no shebang (PowerShell assumed)
+
+See `best-practices/components/solve-scripts/set-flags.md` for the full per-shell rule.
 
 **Bash version guard:** Some container images ship old bash (< 4.x) that lacks features like associative arrays. Force a re-exec under a known-good binary:
 

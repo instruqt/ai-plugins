@@ -23,10 +23,10 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/AmazonS3FullAccess
-      - arn:aws:iam::policy/AmazonEC2ReadOnlyAccess
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
 
 azure_subscriptions:
   - name: azure
@@ -62,9 +62,9 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/AmazonS3FullAccess
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
 
 gcp_projects:
   - name: gcp
@@ -100,9 +100,9 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/AmazonS3FullAccess
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
 
 azure_subscriptions:
   - name: azure

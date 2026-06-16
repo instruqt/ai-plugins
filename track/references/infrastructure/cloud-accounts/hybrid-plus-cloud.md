@@ -37,10 +37,10 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/AmazonS3FullAccess
-      - arn:aws:iam::policy/AmazonRDSReadOnlyAccess
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      - arn:aws:iam::aws:policy/AmazonRDSReadOnlyAccess
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
 ```
 
 ### Variant: container + VM + Azure

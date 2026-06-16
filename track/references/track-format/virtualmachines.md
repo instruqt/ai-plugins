@@ -43,19 +43,7 @@ virtualmachines:
 
 ### Available machine types
 
-| Family | Types |
-|--------|-------|
-| **n1-standard** | n1-standard-1, n1-standard-2, n1-standard-4, n1-standard-8 |
-| **n1-highcpu** | n1-highcpu-8, n1-highcpu-16 |
-| **n1-highmem** | n1-highmem-8 |
-| **n2-standard** | n2-standard-2, n2-standard-4, n2-standard-8, n2-standard-16 |
-| **n2-highcpu** | n2-highcpu-2, n2-highcpu-32 |
-| **n2-highmem** | n2-highmem-16 |
-| **n2d** | n2d-highcpu-32, n2d-standard-8 |
-| **c2** | c2-standard-8 |
-| **e2** | e2-small, e2-micro, e2-standard-2, e2-standard-4, e2-standard-8, e2-standard-16, e2-highcpu-16 |
-| **f1/g1** | f1-micro, g1-small |
-| **t2a (Arm64)** | t2a-standard-1 |
+See `track-format/machine-types.md` for the full list of supported machine types and their vCPU/memory specs. Common choices: `n1-standard-2` (general workshops), `n1-standard-4` (Kubernetes/Compose), `e2-small` (lightweight auxiliary VMs).
 
 Use `machine_type` instead of `memory`/`cpus` fields. The latter are a legacy alternative.
 

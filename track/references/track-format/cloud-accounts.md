@@ -16,9 +16,9 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/ReadOnlyAccess
+      - arn:aws:iam::aws:policy/ReadOnlyAccess
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
     iam_policy: |
       {
         "Version": "2012-10-17",
@@ -232,8 +232,8 @@ aws_accounts:
       - us-west-2
       - us-east-1
     managed_policies:
-      - arn:aws:iam::policy/AmazonEC2ReadOnlyAccess
-      - arn:aws:iam::policy/AmazonS3ReadOnlyAccess
+      - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
+      - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
     iam_policy: |
       {
         "Version": "2012-10-17",
@@ -250,7 +250,7 @@ aws_accounts:
         ]
       }
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
 ```
 
 ### Multi-cloud track
@@ -263,9 +263,9 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/AmazonS3FullAccess
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
 
 gcp_projects:
   - name: gcp
