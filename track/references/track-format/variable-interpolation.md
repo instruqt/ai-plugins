@@ -24,6 +24,9 @@ agent variable get KEY
 
 The `hostname` parameter specifies which sandbox host the variable was set on. Variables are resolved before the content is parsed.
 
+> [!NOTE]
+> The `[[ Instruqt-Var ]]` shortcode resolves **agent-set variables in challenge content** (assignment markdown and the string fields listed below). It does **not** work in `config.yml`. Sandbox identifiers like `${_SANDBOX_ID}` are a separate, platform-provided mechanism substituted directly in `config.yml` fields (hostnames, URLs) — use those there. The two syntaxes are not interchangeable.
+
 ## Fields
 
 | Parameter | Required | Description |

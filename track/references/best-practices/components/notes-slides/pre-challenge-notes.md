@@ -16,11 +16,7 @@ Evaluates whether pre-challenge notes slides are configured to provide learners 
 
 Notes slides appear during challenge loading, keeping learners engaged while the sandbox environment starts. They are defined in the challenge configuration as a `notes` array.
 
-The `enhanced_loading` setting controls the loading experience:
-
-- **Track level**: set `enhanced_loading: false` to use the notes-only loading screen (default behavior shows notes during load)
-- **First challenge**: use `enhanced_loading: null` to inherit the track-level setting
-- **Subsequent challenges**: set `enhanced_loading: false` explicitly to ensure notes display during transitions
+For notes slides to display as overlays, set `enhanced_loading: false` at the track level. Challenges inherit the track value via `enhanced_loading: null` (the default); set `false` explicitly on a challenge if you want to be certain regardless of the track setting. See `track-format/track-yml.md` for the meaning of each value (`null`/`false`/`true`).
 
 Notes support three content types:
 
