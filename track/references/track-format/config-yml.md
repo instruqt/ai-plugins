@@ -33,9 +33,7 @@ virtualmachines:
 
 virtualbrowsers:
   - name: web-app
-    urls:
-      - url: https://app-${_SANDBOX_ID}.instruqt.io
-        label: Application
+    url: https://app-${_SANDBOX_ID}.instruqt.io
 
 aws_accounts:
   - name: sandbox
@@ -45,11 +43,11 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/ReadOnlyAccess
+      - arn:aws:iam::aws:policy/ReadOnlyAccess
     iam_policy: |
       {"Version":"2012-10-17","Statement":[...]}
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
     admin_iam_policy: |
       {"Version":"2012-10-17","Statement":[...]}
     scp_policy: |
@@ -244,9 +242,9 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/ReadOnlyAccess
+      - arn:aws:iam::aws:policy/ReadOnlyAccess
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
 ```
 
 ### Multi-container with private backend

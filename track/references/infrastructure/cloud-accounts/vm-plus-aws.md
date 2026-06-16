@@ -28,11 +28,11 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/AmazonEC2FullAccess
-      - arn:aws:iam::policy/AmazonS3FullAccess
-      - arn:aws:iam::policy/AmazonECS_FullAccess
+      - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      - arn:aws:iam::aws:policy/AmazonECS_FullAccess
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
 ```
 
 ### Variant: Docker-based workflow with ECR
@@ -61,10 +61,10 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/AmazonEC2ContainerRegistryFullAccess
-      - arn:aws:iam::policy/AmazonECS_FullAccess
+      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
+      - arn:aws:iam::aws:policy/AmazonECS_FullAccess
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
 ```
 
 ### Setup script: install AWS CLI on the VM

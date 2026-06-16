@@ -2,7 +2,7 @@
 
 Multi-cluster pattern combining a local Kind cluster on a VM with a remote EKS cluster in a sandboxed AWS account. Both clusters are accessible from the VM via separate kubeconfig contexts.
 
-See `cloud-accounts/container-plus-aws.md` for AWS account configuration details. See `base-compute/single-vm-kind-k3s.md` for Kind setup details.
+See `cloud-accounts/vm-plus-aws.md` for AWS account configuration details. See `base-compute/single-vm-kind-k3s.md` for Kind setup details.
 
 ## Config.yml Example
 

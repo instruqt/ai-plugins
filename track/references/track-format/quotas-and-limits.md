@@ -12,7 +12,7 @@ Limits are enforced by the platform and cannot be overridden in track configurat
 
 | Resource | Limit |
 |----------|-------|
-| Virtual machines | Up to 32 vCPUs and 208 GB memory (depends on machine type) |
+| Virtual machines | Up to 32 vCPUs and 256 GB memory (depends on machine type) |
 | Container memory | Up to 8 GB (8192 MB) per container |
 | Total containers + website services | 15 combined per sandbox |
 

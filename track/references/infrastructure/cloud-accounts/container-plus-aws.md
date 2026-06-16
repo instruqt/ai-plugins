@@ -24,10 +24,10 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/AmazonEC2ReadOnlyAccess
-      - arn:aws:iam::policy/AmazonS3FullAccess
+      - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
 ```
 
 ### Variant: dual-policy with SCP guardrails
@@ -121,10 +121,10 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/PowerUserAccess
-      - arn:aws:iam::policy/IAMFullAccess
+      - arn:aws:iam::aws:policy/PowerUserAccess
+      - arn:aws:iam::aws:policy/IAMFullAccess
     admin_managed_policies:
-      - arn:aws:iam::policy/AdministratorAccess
+      - arn:aws:iam::aws:policy/AdministratorAccess
 ```
 
 ## Auto-Injected Environment Variables

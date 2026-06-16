@@ -174,5 +174,5 @@ aws_accounts:
     regions:
       - us-west-2
     managed_policies:
-      - arn:aws:iam::policy/ReadOnlyAccess
+      - arn:aws:iam::aws:policy/ReadOnlyAccess
 ```

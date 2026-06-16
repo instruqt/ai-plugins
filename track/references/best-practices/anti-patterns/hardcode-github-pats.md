@@ -35,5 +35,7 @@ virtualmachines:
 
 ```bash
 # setup-sandbox
-git clone "https://${GITHUB_TOKEN}@github.com/acme/private-repo.git" /opt/repo
+git -c "http.extraheader=Authorization: token ${GITHUB_TOKEN}" clone https://github.com/acme/private-repo.git /opt/repo
 ```
+
+Avoid putting the token in the clone URL (`https://${GITHUB_TOKEN}@github.com/...`) — it persists in the cloned repo's `.git/config`. The `http.extraheader` form keeps it out. See `best-practices/anti-patterns/credentials-in-scripts.md`.
