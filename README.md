@@ -26,7 +26,7 @@ A collection of Claude Code plugins for building and managing Instruqt content.
 ### 1. Add the marketplace
 
 ```
-/plugin marketplace add instruqt/ai-plugins
+/plugin install track@ai-plugin
 ```
 
 ### 2. Install a plugin
