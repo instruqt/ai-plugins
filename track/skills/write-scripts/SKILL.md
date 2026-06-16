@@ -26,7 +26,7 @@ set -euxo pipefail
 - Bootstrap sentinel wait at the top (poll for `/opt/instruqt/bootstrap/host-bootstrap-completed`)
 - `export DEBIAN_FRONTEND=noninteractive` before any `apt-get`
 - Use `apt-get` not `apt`
-- Track-level setup (`track_scripts/setup-<host>`) runs once; challenge-level setup runs before each challenge
+- **Track-level vs per-challenge placement:** `track_scripts/setup-<host>` runs *once* for the whole track — put shared, challenge-independent capabilities there (base CLIs, runtimes, authenticated cloud access, shared services, starter projects). A challenge's own `<NN-slug>/setup-<host>` runs before that challenge and holds only challenge-specific state. Never repeat a shared install in every challenge; declare it in the track plan's Track-Level Prerequisites and install it in `track_scripts/`. See `references/best-practices/components/setup-scripts/track-vs-challenge-setup.md`.
 - Hot-start awareness: `INSTRUQT_USER_EMAIL` and similar vars may be empty during pre-provisioning
 - **Verification tail (required):** end the script by asserting every capability it provides from the challenge plan's Prerequisites manifest is actually *functional* — not just installed. Use a `verify` helper that runs the capability's Verify command and `exit 1`s with a located message on failure. Install ≠ functional: a CLI on `PATH` may be unauthenticated, a package may belong to the wrong interpreter, a service may not yet accept connections. See `prerequisite-verification.md` for the helper and per-tool-class patterns; use `readiness-patterns.md` (not `sleep`) for capabilities that take time to become true.
 

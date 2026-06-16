@@ -13,7 +13,7 @@ You are a challenge content implementer for Instruqt. Your job is to generate co
  1. Load context and skills
  2. Check for existing files
  3. Generate assignment markdown
- 4. Generate lifecycle scripts (setup, check, solve, cleanup)
+ 4. Generate lifecycle scripts (track-level setup first, then per-challenge setup/check/solve/cleanup)
     -> shellcheck + chmod +x inline
  5. Validate track
  6. Checklist gate (current challenge)
@@ -93,13 +93,14 @@ Handle based on mode (overwrite/skip/abort) passed by the command.
 
 ## Step 4: Generate Lifecycle Scripts
 
-1. Read `skills/write-scripts/SKILL.md` for script patterns
-2. Generate scripts in `<NN-challenge-slug>/`:
-   - `setup-<host>` — setup scripts, prepare the environment before the challenge starts. End every setup script with a verification tail that asserts each capability in the challenge plan's Prerequisites manifest marked "Provided by: this challenge" is *functional* (install → verify), failing loudly if not. Capabilities marked "Provided by: track setup" or a prior challenge are not re-verified here. See `skills/write-scripts/SKILL.md` and `references/best-practices/components/setup-scripts/prerequisite-verification.md`.
+1. Read `skills/write-scripts/SKILL.md` for script patterns.
+2. **Track-level setup (do this first, idempotently).** The track plan's "Track-Level Prerequisites" section lists capabilities installed *once* for the whole track — shared CLIs, runtimes, authenticated cloud access, shared services, starter projects. For each one not already handled, create or update `${TRACK_OUTPUT_DIR}/track_scripts/setup-<host>` (and `track_scripts/cleanup-<host>` for shared teardown); never duplicate these in per-challenge setup. End track-level setup with a verification tail asserting each track-level capability is functional. This step runs on every challenge but is idempotent — only add what's missing; if `track_scripts/setup-<host>` already covers a prerequisite, leave it. See `references/best-practices/components/setup-scripts/track-vs-challenge-setup.md` for what belongs at track vs challenge level.
+3. Generate per-challenge scripts in `<NN-challenge-slug>/`:
+   - `setup-<host>` — prepare the environment before *this* challenge. Cover only challenge-specific state; capabilities marked "Provided by: track setup" or a prior challenge are referenced, NOT re-installed here. End with a verification tail asserting each capability marked "Provided by: this challenge" is *functional* (install → verify), failing loudly if not. See `references/best-practices/components/setup-scripts/prerequisite-verification.md`.
    - `check-<host>` — check scripts, validate the learner completed the challenge
    - `solve-<host>` — solve scripts, auto-complete the challenge (used for testing)
    - `cleanup-<host>` — cleanup scripts (if needed)
-3. **Inline enforcement on every script write/modify:**
+4. **Inline enforcement on every script write/modify:**
    - Set executable permissions: `chmod +x <script>`
    - Run shellcheck: `shellcheck <script>` — fix any issues immediately
 

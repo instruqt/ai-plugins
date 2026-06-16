@@ -22,6 +22,7 @@ Scan the filesystem to determine what exists:
 - [ ] `track.yml` exists
 - [ ] `config.yml` exists
 - [ ] `.instruqt/plan.md` exists
+- [ ] `track_scripts/setup-*` exists (if the track plan declares Track-Level Prerequisites)
 
 **Scores** (`${TRACK_OUTPUT_DIR}/.instruqt/`):
 - [ ] `scores.json` exists (scoring checkpoint)
