@@ -45,6 +45,8 @@ Cross-check each challenge's Prerequisites manifest against its setup scripts. T
 - Flag manifest rows whose Verify command only tests existence (`command -v`, `which`, `[ -f ... ]`) when the capability implies function (auth, a reachable backend, an importable package) — these pass at setup but fail at runtime.
 - Flag setup scripts that install a tool/runtime/package or start a service but have no verification tail at all.
 - Do not require re-verification of capabilities marked "Provided by: track setup" or a prior challenge slug in per-challenge setup — those are verified where they are provided.
+- Flag when the track plan declares "Track-Level Prerequisites" but no `track_scripts/setup-<host>` installs or verifies them — track-level setup is missing.
+- Flag the same tool/runtime/package install repeated across multiple challenges' setup scripts; shared setup belongs in `track_scripts/setup-<host>`, not duplicated per challenge.
 
 If a challenge plan has no Prerequisites section, note it as a warning (the plan predates this convention) rather than blocking.
 
