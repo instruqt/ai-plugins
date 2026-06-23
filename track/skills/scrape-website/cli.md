@@ -24,9 +24,16 @@ BINARY="scraper-${OS}-${ARCH}"
 2. Download the latest release to the plugin's bin directory:
 ```bash
 INSTALL_DIR="${CLAUDE_PLUGIN_ROOT}/bin"
-TAG=$(gh release list --repo instruqt/ai-plugins --limit 1 --json tagName --jq '.[0].tagName')
-gh release download "$TAG" --repo instruqt/ai-plugins --pattern "${BINARY}" --dir "$INSTALL_DIR" --clobber
-mv "${INSTALL_DIR}/${BINARY}" "${INSTALL_DIR}/scraper"
+mkdir -p "$INSTALL_DIR"
+if command -v gh &>/dev/null; then
+  TAG=$(gh release list --repo instruqt/ai-plugins --limit 1 --json tagName --jq '.[0].tagName')
+  gh release download "$TAG" --repo instruqt/ai-plugins --pattern "${BINARY}" --dir "$INSTALL_DIR" --clobber
+  mv "${INSTALL_DIR}/${BINARY}" "${INSTALL_DIR}/scraper"
+else
+  TAG=$(curl -fsSL "https://api.github.com/repos/instruqt/ai-plugins/releases/latest" | grep -o '"tag_name": *"[^"]*"' | head -1 | cut -d'"' -f4)
+  URL="https://github.com/instruqt/ai-plugins/releases/download/${TAG}/${BINARY}"
+  curl -fsSL "$URL" -o "${INSTALL_DIR}/scraper" || wget -q "$URL" -O "${INSTALL_DIR}/scraper"
+fi
 chmod +x "${INSTALL_DIR}/scraper"
 ```
 
