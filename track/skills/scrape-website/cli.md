@@ -30,9 +30,20 @@ if command -v gh &>/dev/null; then
   gh release download "$TAG" --repo instruqt/ai-plugins --pattern "${BINARY}" --dir "$INSTALL_DIR" --clobber
   mv "${INSTALL_DIR}/${BINARY}" "${INSTALL_DIR}/scraper"
 else
-  TAG=$(curl -fsSL "https://api.github.com/repos/instruqt/ai-plugins/releases/latest" | grep -o '"tag_name": *"[^"]*"' | head -1 | cut -d'"' -f4)
+  if command -v curl &>/dev/null; then
+    TAG=$(curl -fsSL "https://api.github.com/repos/instruqt/ai-plugins/releases/latest" | grep -o '"tag_name": *"[^"]*"' | head -1 | cut -d'"' -f4)
+  elif command -v wget &>/dev/null; then
+    TAG=$(wget -qO- "https://api.github.com/repos/instruqt/ai-plugins/releases/latest" | grep -o '"tag_name": *"[^"]*"' | head -1 | cut -d'"' -f4)
+  else
+    echo "No download tool found. Install curl, wget, or gh." >&2; exit 1
+  fi
+  [ -n "$TAG" ] || { echo "Failed to resolve latest release tag" >&2; exit 1; }
   URL="https://github.com/instruqt/ai-plugins/releases/download/${TAG}/${BINARY}"
-  curl -fsSL "$URL" -o "${INSTALL_DIR}/scraper" || wget -q "$URL" -O "${INSTALL_DIR}/scraper"
+  if command -v curl &>/dev/null; then
+    curl -fsSL "$URL" -o "${INSTALL_DIR}/scraper"
+  else
+    wget -q "$URL" -O "${INSTALL_DIR}/scraper"
+  fi
 fi
 chmod +x "${INSTALL_DIR}/scraper"
 ```
