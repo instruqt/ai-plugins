@@ -1,3 +1,10 @@
+---
+name: generate-challenge
+description: Generate a single Instruqt track challenge with validation and scoring loops.
+user-invocable: true
+disable-model-invocation: true
+---
+
 # Generate Challenge Command
 
 You are helping a user generate a single Instruqt track challenge, with built-in validation and scoring loops.

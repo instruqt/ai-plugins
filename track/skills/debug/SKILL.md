@@ -1,3 +1,10 @@
+---
+name: debug
+description: Diagnose plugin environment and subagent permissions.
+user-invocable: true
+disable-model-invocation: true
+---
+
 # Debug Command
 
 Diagnose plugin environment and subagent permissions.

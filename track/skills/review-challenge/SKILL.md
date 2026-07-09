@@ -1,3 +1,10 @@
+---
+name: review-challenge
+description: Review a generated challenge and produce structured quality feedback.
+user-invocable: true
+disable-model-invocation: true
+---
+
 # Review Challenge Command
 
 You are helping a user review a single generated challenge and get structured quality feedback before moving on. This is a feedback tool — it produces a scorecard, it does NOT auto-fix.

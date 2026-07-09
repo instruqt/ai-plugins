@@ -1,3 +1,10 @@
+---
+name: generate-all-challenges
+description: Generate an Instruqt track, resuming from current state.
+user-invocable: true
+disable-model-invocation: true
+---
+
 # Generate All Challenges Command
 
 You are helping a user generate an Instruqt track. This command detects the current state of the track, presents it, and picks up from wherever the user left off — or starts fresh if they prefer. It is **idempotent** — run it as many times as needed.

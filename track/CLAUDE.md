@@ -10,10 +10,7 @@ The plugin framework substitutes these before any command runs — use them dire
 - `CLAUDE_PLUGIN_DATA` — global research data (`companies/<company-slug>/`, `products/<company-slug>/<product-slug>/`)
 - `TRACK_OUTPUT_DIR` — the track working directory; if unset, default to the current working directory
 
-If `CLAUDE_PLUGIN_ROOT` ever arrives unresolved (literal `${...}`), recover it from the install cache — the parent of the matching `commands/` dir:
-```bash
-ls ~/.claude/plugins/cache/*/track/*/commands/research-company.md
-```
+If `CLAUDE_PLUGIN_ROOT` ever arrives unresolved (literal `${...}`), assume the plugin files are under the current `track/` directory.
 
 ### Canonical track layout
 
@@ -81,9 +78,9 @@ The frontend renders a live task list as the primary progress surface. You MUST 
 - Do not narrate progress in chat text. The task list is the progress surface; chat text is reserved for the Interpretation and Completion sentences.
 - Do not mention the task list, tasks, todos, or the tool by name to the user.
 
-## Command Presentation
+## Skill Invocation
 
-### `/track:research-company`
+### `project:research-company`
 
 | Phase          | What to say                                                                                                          |
 | -------------- | -------------------------------------------------------------------------------------------------------------------- |
@@ -91,7 +88,7 @@ The frontend renders a live task list as the primary progress surface. You MUST 
 | Actions        | _(no text — the task list renders directly)_                                                                         |
 | Completion     | "Company profile created for **[Company]**. Would you like to make changes, or move on to researching a product?"    |
 
-### `/track:research-product`
+### `project:research-product`
 
 | Phase          | What to say                                                                                                  |
 | -------------- | ------------------------------------------------------------------------------------------------------------ |
@@ -99,7 +96,7 @@ The frontend renders a live task list as the primary progress surface. You MUST 
 | Actions        | _(no text — the task list renders directly)_                                                                 |
 | Completion     | "Product profile created for **[Product]**. Would you like to make changes, or move on to planning a track?" |
 
-### `/track:plan-track`
+### `project:plan-track`
 
 | Phase          | What to say                                                                                         |
 | -------------- | --------------------------------------------------------------------------------------------------- |
@@ -107,7 +104,7 @@ The frontend renders a live task list as the primary progress surface. You MUST 
 | Actions        | _(no text — the task list renders directly)_                                                        |
 | Completion     | "Track plan created for **[topic]**. Would you like to make changes, or start planning challenges?" |
 
-### `/track:plan-challenge`
+### `project:plan-challenge`
 
 | Phase          | What to say                                                                                               |
 | -------------- | --------------------------------------------------------------------------------------------------------- |
@@ -115,7 +112,7 @@ The frontend renders a live task list as the primary progress surface. You MUST 
 | Actions        | _(no text — the task list renders directly)_                                                              |
 | Completion     | "Challenge plan created for **[Title]**. Would you like to make changes, or generate this challenge?"     |
 
-### `/track:generate-challenge`
+### `project:generate-challenge`
 
 | Phase          | What to say                                                                                                   |
 | -------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -123,7 +120,7 @@ The frontend renders a live task list as the primary progress surface. You MUST 
 | Actions        | _(no text — the task list renders directly)_                                                                  |
 | Completion     | "Challenge **[Title]** generated. Would you like to make changes, or continue with the next challenge?"       |
 
-### `/track:generate-all-challenges`
+### `project:generate-all-challenges`
 
 | Phase          | What to say                                                                                                   |
 | -------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -136,7 +133,7 @@ After each challenge is generated and validated, prompt the user:
 - **Test manually** — the user tests, then confirms when done
 - **Skip testing** — continue to the next challenge
 
-### `/track:generate-readme`
+### `project:generate-readme`
 
 | Phase          | What to say                                                                                                   |
 | -------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -144,7 +141,7 @@ After each challenge is generated and validated, prompt the user:
 | Actions        | _(no text — the task list renders directly)_                                                                  |
 | Completion     | "README created. Would you like to make changes?"                                                             |
 
-### `/track:review-track-plan`, `/track:review-challenge-plan`, `/track:review-challenge`, `/track:review-track`
+### `project:review-track-plan`, `project:review-challenge-plan`, `project:review-challenge`, `project:review-track`
 
 | Phase          | What to say                                                                                        |
 | -------------- | -------------------------------------------------------------------------------------------------- |

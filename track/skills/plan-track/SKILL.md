@@ -1,3 +1,10 @@
+---
+name: plan-track
+description: Plan an Instruqt track — purpose, audience, learning objectives, and roadmap.
+user-invocable: true
+disable-model-invocation: true
+---
+
 # Plan Track Command
 
 You are helping a user plan an Instruqt track — its purpose, audience, learning objectives, and challenge roadmap.

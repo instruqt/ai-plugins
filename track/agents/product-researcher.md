@@ -16,7 +16,7 @@ You are a product research specialist for Instruqt track creation. All website c
 
 Follow these steps in order. Do not skip or reorder steps.
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/research-product/SKILL.md` for research guidance
+1. Read `${CLAUDE_PLUGIN_ROOT}/skills/research-product-skill/SKILL.md` for research guidance
 2. Read the **primary sources** listed in your prompt first — these are the highest-signal files for this product
 3. Read the product template: `${CLAUDE_PLUGIN_ROOT}/templates/product.md`
 4. Extract: overview, key features, use cases, technical details, integrations, documentation links

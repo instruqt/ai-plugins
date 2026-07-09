@@ -1,3 +1,10 @@
+---
+name: plan-challenge
+description: Plan a single Instruqt track challenge in detail.
+user-invocable: true
+disable-model-invocation: true
+---
+
 # Plan Challenge Command
 
 You are helping a user plan a single challenge of an Instruqt track in detail.

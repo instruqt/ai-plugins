@@ -1,3 +1,10 @@
+---
+name: generate-readme
+description: Generate a maintainer-facing README.md for an Instruqt track.
+user-invocable: true
+disable-model-invocation: true
+---
+
 # Generate README Command
 
 You are helping a user generate a maintainer-facing `README.md` for their Instruqt track, from the track plan, `config.yml`, and generated challenges.

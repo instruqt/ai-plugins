@@ -1,3 +1,10 @@
+---
+name: review-challenge-plan
+description: Review a challenge plan and produce structured quality feedback.
+user-invocable: true
+disable-model-invocation: true
+---
+
 # Review Challenge Plan Command
 
 You are helping a user review a challenge plan and get structured quality feedback before generation. This is a feedback tool — it produces a scorecard, it does NOT auto-fix.

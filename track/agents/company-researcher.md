@@ -18,7 +18,7 @@ You are a company research specialist for Instruqt track creation. All website c
 Follow these steps in order. Do not skip or reorder steps.
 
 1. Read the manifest: `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/manifest.json` to understand what domains were scraped and their relationships
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/research-company/SKILL.md` for research guidance
+2. Read `${CLAUDE_PLUGIN_ROOT}/skills/research-company-skill/SKILL.md` for research guidance
 3. Read `${CLAUDE_PLUGIN_ROOT}/skills/analyze-writing-style/SKILL.md` for style analysis guidance
 4. Focus on the **primary domain's** directory: `${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/website/<primary-domain>/`
 5. Read the company-related pages (about, mission, company, team, homepage) from the primary domain

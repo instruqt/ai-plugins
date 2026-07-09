@@ -1,3 +1,10 @@
+---
+name: review-track-plan
+description: Review a track plan and produce structured quality feedback.
+user-invocable: true
+disable-model-invocation: true
+---
+
 # Review Track Plan Command
 
 You are helping a user review a track plan and get structured quality feedback before they move on to challenge planning. This is a feedback tool — it produces a scorecard, it does NOT auto-fix.

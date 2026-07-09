@@ -1,3 +1,10 @@
+---
+name: review-track
+description: Review a full Instruqt track and produce structured quality feedback.
+user-invocable: true
+disable-model-invocation: true
+---
+
 # Review Track Command
 
 You are helping a user review a full Instruqt track (hand-written or generated, possibly edited and tested) and get structured quality feedback. This is a feedback tool — it produces a scorecard, it does NOT auto-fix.

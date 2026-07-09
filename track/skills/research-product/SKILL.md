@@ -1,33 +1,80 @@
-# Research Product
+---
+name: research-product
+description: Research and document a single product for Instruqt track creation.
+user-invocable: true
+disable-model-invocation: true
+---
 
-Orchestrates single-product research from scraped content and documentation.
+# Research Product Command
 
-## Progress reporting
+You are helping a user research and document a single product for Instruqt track creation. The command owns all scraping; the agent only analyzes local files.
 
-Do not create your own top-level task list. The invoking command owns the user-facing task list. If this skill represents a single user-visible step in that list, your work maps to one entry. If you need finer-grained progress, update the existing task list rather than starting a new one.
+## Arguments
 
-## Prerequisites
+- `/track:research-product <product-name> [url]` — research a specific product
+- `/track:research-product` (no argument) — list documented products or ask which to add
 
-Run the `scrape-website` skill if product docs haven't been scraped yet.
+## Context Directory
+
+Product context is stored in `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/`:
+
+```
+${CLAUDE_PLUGIN_DATA}/products/
+  <company-slug>/
+    <product-slug>/
+      product.md
+      manifest.json
+      sitemaps/
+      website/
+```
+
+Products are independent of companies — no company research is required, though existing company context can serve as additional source material.
 
 ## Workflow
 
-1. Read scraped HTML files relevant to this product
-2. If product URL provided, use `scrape-website` to fetch product-specific docs
-3. Extract: overview, key features, use cases, technical details, integrations, documentation links
-4. Focus on track-creation-specific info: setup requirements, core workflows, concepts to teach
-5. Read template: `templates/product.md`
-6. Write output: `${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/product.md`
+### Step 1: Check Context
 
-## Product Slug
+1. List existing products in `${CLAUDE_PLUGIN_DATA}/products/`. If the product is already documented, ask: update, or add a different one?
+2. If company context exists in `${CLAUDE_PLUGIN_DATA}/companies/`, check for scraped website content relevant to this product.
 
-Derive from product name: lowercase, replace spaces with hyphens.
-Example: "Acme CLI" -> "acme-cli"
+### Step 2: Scrape Product Docs (if URL provided)
 
-## Quality Checklist
+If a product URL was provided, read `${CLAUDE_PLUGIN_ROOT}/skills/scrape-website/SKILL.md` and follow its instructions. Set the output directory first:
 
-- [ ] All template sections filled with actionable details
-- [ ] Technical details are current and accurate
-- [ ] Documentation links are included
-- [ ] Sources section lists analyzed pages
-- [ ] Info is specific enough to inform track content (not marketing fluff)
+```bash
+export SCRAPER_DATA_DIR="${CLAUDE_PLUGIN_DATA}/products/<company-slug>"
+```
+
+1. `mkdir -p ${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>`
+2. Discover the sitemap for the product URL.
+3. If a sitemap is found: filter for product-relevant URLs, then scrape the selected URLs. If not: scrape the single product URL directly.
+
+If no URL was provided, skip this step — the researcher uses existing content (company website scrapes or previously scraped product content).
+
+### Step 3: Spawn Product Researcher
+
+```
+Agent(
+  subagent_type="track:product-researcher",
+  prompt="Read ${CLAUDE_PLUGIN_ROOT}/agents/product-researcher.md for your full instructions.
+  Product: <product-name>
+  Product directory: ${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>/
+  Primary sources (read first): <list primary_files if available>
+  Additional context: <if company context exists, point to relevant website content under ${CLAUDE_PLUGIN_DATA}/companies/<company-slug>/website/>
+  Analyze the scraped content for this product and return the full product document."
+)
+```
+
+### Step 4: Write Product File
+
+1. `mkdir -p ${CLAUDE_PLUGIN_DATA}/products/<company-slug>/<product-slug>`
+2. Write the agent's response to `.../product.md`.
+
+### Step 5: Present Results
+
+Summarize key findings and ask if anything needs adjustment.
+
+## Important Notes
+
+- Product slug: lowercase, replace spaces with hyphens.
+- Run repeatedly to document multiple products.
